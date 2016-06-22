@@ -1,2 +1,2 @@
 # xxl-plugins
-备用技能点
+Standby skill points
