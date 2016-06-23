@@ -6,6 +6,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>project/xxl-db-master</module>
+		<module>project/xxl-seckill-master</module>
 		<module>dpsf-demo</module>
 		<module>elasticsarch-demo</module>
 		<module>hadoop-demo</module>
