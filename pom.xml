@@ -13,5 +13,6 @@
 		<module>spring-boot</module>
 		<module>test-demo</module>
 		<module>jgroups-demo</module>
+		<module>plugin-util</module>
 	</modules>
 </project>
