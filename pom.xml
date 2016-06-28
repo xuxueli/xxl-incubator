@@ -6,6 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
+		<module>xxl-util</module>
 		<module>xxl-db-master</module>
 		<module>xxl-seckill-master</module>
 	</modules>
