@@ -6,7 +6,7 @@ Standby skill points
 * 简介：日志组件 
 * maven依赖
 
-`
+```
 <dependency>
 	<groupId>org.slf4j</groupId>
 	<artifactId>slf4j-log4j12</artifactId>
@@ -22,15 +22,20 @@ Standby skill points
 	<artifactId>log4j</artifactId>
 	<version>1.2.17</version>
 </dependency>
-`
+```
+
 ### 2、Properties
 ***
-`
+```
 <dependency>
 	<groupId>commons-configuration</groupId>
 	<artifactId>commons-configuration</artifactId>
 	<version>1.10</version>
 </dependency>
+```
+> 启动时自动初始化Configuration类（未完待续）
+
+### 3、Freemarker
 `
 
 

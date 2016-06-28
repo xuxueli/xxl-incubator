@@ -10,14 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Properties工具类
+ * properties util
  * @author xuxueli 2015-6-22 22:36:46
  */
 public class PropertiesUtil {
 	protected static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 
 	/**
-	 * 加载Properties
+	 * load prop file
 	 * @param propertyFileName
 	 * @return
 	 */
@@ -26,10 +26,9 @@ public class PropertiesUtil {
 		InputStream in = null;
 		try {
 			ClassLoader loder = Thread.currentThread().getContextClassLoader();
-			URL url = loder.getResource(propertyFileName); // 方式2：配置更新不需要重启JVM
+			URL url = loder.getResource(propertyFileName); // 方式1：配置更新不需要重启JVM
 			in = new FileInputStream(url.getPath());
-			// in = loder.getResourceAsStream(propertyFileName); //
-			// 方式2：配置更新需重启JVM
+			// in = loder.getResourceAsStream(propertyFileName); // 方式2：配置更新需重启JVM
 			if (in != null) {
 				prop.load(in);
 			}
@@ -48,7 +47,7 @@ public class PropertiesUtil {
 	}
 
 	/**
-	 * 获取配置String
+	 * load prop value of string
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -58,7 +57,7 @@ public class PropertiesUtil {
 	}
 
 	/**
-	 * 获取配置int
+	 * load prop value of int
 	 * @param key
 	 * @param defaultValue
 	 * @return
@@ -66,11 +65,10 @@ public class PropertiesUtil {
 	protected static int getInt(Properties prop, String key) {
 		return Integer.parseInt(getString(prop, key));
 	}
-
 	
 	public static void main(String[] args) {
-		Properties prop = loadProperties("memcached.properties");
-		System.out.println(getString(prop, "server.address"));
+		Properties prop = loadProperties("config.properties");
+		System.out.println(getString(prop, "name"));
 	}
 
 }
