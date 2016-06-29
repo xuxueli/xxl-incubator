@@ -1,4 +1,4 @@
-package com.xxl.plugins.util.configuration;
+package com.xxl.util.core.util;
 
 import java.io.FileInputStream;
 import java.io.IOException;

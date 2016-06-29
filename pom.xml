@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>xxl-util</module>
-		<module>xxl-db-master</module>
-		<module>xxl-seckill-master</module>
+		<module>xxl-db</module>
+		<module>xxl-seckill</module>
 	</modules>
 </project>
