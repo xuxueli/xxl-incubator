@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,6 +14,7 @@ import com.xxl.util.core.util.HtmlTemplateUtil;
 import com.xxl.util.core.util.HttpClientUtil;
 import com.xxl.util.core.util.JacksonUtil;
 import com.xxl.util.core.util.PropertiesUtil;
+import com.xxl.util.core.util.SpringContentUtil;
 import com.xxl.util.core.util.WebPathUtil;
 
 /**
@@ -20,6 +23,7 @@ import com.xxl.util.core.util.WebPathUtil;
  */
 @Controller
 public class IndexController {
+	protected static Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
 	@RequestMapping("/HtmlTemplateUtil")
 	@ResponseBody
@@ -63,5 +67,23 @@ public class IndexController {
 		return result;
 	}
 	
+	@RequestMapping("/Slf4jUtil")
+	@ResponseBody
+	public String Slf4jUtil(){
+		logger.info("log info.");
+		return "slf4j";
+	}
+	
+	@RequestMapping("/SpringContentUtil")
+	@ResponseBody
+	public Object SpringContentUtil(){
+		return SpringContentUtil.getBeanByName("freemarkerConfig");
+	}
+	
+	@RequestMapping("/WebPathUtil")
+	@ResponseBody
+	public String WebPathUtil(){
+		return WebPathUtil.webPath();
+	}
 	
 }

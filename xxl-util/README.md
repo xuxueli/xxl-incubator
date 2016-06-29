@@ -72,7 +72,8 @@ Standby skill points
 ##### 使用步骤
 > 1、引入PropertiesUtil.java文件
 > 2、使用示例：见：com.xxl.util.controller.IndexController.PropertiesUtil()；
-> 3、启动时自动初始化Configuration类（未完待续）
+
+**启动时自动初始化Configuration类（未完待续）**
 
 ### 5、slf4j
 ##### 功能简介：日志组件 
@@ -101,7 +102,7 @@ Standby skill points
 protected static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 logger.error("close {} error!", propertyFileName);
 ```
-
+> 4、使用示例：见：com.xxl.util.controller.IndexController.PropertiesUtil()；
 
 ### 6、SpringContentUtil.java
 ##### 功能简介：加载Spring容器中Bean的工具；
@@ -116,6 +117,7 @@ logger.error("close {} error!", propertyFileName);
 ```
 SpringContentUtil.getBeanByName("freemarkerConfig");
 ```
+> 5、使用示例：见：com.xxl.util.controller.IndexController.SpringContentUtil()；
 
 ### 7、WebPathUtil.java
 ##### 功能简介：
@@ -124,7 +126,7 @@ SpringContentUtil.getBeanByName("freemarkerConfig");
 ##### 使用步骤
 > 1、引入WebPathUtil.java文件
 > 2、如何使用：直接调用即可，如 “File htmlFile = new File(WebPathUtil.webPath() + filePathName);”生成Web目录下文件；
-
+> 3、使用示例：见：com.xxl.util.controller.IndexController.WebPathUtil()；
 
 
 
