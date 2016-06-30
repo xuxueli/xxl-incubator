@@ -27,11 +27,3 @@ Standby skill points
 * 7、WebPathUtil.java	(获取Web和Class根目录路径工具类)
 > 详细：见：com.xxl.util.controller.UtilDemoController.WebPathUtil()
 
-
-### 算法（com.xxl.util.core.algorithm）
-***
-> 1、AndCalculate.java		(利用“与”计算获取数字组合方案；)
-
-
-
-
