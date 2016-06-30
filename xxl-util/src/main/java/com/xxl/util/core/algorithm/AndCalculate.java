@@ -24,8 +24,6 @@ public class AndCalculate {
 	}
 
 	/**
-	 * 给定数字数组，求相加得到指定结果的一种组合方案
-	 * 
 	 * @param array		组合元素
 	 * @param expected	期望相加后等于的值
 	 * @return
