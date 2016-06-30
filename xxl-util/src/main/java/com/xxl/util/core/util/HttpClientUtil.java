@@ -50,9 +50,13 @@ public class HttpClientUtil {
 			RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000).build();
 			httpPost.setConfig(requestConfig);
 			
-			httpClient = HttpClients.createDefault();
+			// httpClient = HttpClients.createDefault();	// default retry 3 times
+			// httpClient = HttpClients.custom().setRetryHandler(new DefaultHttpRequestRetryHandler(3, true)).build();
+			httpClient = HttpClients.custom().disableAutomaticRetries().build();
+			
 			HttpResponse response = httpClient.execute(httpPost);
 			HttpEntity entity = response.getEntity();
+			
 			if (response.getStatusLine().getStatusCode() == 200) {
 				if (null != entity) {
 					String responseMsg = EntityUtils.toString(entity, "UTF-8");
@@ -86,7 +90,7 @@ public class HttpClientUtil {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(post("https://www.hao123.com/", null));
+		System.out.println(post("http://192.168.0.124:9999/", null));
 	}
 	
 }
