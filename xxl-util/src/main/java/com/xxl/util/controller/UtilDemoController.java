@@ -16,6 +16,7 @@ import com.xxl.util.core.util.JacksonUtil;
 import com.xxl.util.core.util.PropInjectUtil;
 import com.xxl.util.core.util.PropertiesUtil;
 import com.xxl.util.core.util.SpringContentUtil;
+import com.xxl.util.core.util.TableInjectUtil;
 import com.xxl.util.core.util.WebPathUtil;
 
 /**
@@ -211,16 +212,32 @@ public class UtilDemoController {
 	 * <pre>
 	8、PropInjectUtil.java
 		功能简介：
-			自动将properties文件中键值对注入到PropInjectUtil中静态属性中，支持刷新；
+			自动将“prop文件”中“键值对类型配置”注入到静态属性中，支持配置刷新；反射方式实现
 		使用步骤
 			1、引入PropInjectUtil.java文件
-			2、如何使用：直接调用即可，如 “File htmlFile = new File(WebPathUtil.webPath() + filePathName);”生成Web目录下文件；
+			2、如何使用：直接调用即可，如 “PropInjectUtil.name”
 	 * </pre>
 	 */
 	@RequestMapping("/PropInjectUtil")
 	@ResponseBody
 	public String PropInjectUtil(){
 		return PropInjectUtil.name;
+	}
+	
+	/**
+	 * <pre>
+	9、TableInjectUtil.java
+		功能简介：
+			自动将“文本文件”中“表格类型配置”注入到静态属性中，支持配置刷新；反射方式实现
+		使用步骤
+			1、引入TableInjectUtil.java文件
+			2、如何使用：直接调用即可，如 “TableInjectUtil.table.size()”
+	 * </pre>
+	 */
+	@RequestMapping("/TableInjectUtil")
+	@ResponseBody
+	public int TableInjectUtil(){
+		return TableInjectUtil.table.size();
 	}
 	
 }

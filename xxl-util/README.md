@@ -27,6 +27,9 @@ Standby skill points
 * 7、WebPathUtil.java	(获取Web和Class根目录路径工具类)
 > 详细：见：com.xxl.util.controller.UtilDemoController.WebPathUtil()
 
-* 8、PropInjectUtil.java		(自动将properties文件中键值对注入到PropInjectUtil中静态属性中，支持刷新)
+* 8、PropInjectUtil.java		(自动将“prop文件”中“键值对类型配置”注入到静态属性中，支持配置刷新；反射方式实现)
 > 详细：见：com.xxl.util.controller.UtilDemoController.PropInjectUtil()
+
+* 9、TableInjectUtil.java	(自动将“文本文件”中“表格类型配置”注入到静态属性中，支持配置刷新；反射方式实现)
+> 详细：见：com.xxl.util.controller.UtilDemoController.TableInjectUtil()
 

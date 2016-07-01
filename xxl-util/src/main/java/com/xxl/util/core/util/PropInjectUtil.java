@@ -16,7 +16,7 @@ public class PropInjectUtil {
 	private static final String PROP_NAME = "config.properties";
 	
 	static {
-		init();
+		reFresh();
 	}
 	public static void reFresh() {
 		init();
