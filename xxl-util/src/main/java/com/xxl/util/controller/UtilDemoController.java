@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xxl.util.core.util.HtmlTemplateUtil;
 import com.xxl.util.core.util.HttpClientUtil;
 import com.xxl.util.core.util.JacksonUtil;
+import com.xxl.util.core.util.PropInjectUtil;
 import com.xxl.util.core.util.PropertiesUtil;
 import com.xxl.util.core.util.SpringContentUtil;
 import com.xxl.util.core.util.WebPathUtil;
@@ -204,6 +205,22 @@ public class UtilDemoController {
 	@ResponseBody
 	public String WebPathUtil(){
 		return WebPathUtil.webPath();
+	}
+	
+	/**
+	 * <pre>
+	8、PropInjectUtil.java
+		功能简介：
+			自动将properties文件中键值对注入到PropInjectUtil中静态属性中，支持刷新；
+		使用步骤
+			1、引入PropInjectUtil.java文件
+			2、如何使用：直接调用即可，如 “File htmlFile = new File(WebPathUtil.webPath() + filePathName);”生成Web目录下文件；
+	 * </pre>
+	 */
+	@RequestMapping("/PropInjectUtil")
+	@ResponseBody
+	public String PropInjectUtil(){
+		return PropInjectUtil.name;
 	}
 	
 }
