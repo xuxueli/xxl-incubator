@@ -25,6 +25,7 @@ import com.xxl.util.core.util.HttpSessionUtil;
 import com.xxl.util.core.util.IdCardUtil;
 import com.xxl.util.core.util.JacksonUtil;
 import com.xxl.util.core.util.KaptchaUtil;
+import com.xxl.util.core.util.LoginUtil;
 import com.xxl.util.core.util.MailUtil;
 import com.xxl.util.core.util.Md5Util;
 import com.xxl.util.core.util.PropInjectUtil;
@@ -523,6 +524,32 @@ public class UtilDemoController {
 	public String XMemcachedUtil(){
 		XMemcachedUtil.set("test", "666");
 		return (String) XMemcachedUtil.get("test");
+	}
+	
+	/**
+	 * <pre>
+	22、LoginUtil.java
+		功能简介：
+			分布式，登陆验证器，cookie + memcached实现
+		使用步骤
+			1、maven依赖
+				<dependency>
+					<groupId>com.googlecode.xmemcached</groupId>
+					<artifactId>xmemcached</artifactId>
+					<version>2.0.0</version>
+				</dependency>
+			2、配置memcached.properties中的，地址列表，和权重
+				# distributed memcached client config :address="hostMain1:port,hostBack1:port hostMain2:port,hostBack2:port",	weights={1, 2}
+				server.address=127.0.0.1:11211,127.0.0.1:11211 127.0.0.1:11211,127.0.0.1:11211
+				server.weights=5,5
+			3、引入LoginUtil.java、CookieUtil.java和XMemcachedUtil.java文件
+			4、如何使用：直接调用即可，如 “LoginUtil.loginCheck(request);”
+	 * </pre>
+	 */
+	@RequestMapping("/LoginUtil")
+	@ResponseBody
+	public boolean LoginUtil(HttpServletRequest request){
+		return LoginUtil.loginCheck(request);
 	}
 	
 }
