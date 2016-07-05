@@ -33,3 +33,12 @@ Standby skill points
 * 9、TableInjectUtil.java	(自动将“文本文件”中“表格类型配置”注入到静态属性中，支持配置刷新；反射方式实现)
 > 详细：见：com.xxl.util.controller.UtilDemoController.TableInjectUtil()
 
+* 10、IdCardUtil.java	(身份证，计算生日)
+> 详细：见：com.xxl.util.controller.UtilDemoController.IdCardUtil()
+
+* 11、IdCardUtil.java	(Java正则表达式，校验工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.RegexUtil()
+
+* 11、URLEncoderUtil.java	(URL编码解码，Java工具类；对应js中的encodeURI和decodeURI；)
+> 详细：见：com.xxl.util.controller.UtilDemoController.URLEncoderUtil()
+

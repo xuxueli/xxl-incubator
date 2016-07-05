@@ -1,5 +1,6 @@
 package com.xxl.util.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -12,11 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xxl.util.core.util.HtmlTemplateUtil;
 import com.xxl.util.core.util.HttpClientUtil;
+import com.xxl.util.core.util.IdCardUtil;
 import com.xxl.util.core.util.JacksonUtil;
 import com.xxl.util.core.util.PropInjectUtil;
 import com.xxl.util.core.util.PropertiesUtil;
+import com.xxl.util.core.util.RegexUtil;
 import com.xxl.util.core.util.SpringContentUtil;
 import com.xxl.util.core.util.TableInjectUtil;
+import com.xxl.util.core.util.URLEncoderUtil;
 import com.xxl.util.core.util.WebPathUtil;
 
 /**
@@ -238,6 +242,54 @@ public class UtilDemoController {
 	@ResponseBody
 	public int TableInjectUtil(){
 		return TableInjectUtil.table.size();
+	}
+	
+	/**
+	 * <pre>
+	10、IdCardUtil.java
+		功能简介：
+			身份证，计算生日
+		使用步骤
+			1、引入IdCardUtil.java文件
+			2、如何使用：直接调用即可，如 “IdCardUtil.getBirthDate(String idcard)”
+	 * </pre>
+	 */
+	@RequestMapping("/IdCardUtil")
+	@ResponseBody
+	public String IdCardUtil(){
+		return new SimpleDateFormat("yyyy-MM-dd").format(IdCardUtil.getBirthDate("412326200802201234"));
+	}
+	
+	/**
+	 * <pre>
+	11、RegexUtil.java
+		功能简介：
+			Java正则表达式，校验工具类
+		使用步骤
+			1、引入RegexUtil.java文件
+			2、如何使用：直接调用即可，如 “RegexUtil.isMobile("17701093170")”
+	 * </pre>
+	 */
+	@RequestMapping("/RegexUtil")
+	@ResponseBody
+	public boolean RegexUtil(){
+		return RegexUtil.isMobile("17701093170");
+	}
+	
+	/**
+	 * <pre>
+	12、URLEncoderUtil.java
+		功能简介：
+			URL编码解码，Java工具类；对应js中的encodeURI和decodeURI；
+		使用步骤
+			1、引入URLEncoderUtil.java文件
+			2、如何使用：直接调用即可，如 “RegexUtil.isMobile("17701093170")”
+	 * </pre>
+	 */
+	@RequestMapping("/URLEncoderUtil")
+	@ResponseBody
+	public String URLEncoderUtil(){
+		return URLEncoderUtil.encode("https://www.baidu.com/点评");
 	}
 	
 }
