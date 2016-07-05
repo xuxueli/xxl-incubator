@@ -71,3 +71,6 @@ Standby skill points
 
 * 22、LoginUtil.java		(分布式，登陆验证器，cookie + memcached实现)
 > 详细：见：com.xxl.util.controller.UtilDemoController.LoginUtil()
+
+* 23、ZXingUtil.java		(二维码生成)
+> 详细：见：com.xxl.util.controller.UtilDemoController.ZXingUtil()

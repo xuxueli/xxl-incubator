@@ -2,10 +2,8 @@ package com.xxl.util.core.util;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +20,7 @@ import com.google.code.kaptcha.Producer;
 public class KaptchaUtil {
 	private static Logger logger = LoggerFactory.getLogger(KaptchaUtil.class);
 	
-	public static OutputStream generateImage(HttpServletRequest request, HttpServletResponse response) {
+	public static void generateImage(HttpServletRequest request, HttpServletResponse response) {
 		Producer captchaProducer = (Producer) SpringContentUtil.getBeanByName("captchaProducer");
 
 		// Kaptcha生成的随机数，存储在session中
@@ -30,7 +28,7 @@ public class KaptchaUtil {
 		HttpSessionUtil.set(request.getSession(), Constants.KAPTCHA_SESSION_KEY, capText);
 		
 		// create image
-		BufferedImage bi = captchaProducer.createImage(capText);
+		BufferedImage bufferedImage = captchaProducer.createImage(capText);
 		
 		// write to response
 		response.setDateHeader("Expires", 0);
@@ -39,24 +37,19 @@ public class KaptchaUtil {
 		response.setHeader("Pragma", "no-cache");	// Set standard HTTP/1.0 no-cache header.
 		response.setContentType("image/jpeg");	// return a jpeg
 
-		ServletOutputStream out = null;
 		try {
-			out = response.getOutputStream();
 			// write the data out
-			ImageIO.write(bi, "jpg", out);
-			out.flush();
+			ImageIO.write(bufferedImage, "jpg", response.getOutputStream());
+			response.getOutputStream().flush();
 		} catch (IOException e) {
 			logger.error("kaptcha error.", e);
 		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					logger.error("kaptcha error.", e);
-				}
+			try {
+				response.getOutputStream().close();
+			} catch (IOException e) {
+				logger.error("kaptcha error.", e);
 			}
 		}
-		return null;
 	}
 
 }

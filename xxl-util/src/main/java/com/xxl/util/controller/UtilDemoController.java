@@ -38,6 +38,7 @@ import com.xxl.util.core.util.TableInjectUtil;
 import com.xxl.util.core.util.URLEncoderUtil;
 import com.xxl.util.core.util.WebPathUtil;
 import com.xxl.util.core.util.XMemcachedUtil;
+import com.xxl.util.core.util.ZXingUtil;
 
 /**
  * UTIL Demo
@@ -550,6 +551,29 @@ public class UtilDemoController {
 	@ResponseBody
 	public boolean LoginUtil(HttpServletRequest request){
 		return LoginUtil.loginCheck(request);
+	}
+	
+	/**
+	 * <pre>
+	22、ZXingUtil.java
+		功能简介：
+			二维码生成
+		使用步骤
+			1、maven依赖
+				<dependency>
+					<groupId>com.google.zxing</groupId>
+					<artifactId>core</artifactId>
+					<version>3.2.1</version>
+				</dependency>
+			3、引入ZXingUtil.java文件
+			4、如何使用：直接调用即可，如 “ZXingUtil.qrCode(response, qrCodeContent);”
+	 * </pre>
+	 */
+	@RequestMapping("/ZXingUtil")
+	@ResponseBody
+	public void ZXingUtil(HttpServletResponse response){
+		String qrCodeContent = "Hi";
+		ZXingUtil.qrCode(response, qrCodeContent);
 	}
 	
 }
