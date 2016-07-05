@@ -36,9 +36,35 @@ Standby skill points
 * 10、IdCardUtil.java	(身份证，计算生日)
 > 详细：见：com.xxl.util.controller.UtilDemoController.IdCardUtil()
 
-* 11、IdCardUtil.java	(Java正则表达式，校验工具类)
+* 11、RegexUtil.java	(Java正则表达式，校验工具类)
 > 详细：见：com.xxl.util.controller.UtilDemoController.RegexUtil()
 
-* 11、URLEncoderUtil.java	(URL编码解码，Java工具类；对应js中的encodeURI和decodeURI；)
+* 12、URLEncoderUtil.java	(URL编码解码，Java工具类；对应js中的encodeURI和decodeURI；)
 > 详细：见：com.xxl.util.controller.UtilDemoController.URLEncoderUtil()
 
+* 13、CookieUtil.java	(cookie工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.CookieUtil()
+
+* 14、RandomUtil.java	(随机字符串生成，用户随机/短信验证码生成等)
+> 详细：见：com.xxl.util.controller.UtilDemoController.RandomUtil()
+
+* 15、DateFormatUtil.java	(日期格式化，日期解析)
+> 详细：见：com.xxl.util.controller.UtilDemoController.DateFormatUtil()
+
+* 16、HttpSessionUtil.java	(HttpSession(session会话)工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.HttpSessionUtil()
+
+* 17、ServletContextUtil.java	(ServletContextUtil(Web全局)工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.ServletContextUtil()
+
+* 18、Md5Util.java	(Md5加密工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.Md5Util()
+
+* 19、MailUtil.java	(邮件发送工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.MailUtil()
+
+* 20、KaptchaUtil	(Kaptcha验证码生成)
+> 详细：见：com.xxl.util.controller.UtilDemoController.KaptchaUtil()
+
+* 21、XMemcachedUtil.java	(memcached分布式缓存的客户端工具)
+> 详细：见：com.xxl.util.controller.UtilDemoController.XMemcachedUtil()
