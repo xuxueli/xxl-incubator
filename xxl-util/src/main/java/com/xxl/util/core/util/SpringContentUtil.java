@@ -5,7 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * registry listener
+ * spring content util by Aware
  * @author xuxueli 2016-1-15 16:05:42
  */
 public class SpringContentUtil implements ApplicationContextAware {

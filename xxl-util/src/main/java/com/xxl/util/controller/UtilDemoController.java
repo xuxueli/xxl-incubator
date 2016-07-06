@@ -33,6 +33,7 @@ import com.xxl.util.core.util.PropertiesUtil;
 import com.xxl.util.core.util.RandomUtil;
 import com.xxl.util.core.util.RegexUtil;
 import com.xxl.util.core.util.ServletContextUtil;
+import com.xxl.util.core.util.SpringContentListener;
 import com.xxl.util.core.util.SpringContentUtil;
 import com.xxl.util.core.util.TableInjectUtil;
 import com.xxl.util.core.util.URLEncoderUtil;
@@ -195,21 +196,33 @@ public class UtilDemoController {
 	
 	/**
 	 * <pre>
-	6、SpringContentUtil.java
+	6、SpringContentUtil.java / SpringContentListener.java	
 		功能简介：加载Spring容器中Bean的工具；
-		使用步骤
+		方式A：SpringContentUtil.java 使用步骤
 			1、依赖Spring容器；
 			2、引入SpringContentUtil.java文件
 			3、需要实例化该Bean；见applicationcontext-util.xml配置；
 				<bean id="springContentUtil" class="com.xxl.util.core.util.SpringContentUtil" />
 			4、使用方法：
 				SpringContentUtil.getBeanByName("freemarkerConfig");
+		方式B：SpringContentListener.java 使用步骤
+			1、依赖Spring容器；
+			2、引入B：SpringContentListener.java文件
+			3、web.xml中配置servlet listener：
+				<listener>
+					<listener-class>com.xxl.util.core.util.SpringContentListener</listener-class>
+				</listener>
+			4、使用方法：
+				SpringContentListener.getBeanByName("freemarkerConfig");
 	 * </pre>
 	 */
 	@RequestMapping("/SpringContentUtil")
 	@ResponseBody
-	public Object SpringContentUtil(){
-		return SpringContentUtil.getBeanByName("freemarkerConfig");
+	public String SpringContentUtil(){
+		String temp = SpringContentListener.getBeanByName("freemarkerConfig").toString();
+		temp += "<br>";
+		temp += SpringContentUtil.getBeanByName("freemarkerConfig");
+		return temp;
 	}
 	
 	/**
