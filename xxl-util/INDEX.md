@@ -75,6 +75,9 @@ Standby skill points
 * 23、ZXingUtil.java		(二维码生成)
 > 详细：见：com.xxl.util.controller.UtilDemoController.ZXingUtil()
 
+* 24、IPSeeker.java		(IP地址解析成地址，利用纯真IP数据库)
+> 详细：见：com.xxl.util.controller.UtilDemoController.IPSeeker()
+
 ### 技能点（com.xxl.util.core.skill目录）
-- ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
+- 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()

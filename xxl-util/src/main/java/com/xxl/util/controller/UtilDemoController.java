@@ -22,6 +22,7 @@ import com.xxl.util.core.util.DateFormatUtil;
 import com.xxl.util.core.util.HtmlTemplateUtil;
 import com.xxl.util.core.util.HttpClientUtil;
 import com.xxl.util.core.util.HttpSessionUtil;
+import com.xxl.util.core.util.IPSeeker;
 import com.xxl.util.core.util.IdCardUtil;
 import com.xxl.util.core.util.JacksonUtil;
 import com.xxl.util.core.util.KaptchaUtil;
@@ -575,7 +576,7 @@ public class UtilDemoController {
 	
 	/**
 	 * <pre>
-	22、ZXingUtil.java
+	23、ZXingUtil.java
 		功能简介：
 			二维码生成
 		使用步骤
@@ -594,6 +595,24 @@ public class UtilDemoController {
 	public void ZXingUtil(HttpServletResponse response){
 		String qrCodeContent = "Hi";
 		ZXingUtil.qrCode(response, qrCodeContent);
+	}
+	
+	/**
+	 * <pre>
+	24、IPSeeker.java
+		功能简介：
+			IP地址解析成地址，利用纯真IP数据库
+		使用步骤
+			1、获取“qqwry.dat”文件：
+				IP数据库下载：http://www.cz88.net/    （安装后在根目录获取qqwry.dat文件）
+			3、引入IPSeeker.java文件
+			4、如何使用：直接调用即可，如 “IPSeeker.getInstance().getAddress("58.30.0.0");”
+	 * </pre>
+	 */
+	@RequestMapping("/IPSeeker")
+	@ResponseBody
+	public StringBuffer IPSeeker(HttpServletResponse response){
+		return new StringBuffer(IPSeeker.getInstance().getAddress("58.30.0.0"));	// 基础类型String进行Json转换会乱码；包装类型不会；
 	}
 	
 }
