@@ -27,7 +27,7 @@ public class HtmlTemplateUtil  {
 	
 	public static FreeMarkerConfigurer loadConfig(){
 		if (freemarkerConfig == null) {
-			freemarkerConfig = (FreeMarkerConfigurer) SpringContentUtil.getBeanByName("freemarkerConfig");
+			freemarkerConfig = (FreeMarkerConfigurer) SpringContentAwareUtil.getBeanByName("freemarkerConfig");
 		}
 		return freemarkerConfig;
 	}

@@ -21,7 +21,7 @@ Standby skill points
 * 5、Slf4j	(介绍slf4j)
 > 详细：见：com.xxl.util.controller.UtilDemoController.Slf4j()
 
-* 6、SpringContentUtil.java / SpringContentListener.java		(加载Spring容器中Bean工具类)
+* 6、SpringContentAwareUtil.java/SpringContentListenerUtil.java/SpringContentRequestUtil.java		(三种方式实现，加载Spring容器中Bean的工具；)
 > 详细：见：com.xxl.util.controller.UtilDemoController.SpringContentUtil()
 
 * 7、WebPathUtil.java	(获取Web和Class根目录路径工具类)

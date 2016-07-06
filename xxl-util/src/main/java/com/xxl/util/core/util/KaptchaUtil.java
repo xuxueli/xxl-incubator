@@ -21,7 +21,7 @@ public class KaptchaUtil {
 	private static Logger logger = LoggerFactory.getLogger(KaptchaUtil.class);
 	
 	public static void generateImage(HttpServletRequest request, HttpServletResponse response) {
-		Producer captchaProducer = (Producer) SpringContentUtil.getBeanByName("captchaProducer");
+		Producer captchaProducer = (Producer) SpringContentAwareUtil.getBeanByName("captchaProducer");
 
 		// Kaptcha生成的随机数，存储在session中
 		String capText = captchaProducer.createText();

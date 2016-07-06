@@ -5,16 +5,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 /**
- * spring content util by Aware
+ * spring content util, by ApplicationContextAware
  * @author xuxueli 2016-1-15 16:05:42
  */
-public class SpringContentUtil implements ApplicationContextAware {
+public class SpringContentAwareUtil implements ApplicationContextAware {
 	
 	private static ApplicationContext applicationContext;
 	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		SpringContentUtil.applicationContext = applicationContext;
+		SpringContentAwareUtil.applicationContext = applicationContext;
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class SpringContentUtil implements ApplicationContextAware {
 	 * @return
 	 */
 	public static Object getBeanByName(String name){
-		Object bean = SpringContentUtil.applicationContext.getBean(name);
+		Object bean = SpringContentAwareUtil.applicationContext.getBean(name);
 		return bean;
 	}
 	
@@ -33,7 +33,7 @@ public class SpringContentUtil implements ApplicationContextAware {
 	 * @return
 	 */
 	public static Object getBeanByType(Class<?> type){
-		Object bean = SpringContentUtil.applicationContext.getBean(type);
+		Object bean = SpringContentAwareUtil.applicationContext.getBean(type);
 		return bean;
 	}
 	

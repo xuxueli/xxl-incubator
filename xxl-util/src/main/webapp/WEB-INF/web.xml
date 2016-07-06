@@ -22,7 +22,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>com.xxl.util.core.util.SpringContentListener</listener-class>
+		<listener-class>com.xxl.util.core.util.SpringContentListenerUtil</listener-class>
 	</listener>
 
 	<filter>

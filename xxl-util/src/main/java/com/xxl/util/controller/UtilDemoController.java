@@ -33,8 +33,9 @@ import com.xxl.util.core.util.PropertiesUtil;
 import com.xxl.util.core.util.RandomUtil;
 import com.xxl.util.core.util.RegexUtil;
 import com.xxl.util.core.util.ServletContextUtil;
-import com.xxl.util.core.util.SpringContentListener;
-import com.xxl.util.core.util.SpringContentUtil;
+import com.xxl.util.core.util.SpringContentAwareUtil;
+import com.xxl.util.core.util.SpringContentListenerUtil;
+import com.xxl.util.core.util.SpringContentRequestUtil;
 import com.xxl.util.core.util.TableInjectUtil;
 import com.xxl.util.core.util.URLEncoderUtil;
 import com.xxl.util.core.util.WebPathUtil;
@@ -196,32 +197,38 @@ public class UtilDemoController {
 	
 	/**
 	 * <pre>
-	6、SpringContentUtil.java / SpringContentListener.java	
-		功能简介：加载Spring容器中Bean的工具；
-		方式A：SpringContentUtil.java 使用步骤
-			1、依赖Spring容器；
-			2、引入SpringContentUtil.java文件
-			3、需要实例化该Bean；见applicationcontext-util.xml配置；
-				<bean id="springContentUtil" class="com.xxl.util.core.util.SpringContentUtil" />
-			4、使用方法：
-				SpringContentUtil.getBeanByName("freemarkerConfig");
-		方式B：SpringContentListener.java 使用步骤
-			1、依赖Spring容器；
-			2、引入B：SpringContentListener.java文件
-			3、web.xml中配置servlet listener：
+	6、SpringContentAwareUtil.java/SpringContentListenerUtil.java/SpringContentRequestUtil.java
+		功能简介：
+			三种方式实现，加载Spring容器中Bean的工具；
+		方式A：原生Spring方式，实现ApplicationContextAware接口，从而获取ApplicationContextAware； 
+			1、引入“SpringContentAwareUtil.java”文件
+			2、实例化该Bean；见applicationcontext-util.xml配置；
+				<bean id="springContentUtil" class="com.xxl.util.core.util.SpringContentAwareUtil" />
+			3、使用方法：
+				SpringContentAwareUtil.getBeanByName("freemarkerConfig")
+		方式B：Servlet Listener方式，实现ServletContextListener接口，获取ServletContext，从而获取ApplicationContextAware；
+			1、引入“SpringContentListenerUtil.java”文件
+			2、web.xml中配置servlet listener：
 				<listener>
-					<listener-class>com.xxl.util.core.util.SpringContentListener</listener-class>
+					<listener-class>com.xxl.util.core.util.SpringContentListenerUtil</listener-class>
 				</listener>
-			4、使用方法：
-				SpringContentListener.getBeanByName("freemarkerConfig");
+			3、使用方法：
+				SpringContentListenerUtil.getBeanByName("freemarkerConfig")
+		方式C：解析HttpServletRequest方式，获取ServletContext，从而获取ApplicationContextAware；
+			1、引入“SpringContentRequestUtil.java”文件
+			2、使用方法：
+				SpringContentRequestUtil.getBeanByName(request, "freemarkerConfig")
 	 * </pre>
 	 */
 	@RequestMapping("/SpringContentUtil")
 	@ResponseBody
-	public String SpringContentUtil(){
-		String temp = SpringContentListener.getBeanByName("freemarkerConfig").toString();
+	public String SpringContentUtil(HttpServletRequest request){
+		String temp = "";
+		temp += SpringContentAwareUtil.getBeanByName("freemarkerConfig");
 		temp += "<br>";
-		temp += SpringContentUtil.getBeanByName("freemarkerConfig");
+		temp += SpringContentListenerUtil.getBeanByName("freemarkerConfig").toString();
+		temp += "<br>";
+		temp += SpringContentRequestUtil.getBeanByName(request, "freemarkerConfig").toString();
 		return temp;
 	}
 	

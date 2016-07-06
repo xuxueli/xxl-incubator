@@ -9,11 +9,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- * spring content listener by listener
- * @author xuxueli
+ * spring content util, by ServletContextListener
+ * @author xuxueli 2016-7-6 14:51:15
  */
-public class SpringContentListener implements ServletContextListener {
-	private static transient Logger logger = LoggerFactory.getLogger(SpringContentListener.class);
+public class SpringContentListenerUtil implements ServletContextListener {
+	private static transient Logger logger = LoggerFactory.getLogger(SpringContentListenerUtil.class);
 	
 	private static ApplicationContext applicationContext;
 
@@ -35,7 +35,7 @@ public class SpringContentListener implements ServletContextListener {
 	 * @return
 	 */
 	public static Object getBeanByName(String name){
-		Object bean = SpringContentListener.applicationContext.getBean(name);
+		Object bean = SpringContentListenerUtil.applicationContext.getBean(name);
 		return bean;
 	}
 	
@@ -45,7 +45,7 @@ public class SpringContentListener implements ServletContextListener {
 	 * @return
 	 */
 	public static Object getBeanByType(Class<?> type){
-		Object bean = SpringContentListener.applicationContext.getBean(type);
+		Object bean = SpringContentListenerUtil.applicationContext.getBean(type);
 		return bean;
 	}
 	

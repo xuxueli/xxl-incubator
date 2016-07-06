@@ -52,7 +52,7 @@ public class MailUtil {
 	 */
 	public static boolean sendMailSpring(String toAddress, String mailSubject, String mailBody, 
 			boolean mailBodyIsHtml,File[] attachments) {
-		JavaMailSender javaMailSender = (JavaMailSender) SpringContentUtil.getBeanByName("javaMailSender");
+		JavaMailSender javaMailSender = (JavaMailSender) SpringContentAwareUtil.getBeanByName("javaMailSender");
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, (attachments!=null && attachments.length>0), "UTF-8"); // 设置utf-8或GBK编码，否则邮件会有乱码;multipart,true表示文件上传

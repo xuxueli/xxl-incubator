@@ -19,7 +19,7 @@
 	</bean>
 
 	<!-- spring application util -->
-	<bean id="springContentUtil" class="com.xxl.util.core.util.SpringContentUtil" />
+	<bean id="springContentUtil" class="com.xxl.util.core.util.SpringContentAwareUtil" />
 	
 	<!-- spring mail sender -->
 	<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"  scope="singleton" >
