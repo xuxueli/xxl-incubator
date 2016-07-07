@@ -1,6 +1,6 @@
 package com.xxl.util.core.util;
 
-
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 资源路径Util
@@ -17,7 +17,7 @@ public class WebPathUtil {
 	}
 	
 	/**
-	 * Web跟路径 (通常为样式文件/静态页面 目录) (也可以根据request获取:request.getRealPath("/") )
+	 * Web跟路径 (通常为样式文件/静态页面 目录) (不依赖于request)
 	 * @return
 	 */
 	public static String webPath(){
@@ -27,6 +27,15 @@ public class WebPathUtil {
 			realPath = realPath.substring(0, wei);
 		}
 		return realPath;
+	}
+	
+	/**
+	 * Web跟路径 (依赖于request)
+	 * @param request
+	 * @return
+	 */
+	public static String webPath(HttpServletRequest request){
+		return request.getSession().getServletContext().getRealPath("/");
 	}
 	
 	/**

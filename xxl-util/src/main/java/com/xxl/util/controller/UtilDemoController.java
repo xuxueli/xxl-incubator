@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -433,11 +434,14 @@ public class UtilDemoController {
 		使用步骤
 			1、引入Md5Util.java文件
 			2、如何使用：直接调用即可，如 “Md5Util.encrypt("test")”
+		TIPS：common-codec 已经提供MD5工具，如 “DigestUtils.md5Hex("test")”
 	 * </pre>
 	 */
 	@RequestMapping("/Md5Util")
 	@ResponseBody
 	public String Md5Util(){
+		// common-codec 已经提供MD5工具
+		DigestUtils.md5Hex("test");
 		return Md5Util.encrypt("test");
 	}
 	

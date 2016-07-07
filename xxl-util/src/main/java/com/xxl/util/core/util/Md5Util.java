@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 /**
  * MD5加密
  * @author xuxueli 2015-5-5 18:35:33
@@ -47,7 +49,9 @@ public class Md5Util {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(Md5Util.encrypt("xuxueasdfa"));
+		String temp = "xuxueasdfa";
+		System.out.println(Md5Util.encrypt(temp));
+		System.out.println(DigestUtils.md5Hex(temp));	// common-codec 已经提供MD5工具
 	}
 	
 }
