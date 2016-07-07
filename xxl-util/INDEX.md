@@ -82,5 +82,8 @@ Standby skill points
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()
 
-- 2、文件上传工具，“commons-fileupload + spring mvc”方式实现
+- 2、commons-fileupload		(文件上传工具，“commons-fileupload + spring mvc”方式实现)
 > 详细：见：com.xxl.util.controller.SkillDemoController.fileupload(MultipartFile[], HttpServletRequest)
+
+- 2、ReturnT/WebException		(业务流程控制，两种方式：“ReturnT”和“WebException+异常解析器”方式；)
+> 详细：见：com.xxl.util.controller.SkillDemoController.flowControl()

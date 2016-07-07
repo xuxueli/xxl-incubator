@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.xxl.util.core.skill.flowcontrol.ReturnT;
+import com.xxl.util.core.skill.flowcontrol.WebException;
 import com.xxl.util.core.skill.threadpool.ThreadPoolLinkedHelper;
 import com.xxl.util.core.skill.threadpool.ThreadPoolQueueHelper;
 import com.xxl.util.core.util.WebPathUtil;
@@ -75,10 +78,10 @@ public class SkillDemoController {
 				</dependency>
 			2、配置spring mvc的CommonsMultipartResolver配置
 				<!-- file upload -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	    <property name="defaultEncoding" value="utf-8"/>
-	</bean>
-			3、查看示例：“com.xxl.util.controller.SkillDemoController.fileupload(MultipartFile[], HttpServletRequest)”
+				<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+				    <property name="defaultEncoding" value="utf-8"/>
+				</bean>
+			3、查看示例：“com.xxl.util.controller.SkillDemoController.fileupload(MultipartFile[], HttpServletRequest)” + “fileuploadpage.html”
 		注意点：
 			1. 如果只是上传一个文件，则只需要MultipartFile类型接收文件即可，而且无需显式指定@RequestParam注解
 			2. 如果想上传多个文件，那么这里就要用MultipartFile[]类型来接收文件，并且还要指定@RequestParam注解
@@ -113,22 +116,50 @@ public class SkillDemoController {
 			if (!(allowSuffix.contains(suffix))) {
 				logger.warn("图片上传失败+1，图片后缀不合法，name={}，originalFilename={}", img.getName(), img.getOriginalFilename());
 				continue;
-			} else {
-				logger.warn("------ image process start ------");
-				logger.warn("size:{}, contentType:{}, name:{}, originalFilename:{}", 
-						img.getSize(), img.getContentType(), img.getName(), img.getOriginalFilename());
-				String newFileName = String.valueOf(System.currentTimeMillis()).concat(".").concat(suffix);
-				uploadInfoMap.put(img.getName(), newFileName);
-				try {
-					// 不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉
-					FileUtils.copyInputStreamToFile(img.getInputStream(), new File(realPath, newFileName));
-				} catch (IOException e) {
-					logger.error("", e);
-				}
+			}
+			
+			logger.warn("------ image process start ------");
+			logger.warn("size:{}, contentType:{}, name:{}, originalFilename:{}", 
+					img.getSize(), img.getContentType(), img.getName(), img.getOriginalFilename());
+			String newFileName = String.valueOf(System.currentTimeMillis()).concat(".").concat(suffix);
+			uploadInfoMap.put(img.getOriginalFilename(), newFileName);
+			try {
+				// 不必处理IO流关闭的问题，因为FileUtils.copyInputStreamToFile()方法内部会自动把用到的IO流关掉
+				FileUtils.copyInputStreamToFile(img.getInputStream(), new File(realPath, newFileName));
+			} catch (IOException e) {
+				logger.error("", e);
 			}
 		}
-
 		return uploadInfoMap;
+	}
+	
+	/**
+	 * <pre>
+	3、ReturnT.java/WebException.java/WebExceptionResolver.java
+		功能简介：
+			业务流程控制，两种方式：“ReturnT”和“WebException+异常解析器”方式；
+		方式A：“ReturnT.java”方式
+			特点：项目底层，封装ReturnT（code、msg、content为泛型），逻辑流程中返回“封装ReturnT”，controller中根据返回值
+			使用步骤：
+				1、引入ReturnT.java
+				2、使用，Controller如 “@ResponseBody public ReturnT<String> flowControl()”；Service中如 “public ReturnT<Integer> articleMenuAdd(ArticleMenu menu);”；
+		方式B：“WebException.java + WebExceptionResolver.java”方式实现
+			特点：项目底层“异常机制”统一catch进行“自定义异常”处理，逻辑流程中抛出“自定义异常”，然后跳转统一error页或返回统一json返回值（WebException转json），这样在controller中不用写一堆的try/catch，甚至不需要定义和处理返回值，灵活方便；
+			使用步骤：
+				1、引入 “WebException.java + WebExceptionResolver.java”
+				2、配置SpringMvc异常解析器：
+					<bean id="exceptionResolver" class="com.xxl.util.core.skill.flowcontrol.WebExceptionResolver" />
+				3、使用，业务中抛出该异常即可，如 “throw new WebException("流程控制");” 
+	   </pre>
+	 * @return
+	 */
+	@RequestMapping(value="/flowControl")
+	@ResponseBody
+	public ReturnT<String> flowControl() {
+		if (new Random().nextBoolean()) {
+			throw new WebException("流程控制");
+		}
+		return new ReturnT<String>("流程控制");
 	}
 	
 }
