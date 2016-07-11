@@ -1,5 +1,6 @@
 package com.xxl.util.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +31,7 @@ import com.xxl.util.core.util.KaptchaUtil;
 import com.xxl.util.core.util.LoginUtil;
 import com.xxl.util.core.util.MailUtil;
 import com.xxl.util.core.util.Md5Util;
+import com.xxl.util.core.util.PoiUtil;
 import com.xxl.util.core.util.PropInjectUtil;
 import com.xxl.util.core.util.PropertiesUtil;
 import com.xxl.util.core.util.RandomUtil;
@@ -617,6 +619,43 @@ public class UtilDemoController {
 	@ResponseBody
 	public StringBuffer IPSeeker(HttpServletResponse response){
 		return new StringBuffer(IPSeeker.getInstance().getAddress("58.30.0.0"));	// 基础类型String进行Json转换会乱码；包装类型不会；
+	}
+	
+	/**
+	 * <pre>
+	25、PoiUtil.java
+		功能简介：
+			操作Microsoft Office文档的工具类，支持Excel、Word和PPT，其中Excel尤其常见
+			(jxl：另一个操作Excel的工具类Jar包，不推荐，因为功能单一维护不稳定)
+		使用步骤：
+			1、maven依赖
+				<dependency>
+					<groupId>org.apache.poi</groupId>
+					<artifactId>poi</artifactId>
+					<version>3.10-FINAL</version>
+				</dependency>
+			2、引入 “PoiUtil.java”
+	   </pre>
+	 * @return
+	 */
+	@RequestMapping(value="/PoiUtil")
+	public void PoiUtil(HttpServletResponse response) {
+		response.setContentType("application/x-msdownload");
+        response.setHeader("Content-Disposition", "attachment; filename=demo.xlsx");//
+        response.resetBuffer();
+        // 利用输出输入流导出文件
+        try {
+			response.getOutputStream().write(PoiUtil.exportExcelDemo());
+			response.getOutputStream().flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				response.getOutputStream().close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 }

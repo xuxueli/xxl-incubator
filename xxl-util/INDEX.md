@@ -78,6 +78,9 @@ Standby skill points
 * 24、IPSeeker.java		(IP地址解析成地址，利用纯真IP数据库)
 > 详细：见：com.xxl.util.controller.UtilDemoController.IPSeeker()
 
+- 25、PoiUtil.java	(操作Microsoft Office文档的工具类，支持Excel、Word和PPT，其中Excel尤其常见)
+> 详细：见：com.xxl.util.controller.UtilDemoController.PoiUtil()
+
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()
@@ -85,5 +88,5 @@ Standby skill points
 - 2、commons-fileupload		(文件上传工具，“commons-fileupload + spring mvc”方式实现)
 > 详细：见：com.xxl.util.controller.SkillDemoController.fileupload(MultipartFile[], HttpServletRequest)
 
-- 2、ReturnT/WebException		(业务流程控制，两种方式：“ReturnT”和“WebException+异常解析器”方式；)
+- 3、ReturnT/WebException		(业务流程控制，两种方式：“ReturnT”和“WebException+异常解析器”方式；)
 > 详细：见：com.xxl.util.controller.SkillDemoController.flowControl()
