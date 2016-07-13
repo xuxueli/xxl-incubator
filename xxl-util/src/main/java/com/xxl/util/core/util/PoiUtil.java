@@ -6,14 +6,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,8 +93,11 @@ public class PoiUtil {
 	
 	/**
 	 * 解析Excel Demo
+	 * @throws IOException 
+	 * @throws InvalidFormatException 
+	 * @throws EncryptedDocumentException 
 	 */
-	public static void importExcelDemo(){
+	public static void importExcelDemo() throws EncryptedDocumentException, InvalidFormatException, IOException{
 		File uploadXlsFile = new File("/demo-sheet.xlsx");
 		
 		Workbook book = WorkbookFactory.create(uploadXlsFile);
@@ -106,7 +112,7 @@ public class PoiUtil {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, EncryptedDocumentException, InvalidFormatException {
 		exportExcelDemo();
 		importExcelDemo();
 	}
