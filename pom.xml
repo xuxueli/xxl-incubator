@@ -6,8 +6,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>xxl-util</module>
 		<module>xxl-db</module>
+		<module>xxl-pm</module>
 		<module>xxl-seckill</module>
+		<module>xxl-util</module>
 	</modules>
 </project>
