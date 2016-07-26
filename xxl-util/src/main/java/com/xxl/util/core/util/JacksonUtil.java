@@ -10,6 +10,8 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Jackson util
@@ -20,8 +22,9 @@ import org.codehaus.jackson.type.TypeReference;
  * @author xuxueli 2015-9-25 18:02:56
  */
 public class JacksonUtil {
-	
-    private final static ObjectMapper objectMapper = new ObjectMapper();
+	private static Logger logger = LoggerFactory.getLogger(JacksonUtil.class);
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     
     public static ObjectMapper getInstance() {
         return objectMapper;
@@ -38,11 +41,11 @@ public class JacksonUtil {
     	try {
 			return getInstance().writeValueAsString(obj);
 		} catch (JsonGenerationException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
         return null;
     }
@@ -59,11 +62,11 @@ public class JacksonUtil {
     	try {
 			return getInstance().readValue(jsonStr, clazz);
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
     	return null;
     }
@@ -71,11 +74,11 @@ public class JacksonUtil {
     	try {
 			return getInstance().readValue(jsonStr, new TypeReference<T>() { });
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
     	return null;
     }
@@ -86,10 +89,11 @@ public class JacksonUtil {
 			map.put("aaa", "111");
 			map.put("bbb", "222");
 			String json = writeValueAsString(map);
-			System.out.println(json);
-			System.out.println(readValue(json, Map.class));
+
+			logger.error(json);
+			logger.error(readValue(json, Map.class).toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 }
