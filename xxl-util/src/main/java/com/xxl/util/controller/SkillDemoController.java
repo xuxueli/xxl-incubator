@@ -2,14 +2,12 @@ package com.xxl.util.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.xxl.util.core.skill.xml.model.User;
+import com.xxl.util.core.skill.xml.util.XStreamUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,6 +158,46 @@ public class SkillDemoController {
 			throw new WebException("流程控制");
 		}
 		return new ReturnT<String>("流程控制");
+	}
+
+	/**
+	 * <pre>
+	 3、XStreamUtil.java 或者 XmlDom4jImpl.java / XmlDomImpl.java / XmlSaxImpl.java
+		 功能简介：
+	 		XML解析生成: XStream方式, 功能完善; Dom4j/DOM/SAX方式, 比较原始,需要根据对象属性编码定制
+		 方式A：“XStreamUtil.java”方式
+			特点：功能完善
+		 	使用步骤：
+				1、依赖
+					<dependency>
+						 <groupId>com.thoughtworks.xstream</groupId>
+						 <artifactId>xstream</artifactId>
+						 <version>1.4.7</version>
+					 </dependency>
+				2、引入 XStreamUtil.java
+				3、使用，XStreamUtil.java 中静态方法调用即可;
+		 方式B：XmlDom4jImpl.java / XmlDomImpl.java / XmlSaxImpl.java
+				特点：比较原始,需要根据对象属性编码定制
+			 使用步骤：
+				1、引入依赖
+					<dependency>
+						<groupId>dom4j</groupId>
+						<artifactId>dom4j</artifactId>
+						<version>1.6</version>
+				 	</dependency>
+
+				 2、引入 XmlDom4jImpl.java / XmlDomImpl.java / XmlSaxImpl.java
+				 3、使用，XmlDom4jImpl.java 中方法调用即可;
+	 </pre>
+	 * @return
+	 */
+	@RequestMapping(value="/xmlParse")
+	@ResponseBody
+	public ReturnT<String> xmlParse() {
+		List<User> userList = new ArrayList<User>();
+
+		String xml = XStreamUtil.bean2xml(userList);
+		return new ReturnT<String>(xml);
 	}
 	
 }

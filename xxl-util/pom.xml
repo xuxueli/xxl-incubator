@@ -153,7 +153,20 @@
 		    <artifactId>poi-ooxml</artifactId>
 		    <version>3.14</version>
 		</dependency>
-		
+
+		<!-- dom4j -->
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6</version>
+		</dependency>
+
+		<!-- xstream -->
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>1.4.7</version>
+		</dependency>
 
 	</dependencies>
 
