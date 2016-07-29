@@ -195,6 +195,7 @@ public class SkillDemoController {
 	@ResponseBody
 	public ReturnT<String> xmlParse() {
 		List<User> userList = new ArrayList<User>();
+		userList.add(new User(2, "jack", 18, "女"));
 
 		String xml = XStreamUtil.bean2xml(userList);
 		return new ReturnT<String>(xml);
