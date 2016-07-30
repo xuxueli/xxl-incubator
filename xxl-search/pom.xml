@@ -30,27 +30,42 @@
             <version>${spring.version}</version>
         </dependency>
 
-
-        <!-- aspectjweaver (support spring aop) -->
+        <!-- aspectjweaver (support spring AOP )
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>1.8.9</version>
         </dependency>
-
-        <!-- jackson (support spring json) -->
+        -->
+        <!-- jackson (support spring @ResponseBody ) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.8.1</version>
         </dependency>
 
-
-        <!-- slf4j -->
+        <!-- slf4j
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.5</version>
+            <version>1.7.21</version>
+        </dependency>
+        -->
+        <!-- log4j 2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
+            <version>2.6.2</version>
         </dependency>
 
         <!-- freemarker -->
