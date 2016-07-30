@@ -1,3 +1,9 @@
+# for eclipse
 /.settings/
 /.project
-xxl-seckill.iml
+
+# for idea
+*.iml
+*/target
+/.idea
+.DS_Store

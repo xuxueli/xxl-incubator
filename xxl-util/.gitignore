@@ -1,5 +1,9 @@
-/target/
+# for eclipse
 /.settings/
-/.classpath
 /.project
-xxl-util.iml
+
+# for idea
+*.iml
+*/target
+/.idea
+.DS_Store

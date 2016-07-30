@@ -1,4 +1,9 @@
-/.project
+# for eclipse
 /.settings/
-xxl-incubator.iml
-*.DS_Store
+/.project
+
+# for idea
+*.iml
+*/target
+/.idea
+.DS_Store
