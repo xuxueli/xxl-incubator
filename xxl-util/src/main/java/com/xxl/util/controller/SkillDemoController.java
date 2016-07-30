@@ -1,6 +1,7 @@
 package com.xxl.util.controller;
 
 import com.xxl.util.core.skill.crawler.htmlparser.downpage.DownPageUtil;
+import com.xxl.util.core.skill.crawler.jsoup.explainpage.HtmlExplainUtil;
 import com.xxl.util.core.skill.flowcontrol.ReturnT;
 import com.xxl.util.core.skill.flowcontrol.WebException;
 import com.xxl.util.core.skill.threadpool.ThreadPoolLinkedHelper;
@@ -237,8 +238,10 @@ public class SkillDemoController {
 	@ResponseBody
 	public ReturnT<String> crawler(int type) {
 		if (type == 0) {
-
+		    // HtmlExplainUtil(线程池并发操作) + JsoupUtil(根据URL,解析页面文档元素)
+            HtmlExplainUtil.run("http://www.qiushibaike.com/");
 		} else {
+		    // DownPageUtil(线程池并发操作) + HtmlParser(解析统计link) + PageDownLoader(根据URL下载整个页面,保存本地文件)
 			DownPageUtil.run("http://www.pook.com/");
 		}
 		return new ReturnT<String>("");

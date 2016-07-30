@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * DownPageUtil(线程池并发操作) + HtmlParser(解析统计link) + PageDownLoader(根据URL下载整个页面,保存本地文件)
- * Created by xuxueli on 16/7/30.
+ * Created by xuxueli on 2015-05-14 22:44:43
  */
 public class DownPageUtil {
     private static Logger logger = LoggerFactory.getLogger(DownPageUtil.class);

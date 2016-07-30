@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 下载 url 指向的网页
- * @author xuxueli
+ * @author xuxueli 2015-05-14 22:44:43
  */
 public class PageDownLoader {
 	private static Logger logger = LoggerFactory.getLogger(PageDownLoader.class);
