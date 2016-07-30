@@ -91,5 +91,8 @@ Standby skill points
 - 3、ReturnT/WebException		(业务流程控制，两种方式：“ReturnT”和“WebException+异常解析器”方式；)
 > 详细：见：com.xxl.util.controller.SkillDemoController.flowControl()
 
-- 4、XML解析,生成    (XML解析生成: XStream方式, 功能完善; Dom4j/DOM/SAX方式, 比较原始,需要根据对象属性编码定制)
+- 4、XStreamUtil.java/"Dom4j/DOM/SAX"     (XML解析生成: XStream方式, 功能完善; Dom4j/DOM/SAX方式, 比较原始,需要根据对象属性编码定制)
 > 详细：见：com.xxl.util.controller.SkillDemoController.xmlParse()
+
+- 5、JsoupUtil.java/HtmlParserUtil.java    (页面爬虫工具)
+> 详细：见：com.xxl.util.controller.SkillDemoController.crawler()

@@ -1,13 +1,13 @@
 package com.xxl.util.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.xxl.util.core.skill.crawler.htmlparser.downpage.DownPageUtil;
+import com.xxl.util.core.skill.flowcontrol.ReturnT;
+import com.xxl.util.core.skill.flowcontrol.WebException;
+import com.xxl.util.core.skill.threadpool.ThreadPoolLinkedHelper;
+import com.xxl.util.core.skill.threadpool.ThreadPoolQueueHelper;
 import com.xxl.util.core.skill.xml.model.User;
 import com.xxl.util.core.skill.xml.util.XStreamUtil;
+import com.xxl.util.core.util.WebPathUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.xxl.util.core.skill.flowcontrol.ReturnT;
-import com.xxl.util.core.skill.flowcontrol.WebException;
-import com.xxl.util.core.skill.threadpool.ThreadPoolLinkedHelper;
-import com.xxl.util.core.skill.threadpool.ThreadPoolQueueHelper;
-import com.xxl.util.core.util.WebPathUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * skill demo
@@ -162,7 +161,7 @@ public class SkillDemoController {
 
 	/**
 	 * <pre>
-	 3、XStreamUtil.java 或者 XmlDom4jImpl.java / XmlDomImpl.java / XmlSaxImpl.java
+	 4、XStreamUtil.java 或者 XmlDom4jImpl.java / XmlDomImpl.java / XmlSaxImpl.java
 		 功能简介：
 	 		XML解析生成: XStream方式, 功能完善; Dom4j/DOM/SAX方式, 比较原始,需要根据对象属性编码定制
 		 方式A：“XStreamUtil.java”方式
@@ -199,6 +198,50 @@ public class SkillDemoController {
 
 		String xml = XStreamUtil.bean2xml(userList);
 		return new ReturnT<String>(xml);
+	}
+
+	/**
+	 * <pre>
+	 5、JsoupUtil.java/HtmlParserUtil.java
+	 功能简介: 页面爬虫工具
+	 	方式A：“JsoupUtil.java”方式
+			特点：soup是一个开源的Java库，它可以用于处理实际应用中的HTML。它提供了非常便利的API来进行数据的提取及修改，充分利用了DOM，CSS以及jquery风格方法的长处
+			使用步骤：
+				1、maven依赖 (官网：http://jsoup.org/download )
+					<dependency>
+		         		<groupId>org.jsoup</groupId>
+		         		<artifactId>jsoup</artifactId>
+		         		<version>1.7.3</version>
+					</dependency>
+				2、引入 JsoupUtil.java, 使用其中静态方法调用即可;
+		方式B："HtmlParserUtil.java"方式
+			特点：HTML Parser 是一个对HTML进行分析的快速实时的解析器。由于HtmlParser自2006年以后就再没更新，目前很多人推荐使用jsoup代替它。
+	 		(DownPageUtil(线程池并发操作) + HtmlParser(解析统计link) + PageDownLoader(根据URL下载整个页面,保存本地文件))
+			使用步骤：
+				1、引入依赖
+					<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>4.3.6</version>
+					</dependency>
+					<dependency>
+						<groupId>org.htmlparser</groupId>
+						<artifactId>htmlparser</artifactId>
+						<version>2.1</version>
+					</dependency>
+	 			2、引入 HtmlParserUtil.java, 使用其中静态方法调用即可;
+	 </pre>
+	 * @return
+	 */
+	@RequestMapping(value="/crawler")
+	@ResponseBody
+	public ReturnT<String> crawler(int type) {
+		if (type == 0) {
+
+		} else {
+			DownPageUtil.run("http://www.pook.com/");
+		}
+		return new ReturnT<String>("");
 	}
 	
 }

@@ -10,7 +10,7 @@
 	</appender>
 	
     <appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/logs/xxl-util.log"/>
+        <param name="file" value="/data/applogs/xxl-util/xxl-util.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -21,14 +21,15 @@
     <root>
         <level value="INFO" />
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
+        <!--<appender-ref ref="FILE" />-->
     </root>
 	
-    <!-- 默认true：继承父appender，也会在父appender输出；false：只会在该appender输出 -->
+    <!-- 默认true：继承父appender，也会在父appender输出；false：只会在该appender输出
     <logger name="com.xxl.util.service" additivity="false">
     	<level value="INFO" />
         <appender-ref ref="CONSOLE" />
         <appender-ref ref="FILE" />
     </logger>
-	
+	-->
+
 </log4j:configuration>
