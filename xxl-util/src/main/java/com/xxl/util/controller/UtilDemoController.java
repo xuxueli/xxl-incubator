@@ -1,5 +1,17 @@
 package com.xxl.util.controller;
 
+import com.xxl.util.core.util.*;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.codehaus.jackson.map.util.JSONPObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,44 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.xxl.util.core.util.CookieUtil;
-import com.xxl.util.core.util.DateFormatUtil;
-import com.xxl.util.core.util.HtmlTemplateUtil;
-import com.xxl.util.core.util.HttpClientUtil;
-import com.xxl.util.core.util.HttpSessionUtil;
-import com.xxl.util.core.util.IPSeeker;
-import com.xxl.util.core.util.IdCardUtil;
-import com.xxl.util.core.util.JacksonUtil;
-import com.xxl.util.core.util.KaptchaUtil;
-import com.xxl.util.core.util.LoginUtil;
-import com.xxl.util.core.util.MailUtil;
-import com.xxl.util.core.util.Md5Util;
-import com.xxl.util.core.util.PoiUtil;
-import com.xxl.util.core.util.PropInjectUtil;
-import com.xxl.util.core.util.PropertiesUtil;
-import com.xxl.util.core.util.RandomUtil;
-import com.xxl.util.core.util.RegexUtil;
-import com.xxl.util.core.util.ServletContextUtil;
-import com.xxl.util.core.util.SpringContentAwareUtil;
-import com.xxl.util.core.util.SpringContentListenerUtil;
-import com.xxl.util.core.util.SpringContentRequestUtil;
-import com.xxl.util.core.util.TableInjectUtil;
-import com.xxl.util.core.util.URLEncoderUtil;
-import com.xxl.util.core.util.WebPathUtil;
-import com.xxl.util.core.util.XMemcachedUtil;
-import com.xxl.util.core.util.ZXingUtil;
 
 /**
  * UTIL Demo
@@ -657,5 +631,44 @@ public class UtilDemoController {
 			}
 		}
 	}
+
+	/**
+	 * <pre>
+	 25、Jsonp接口开发
+		 功能简介：Jsonp接口开发
+		 方式1： JSONP (Jackson之JSONPObject方式)
+				@RequestMapping(value = "/jsonp" )
+				@ResponseBody
+				public JSONPObject jsonp(String callback) {
+					Map<String, Object> paramJsonObj = new HashMap<String, Object>();
+					paramJsonObj.put("code", 200);
+					paramJsonObj.put("msg", "终于成功了");
+					// 封装JSONP
+				 	return new JSONPObject(callback, paramJsonObj);
+				}
+	 	方式2： JSONP (SpringMVC4之MappingJacksonValue方式)
+				@RequestMapping("/jsonp")
+				@ResponseBody
+				public MappingJacksonValue jsonp(String callback) {
+					Map<String, Object> temp = new HashMap<String, Object>();
+					temp.put("code", 200);
+					temp.put("msg", "终于成功了");
+					// 封装JSONP
+					MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(temp);
+					mappingJacksonValue.setJsonpFunction(callback);
+					return mappingJacksonValue;
+				}
+	 </pre>
+	 */
+	@RequestMapping(value = "/jsonp" )
+	@ResponseBody
+	public JSONPObject jsonp(String callback) {
+		Map<String, Object> paramJsonObj = new HashMap<String, Object>();
+		paramJsonObj.put("code", 200);
+		paramJsonObj.put("msg", "终于成功了");
+		// 封装JSONP
+		return new JSONPObject(callback, paramJsonObj);
+	}
+
 	
 }

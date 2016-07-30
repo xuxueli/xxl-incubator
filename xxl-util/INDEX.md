@@ -81,6 +81,9 @@ Standby skill points
 - 25、PoiUtil.java	(操作Microsoft Office文档的工具类，支持Excel、Word和PPT，其中Excel尤其常见)
 > 详细：见：com.xxl.util.controller.UtilDemoController.PoiUtil()
 
+- 26、Jsonp接口开发  (方式1：Jackson之JSONPObject方式; 方式2：SpringMVC4之MappingJacksonValue方式)
+> 详细：见：com.xxl.util.controller.UtilDemoController.jsonp()
+
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()
