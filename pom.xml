@@ -10,5 +10,6 @@
 		<module>xxl-pm</module>
 		<module>xxl-seckill</module>
 		<module>xxl-util</module>
-	</modules>
+        <module>xxl-search</module>
+    </modules>
 </project>
