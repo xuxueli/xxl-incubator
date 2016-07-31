@@ -13,8 +13,9 @@
     <packaging>war</packaging>
 
     <properties>
-        <jdk.version>1.6</jdk.version>
+        <jdk.version>1.7</jdk.version>
         <spring.version>4.3.2.RELEASE</spring.version>
+        <lucene.version>5.5.2</lucene.version>
     </properties>
 
     <dependencies>
@@ -44,13 +45,6 @@
             <version>2.8.1</version>
         </dependency>
 
-        <!-- slf4j
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.21</version>
-        </dependency>
-        -->
         <!-- log4j 2 -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -96,6 +90,40 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- lucene start -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-memory</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <!-- 不兼容 -->
+        <!--<dependency>
+            <groupId>org.wltea.ik-analyzer</groupId>
+            <artifactId>ik-analyzer</artifactId>
+            <version>3.2.8</version>
+        </dependency>-->
+        <!-- lucene end -->
 
     </dependencies>
 

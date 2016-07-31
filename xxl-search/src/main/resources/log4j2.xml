@@ -16,7 +16,7 @@
         <!-- additivity:false-不会打印在父logger -->
         <logger name="com.xxl.search.service" level="info" additivity="false">
             <appender-ref ref="Console"/>
-            <appender-ref ref="file"/>
+            <!--<appender-ref ref="file"/>-->
         </logger>
     </loggers>
 
