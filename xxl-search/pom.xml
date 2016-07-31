@@ -91,12 +91,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- lucene start -->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-common</artifactId>
-            <version>${lucene.version}</version>
-        </dependency>
+        <!-- lucene start (lucene-highlighter、lucene-queries、lucene-core、lucene-analyzers-common、lucene-join、lucene-momney; lucene-queryparser、lucene-sandbox) -->
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-highlighter</artifactId>
@@ -107,16 +102,6 @@
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>${lucene.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-memory</artifactId>
-            <version>${lucene.version}</version>
-        </dependency>
         <!-- 不兼容 -->
         <!--<dependency>
             <groupId>org.wltea.ik-analyzer</groupId>
@@ -124,6 +109,14 @@
             <version>3.2.8</version>
         </dependency>-->
         <!-- lucene end -->
+
+
+        <!--elasticsearch -->
+        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>2.2.1</version>
+        </dependency>
 
     </dependencies>
 
