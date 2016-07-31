@@ -79,11 +79,13 @@ apache lucene是apache下一个著名的开源搜索引擎内核，基于Java技
 # Elasticsearch 应用
 ---
 
-[官网](http://www.elasticsearch.org/download/)
-[github](https://github.com/elastic/elasticsearch/releases)
+[官网下载发行版](https://www.elastic.co/downloads/elasticsearch)
+
+[github源码](https://github.com/elastic/elasticsearch/releases)
+
 [文档](https://github.com/elastic/elasticsearch/blob/master/docs/java-api/client.asciidoc)
 
-### 简介
+### 简介 : A Distributed RESTful Search Engine
 Lucene可以说是当今最先进，最高效的全功能开源搜索引擎框架。但是**Lucene只是一个框架，要充分利用它的功能，需要使用JAVA，并且在程序中集成Lucene**。需要很多的学习了解，才能明白它是如何运行的，Lucene确实非常复杂。
 
 **Elasticsearch是一个建立在全文搜索引擎 Apache Lucene™ 基础上的搜索引擎**。
