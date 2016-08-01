@@ -128,12 +128,12 @@ http.port: 9201
 # 表示这个节点是否可以充当主节点，这个节点是否充当数据节点,如果你的节点数目只有两个的话，为了防止脑裂的情况，需要手动设置主节点和数据节点。其他情况建议直接不设置，默认两个都为true.
 node.master: false
 node.data: true
-# 集群自动发现机制
+# 集群自动发现机制 (单机时,忽略)
 discovery.zen.ping.multicast.enabled: false        // 把组播的自动发现给关闭了，为了防止其他机器上的节点自动连入。
 discovery.zen.fd.ping_timeout: 100s                // 节点与节点之间的连接ping时长
 discovery.zen.ping.timeout: 100s
 discovery.zen.minimum_master_nodes: 2              // 设置为了避免脑裂。比如3个节点的集群，如果设置为2，那么当一台节点脱离后，不会自动成为master。
-discovery.zen.ping.unicast.hosts: ["127.0.0.1:9301 "]     // 关闭了自动创建索引。为的也是安全考虑，否则即使是内网，也有很多扫描程序，一旦开启，扫描程序会自动给你创建很多索引
+discovery.zen.ping.unicast.hosts: ["127.0.0.1:9301"]     // 关闭了自动创建索引。为的也是安全考虑，否则即使是内网，也有很多扫描程序，一旦开启，扫描程序会自动给你创建很多索引
 
 另外：在bin/elasticsearch里面增加两行：
 ES_HEAP_SIZE=4g

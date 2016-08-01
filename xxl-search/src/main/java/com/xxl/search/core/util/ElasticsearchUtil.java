@@ -1,12 +1,5 @@
 package com.xxl.search.core.util;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.get.MultiGetItemResponse;
@@ -24,6 +17,13 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Elasticsearch 工具类
@@ -202,10 +202,10 @@ public class ElasticsearchUtil {
     
     @SuppressWarnings("unused")
 	public static void main(String[] args) {
-    	String index = "users";
+    	String index = "demo-index";
     	String type = "user";
     	
-    	if (false) {
+    	if (true) {
     		String source;
     		
     		Map<String, Object> map = new HashMap<String, Object>();
