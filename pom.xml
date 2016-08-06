@@ -12,5 +12,6 @@
 		<module>xxl-util</module>
         <module>xxl-search</module>
 		<module>demo</module>
+        <module>xxl-cache</module>
     </modules>
 </project>
