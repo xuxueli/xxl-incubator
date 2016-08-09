@@ -1,11 +1,11 @@
 package com.xxl.cache.service.impl;
 
-import com.xxl.cache.core.model.MemcachedTemplate;
+import com.xxl.cache.core.model.XxlCacheKey;
 import com.xxl.cache.core.util.JacksonUtil;
 import com.xxl.cache.core.util.ReturnT;
 import com.xxl.cache.core.util.XMemcachedUtil;
-import com.xxl.cache.dao.IMemcachedDao;
-import com.xxl.cache.service.IMemcachedService;
+import com.xxl.cache.dao.IXxlCacheKeyDao;
+import com.xxl.cache.service.IXxlCacheKeyService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,11 +20,11 @@ import java.util.Map;
  * Created by xuxueli on 16/8/9.
  */
 @Service
-public class MemcachedServiceImpl implements IMemcachedService {
+public class XxlCacheKeyServiceImpl implements IXxlCacheKeyService {
     private static Logger logger = LogManager.getLogger();
 
     @Resource
-    private IMemcachedDao memcachedDao;
+    private IXxlCacheKeyDao xxlCacheKeyDao;
 
     @Override
     public Map<String, Object> pageList(int offset, int pagesize, String key) {
@@ -34,8 +34,8 @@ public class MemcachedServiceImpl implements IMemcachedService {
         params.put("pagesize", pagesize);
         params.put("key", key);
 
-        List<MemcachedTemplate> data = memcachedDao.pageList(params);
-        int list_count = memcachedDao.pageListCount(params);
+        List<XxlCacheKey> data = xxlCacheKeyDao.pageList(params);
+        int list_count = xxlCacheKeyDao.pageListCount(params);
 
         // package result
         Map<String, Object> maps = new HashMap<String, Object>();
@@ -46,32 +46,32 @@ public class MemcachedServiceImpl implements IMemcachedService {
     }
 
     @Override
-    public ReturnT<String> save(MemcachedTemplate memcachedTemplate) {
-        if (StringUtils.isBlank(memcachedTemplate.getKey())) {
+    public ReturnT<String> save(XxlCacheKey xxlCacheKey) {
+        if (StringUtils.isBlank(xxlCacheKey.getKey())) {
             return new ReturnT<String>(500, "请输入“缓存Key”");
         }
-        if (StringUtils.isBlank(memcachedTemplate.getIntro())) {
+        if (StringUtils.isBlank(xxlCacheKey.getIntro())) {
             return new ReturnT<String>(500, "请输入“简介”");
         }
-        memcachedDao.save(memcachedTemplate);
+        xxlCacheKeyDao.save(xxlCacheKey);
         return ReturnT.SUCCESS;
     }
 
     @Override
-    public ReturnT<String> update(MemcachedTemplate memcachedTemplate) {
-        if (StringUtils.isBlank(memcachedTemplate.getKey())) {
+    public ReturnT<String> update(XxlCacheKey xxlCacheKey) {
+        if (StringUtils.isBlank(xxlCacheKey.getKey())) {
             return new ReturnT<String>(500, "请输入“缓存Key”");
         }
-        if (StringUtils.isBlank(memcachedTemplate.getIntro())) {
+        if (StringUtils.isBlank(xxlCacheKey.getIntro())) {
             return new ReturnT<String>(500, "请输入“简介”");
         }
-        memcachedDao.update(memcachedTemplate);
+        xxlCacheKeyDao.update(xxlCacheKey);
         return ReturnT.SUCCESS;
     }
 
     @Override
     public ReturnT<String> delete(int id) {
-        memcachedDao.delete(id);
+        xxlCacheKeyDao.delete(id);
         return ReturnT.SUCCESS;
     }
 

@@ -33,7 +33,7 @@ public class IndexController {
         if (!PermissionInterceptor.ifLogin(request)) {
             return "redirect:/toLogin";
         }
-        return "redirect:/memcached";
+        return "redirect:/cache";
     }
 
     @RequestMapping("/toLogin")

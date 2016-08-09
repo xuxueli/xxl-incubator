@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="MemcachedTemplateMapper">
+<mapper namespace="XxlCacheKeyMapper">
 	
-	<resultMap id="MemcachedTemplate" type="com.xxl.cache.core.model.MemcachedTemplate" >
+	<resultMap id="XxlCacheKey" type="com.xxl.cache.core.model.XxlCacheKey" >
 		<result column="id" property="id" />
 		<result column="key" property="key" />
 		<result column="intro" property="intro" />
@@ -15,9 +15,9 @@
 		t.`intro`
 	</sql>
 	
-	<select id="pageList" parameterType="java.util.Map" resultMap="MemcachedTemplate">
+	<select id="pageList" parameterType="java.util.Map" resultMap="XxlCacheKey">
 		SELECT <include refid="Base_Column_List" />
-		FROM XXL_CACHE_MEMCACHED_TEMPLATE AS t
+		FROM XXL_CACHE_KEY AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="key != null and key != ''">
 				AND t.key = #{key}
@@ -29,7 +29,7 @@
 	
 	<select id="pageListCount" parameterType="java.util.Map" resultType="int">
 		SELECT count(1)
-		FROM XXL_CACHE_MEMCACHED_TEMPLATE AS t
+		FROM XXL_CACHE_KEY AS t
 		<trim prefix="WHERE" prefixOverrides="AND | OR" >
 			<if test="key != null and key != ''">
 				AND t.key = #{key}
@@ -37,8 +37,8 @@
 		</trim>
 	</select>
 	
-	<insert id="save" parameterType="com.xxl.cache.core.model.MemcachedTemplate" useGeneratedKeys="true" keyProperty="id" >
-		INSERT INTO XXL_CACHE_MEMCACHED_TEMPLATE (
+	<insert id="save" parameterType="com.xxl.cache.core.model.XxlCacheKey" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO XXL_CACHE_KEY (
 			`key`,
 			`intro`
 		) VALUES (
@@ -50,8 +50,8 @@
 		</selectKey> 
 	</insert>
 	
-	<update id="update" parameterType="com.xxl.cache.core.model.MemcachedTemplate" >
-		UPDATE XXL_CACHE_MEMCACHED_TEMPLATE
+	<update id="update" parameterType="com.xxl.cache.core.model.XxlCacheKey" >
+		UPDATE XXL_CACHE_KEY
 		SET	`key` = #{key},
 		  	intro = #{intro}
 		WHERE id = #{id}
@@ -59,13 +59,13 @@
 	
 	<delete id="delete" parameterType="java.lang.Integer">
 		DELETE
-		FROM XXL_CACHE_MEMCACHED_TEMPLATE
+		FROM XXL_CACHE_KEY
 		WHERE id = #{id}
 	</delete>
 
-	<select id="load" parameterType="java.lang.Integer" resultMap="MemcachedTemplate">
+	<select id="load" parameterType="java.lang.Integer" resultMap="XxlCacheKey">
 		SELECT <include refid="Base_Column_List" />
-		FROM XXL_CACHE_MEMCACHED_TEMPLATE AS t
+		FROM XXL_CACHE_KEY AS t
 		WHERE t.id = #{id}
 	</select>
 

@@ -1,10 +1,10 @@
 package com.xxl.cache.controller;
 
 import com.xxl.cache.controller.annotation.PermessionLimit;
-import com.xxl.cache.core.model.MemcachedTemplate;
+import com.xxl.cache.core.model.XxlCacheKey;
 import com.xxl.cache.core.util.CacheKeyUtil;
 import com.xxl.cache.core.util.ReturnT;
-import com.xxl.cache.service.IMemcachedService;
+import com.xxl.cache.service.IXxlCacheKeyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,17 +19,17 @@ import java.util.Map;
  * Created by xuxueli on 16/8/6.
  */
 @Controller
-@RequestMapping("/memcached")
-public class MemcachedController {
+@RequestMapping("/cache")
+public class CacheController {
 
     @Resource
-    private IMemcachedService memcachedService;
+    private IXxlCacheKeyService xxlCacheKeyService;
 
 
     @RequestMapping("")
     @PermessionLimit
     public String toLogin(Model model, HttpServletRequest request) {
-        return "memcached/memcached.index";
+        return "cache/cache.index";
     }
 
     @RequestMapping("/pageList")
@@ -37,28 +37,28 @@ public class MemcachedController {
     @PermessionLimit
     public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
         @RequestParam(required = false, defaultValue = "10") int length, String key) {
-        return memcachedService.pageList(start, length, key);
+        return xxlCacheKeyService.pageList(start, length, key);
     }
 
     @RequestMapping("/save")
     @ResponseBody
     @PermessionLimit
-    public ReturnT<String> save(MemcachedTemplate memcachedTemplate) {
-        return memcachedService.save(memcachedTemplate);
+    public ReturnT<String> save(XxlCacheKey xxlCacheKey) {
+        return xxlCacheKeyService.save(xxlCacheKey);
     }
 
     @RequestMapping("/update")
     @ResponseBody
     @PermessionLimit
-    public ReturnT<String> update(MemcachedTemplate memcachedTemplate) {
-        return memcachedService.update(memcachedTemplate);
+    public ReturnT<String> update(XxlCacheKey xxlCacheKey) {
+        return xxlCacheKeyService.update(xxlCacheKey);
     }
 
     @RequestMapping("/delete")
     @ResponseBody
     @PermessionLimit
     public ReturnT<String> delete(int id) {
-        return memcachedService.delete(id);
+        return xxlCacheKeyService.delete(id);
     }
 
 
@@ -66,14 +66,14 @@ public class MemcachedController {
     @ResponseBody
     @PermessionLimit
     public ReturnT<Map<String, Object>> getCacheInfo(String finalKey) {
-        return memcachedService.getCacheInfo(finalKey);
+        return xxlCacheKeyService.getCacheInfo(finalKey);
     }
 
     @RequestMapping("/removeCache")
     @ResponseBody
     @PermessionLimit
     public ReturnT<String> removeCache(String finalKey) {
-        return memcachedService.removeCache(finalKey);
+        return xxlCacheKeyService.removeCache(finalKey);
     }
 
     @RequestMapping("/getFinalKey")

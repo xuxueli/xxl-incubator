@@ -6,7 +6,7 @@ $(function() {
 		"processing" : true, 
 	    "serverSide": true,
 		"ajax": {
-			url: base_url + "/memcached/pageList",
+			url: base_url + "/cache/pageList",
 			type:"post",
 	        data : function ( d ) {
 	        	var obj = {};
@@ -78,7 +78,7 @@ $(function() {
 		ComConfirm.show("确认删除缓存模板?", function(){
 			$.ajax({
 				type : 'post',
-				url : base_url + "/memcached/delete",
+				url : base_url + "/cache/delete",
 				data : {
 					"id":id
 				},
@@ -140,7 +140,7 @@ $(function() {
             element.parent('div').append(error);  
         },
         submitHandler : function(form) {
-        	$.post(base_url + "/memcached/save",  $("#addModal .form").serialize(), function(data, status) {
+        	$.post(base_url + "/cache/save",  $("#addModal .form").serialize(), function(data, status) {
     			if (data.code == "200") {
     				ComAlert.show(1, "新增任务成功", function(){
     					//window.location.reload();
@@ -208,7 +208,7 @@ $(function() {
         },
         submitHandler : function(form) {
 			// post
-    		$.post(base_url + "/memcached/update", $("#updateModal .form").serialize(), function(data, status) {
+    		$.post(base_url + "/cache/update", $("#updateModal .form").serialize(), function(data, status) {
     			if (data.code == "200") {
     				ComAlert.show(1, "更新成功", function(){
     					//window.location.reload();
@@ -256,7 +256,7 @@ $(function() {
 		var key = $("#cacheManageModal .form input[name='key']").val();
 		var params = $("#cacheManageModal .form input[name='params']").val();
 
-		$.post(base_url + "/memcached/getFinalKey", {"key":key, "params":params}, function(data, status) {
+		$.post(base_url + "/cache/getFinalKey", {"key":key, "params":params}, function(data, status) {
 			if (data.code == "200") {
 				var finalKey = data.content;
 				$("#cacheManageModal .form input[name='finalKey']").val(finalKey);
@@ -284,7 +284,7 @@ $(function() {
 			return;
 		}
 
-		$.post(base_url + "/memcached/getCacheInfo", {"finalKey":finalKey}, function(data, status) {
+		$.post(base_url + "/cache/getCacheInfo", {"finalKey":finalKey}, function(data, status) {
 			if (data.code == "200") {
 				var temp = '';
 				temp += '<b>类型:</b> ' + data.content.type + '<br><br>';
@@ -321,7 +321,7 @@ $(function() {
 
 		ComConfirm.show("确认清除缓存?", function(){
 
-			$.post(base_url + "/memcached/removeCache", {"finalKey":finalKey}, function(data, status) {
+			$.post(base_url + "/cache/removeCache", {"finalKey":finalKey}, function(data, status) {
 				if (data.code == "200") {
 					ComAlert.show(1, "缓存清除成功");
 				} else {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  	<title>Memcached缓存管理</title>
+  	<title>缓存管理</title>
   	<#import "/common/common.macro.ftl" as netCommon>
 	<@netCommon.commonStyle />
 	<!-- DataTables -->
@@ -25,7 +25,7 @@
 	<div class="content-wrapper">
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
-			<h1>Memcached缓存管理<small></small></h1>
+			<h1>缓存管理<small></small></h1>
 			<!--
 			<ol class="breadcrumb">
 				<li><a><i class="fa fa-dashboard"></i>调度管理</a></li>
@@ -193,6 +193,6 @@
 <!-- daterangepicker -->
 <script src="${request.contextPath}/static/adminlte/plugins/daterangepicker/moment.min.js"></script>
 <script src="${request.contextPath}/static/adminlte/plugins/daterangepicker/daterangepicker.js"></script>
-<script src="${request.contextPath}/static/js/memcached.index.1.js"></script>
+<script src="${request.contextPath}/static/js/cache.index.1.js"></script>
 </body>
 </html>
