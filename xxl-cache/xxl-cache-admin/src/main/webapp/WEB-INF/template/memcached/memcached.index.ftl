@@ -93,7 +93,7 @@
 				<form class="form-horizontal form" role="form" >
 					<div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">缓存模板<font color="red">*</font></label>
-                        <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key”" maxlength="250" ></div>
+                        <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key”,占位符用{0}、{1}、{2}依次替代" maxlength="250" ></div>
 					</div>
                     <div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">简介<font color="red">*</font></label>
@@ -123,7 +123,7 @@
                 <form class="form-horizontal form" role="form" >
                     <div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">Key<font color="red">*</font></label>
-                        <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key”" maxlength="250" ></div>
+                        <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key,占位符用{0}、{1}、{2}依次替代”" maxlength="250" ></div>
                     </div>
                     <div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">描述<font color="red">*</font></label>
@@ -158,7 +158,7 @@
                     </div>
                     <div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">模板参数<font color="black">*</font></label>
-                        <div class="col-sm-8"><input type="text" class="form-control" name="params" placeholder="请输入“模板参数”" maxlength="100" ></div>
+                        <div class="col-sm-8"><input type="text" class="form-control" name="params" placeholder="多个参数逗号分隔,依次替换占位符{0}、{1}、{2}的位置" maxlength="100" ></div>
                     </div>
                     <div class="form-group">
                         <label for="lastname" class="col-sm-2 control-label">FinalKey<font color="red">*</font></label>
