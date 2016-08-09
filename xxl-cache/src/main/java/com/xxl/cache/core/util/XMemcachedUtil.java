@@ -8,6 +8,8 @@ import net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator;
 import net.rubyeye.xmemcached.utils.AddrUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.TimeoutException;
 
@@ -120,9 +122,9 @@ public final class XMemcachedUtil {
 	 * 删除
 	 * @param key
 	 */
-	public static void delete(String key) {
+	public static boolean delete(String key) {
 		try {
-			getInstance().delete(key);
+			return getInstance().delete(key);
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
@@ -130,6 +132,7 @@ public final class XMemcachedUtil {
 		} catch (MemcachedException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	/**
@@ -149,8 +152,11 @@ public final class XMemcachedUtil {
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
-		set("asd", 500);
-		System.out.println(get("asd"));
+		List<String> list = new ArrayList<String>();
+		list.add("jack");
+		list.add("rose");
+		set("key02", list);
+		System.out.println(get("key02"));
 	}
-	
+
 }

@@ -2,8 +2,8 @@ package com.xxl.cache.controller.resolver;
 
 import com.xxl.cache.core.util.JacksonUtil;
 import com.xxl.cache.core.util.ReturnT;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author xuxueli 2016-1-6 19:22:18
  */
 public class WebExceptionResolver implements HandlerExceptionResolver {
-	private static transient Logger logger = LoggerFactory.getLogger(WebExceptionResolver.class);
+	private static transient Logger logger = LogManager.getLogger();
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,

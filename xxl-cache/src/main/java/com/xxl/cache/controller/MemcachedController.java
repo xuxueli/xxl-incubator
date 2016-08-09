@@ -1,15 +1,18 @@
 package com.xxl.cache.controller;
 
 import com.xxl.cache.controller.annotation.PermessionLimit;
+import com.xxl.cache.core.model.MemcachedTemplate;
+import com.xxl.cache.core.util.CacheKeyUtil;
+import com.xxl.cache.core.util.ReturnT;
+import com.xxl.cache.service.IMemcachedService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +21,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/memcached")
 public class MemcachedController {
+
+    @Resource
+    private IMemcachedService memcachedService;
 
 
     @RequestMapping("")
@@ -28,19 +34,54 @@ public class MemcachedController {
 
     @RequestMapping("/pageList")
     @ResponseBody
+    @PermessionLimit
     public Map<String, Object> pageList(@RequestParam(required = false, defaultValue = "0") int start,
-        @RequestParam(required = false, defaultValue = "10") int length,
-        String jobGroup, String executorHandler, String filterTime) {
+        @RequestParam(required = false, defaultValue = "10") int length, String key) {
+        return memcachedService.pageList(start, length, key);
+    }
 
-        int list_count = 0;
-        List<String> data = null;
+    @RequestMapping("/save")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<String> save(MemcachedTemplate memcachedTemplate) {
+        return memcachedService.save(memcachedTemplate);
+    }
 
-        // package result
-        Map<String, Object> maps = new HashMap<String, Object>();
-        maps.put("recordsTotal", list_count);		// 总记录数
-        maps.put("recordsFiltered", list_count);	// 过滤后的总记录数
-        maps.put("data", "");  					// 分页列表
-        return maps;
+    @RequestMapping("/update")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<String> update(MemcachedTemplate memcachedTemplate) {
+        return memcachedService.update(memcachedTemplate);
+    }
+
+    @RequestMapping("/delete")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<String> delete(int id) {
+        return memcachedService.delete(id);
+    }
+
+
+    @RequestMapping("/getCacheInfo")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<Map<String, Object>> getCacheInfo(String finalKey) {
+        return memcachedService.getCacheInfo(finalKey);
+    }
+
+    @RequestMapping("/removeCache")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<String> removeCache(String finalKey) {
+        return memcachedService.removeCache(finalKey);
+    }
+
+    @RequestMapping("/getFinalKey")
+    @ResponseBody
+    @PermessionLimit
+    public ReturnT<String> getFinalKey(String key, String params) {
+        String finalKey = CacheKeyUtil.getFinalKey(key, params);
+        return new ReturnT<String>(finalKey);
     }
 
 }

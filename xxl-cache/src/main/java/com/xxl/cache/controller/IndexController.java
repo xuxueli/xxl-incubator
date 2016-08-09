@@ -4,7 +4,7 @@ import com.xxl.cache.controller.annotation.PermessionLimit;
 import com.xxl.cache.controller.interceptor.PermissionInterceptor;
 import com.xxl.cache.core.util.PropertiesUtil;
 import com.xxl.cache.core.util.ReturnT;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;

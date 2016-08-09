@@ -1,6 +1,7 @@
 $(function() {
+
 	// init date tables
-	var jobTable = $("#job_list").dataTable({
+	var jobTable = $("#cache_list").dataTable({
 		"deferRender": true,
 		"processing" : true, 
 	    "serverSide": true,
@@ -9,7 +10,7 @@ $(function() {
 			type:"post",
 	        data : function ( d ) {
 	        	var obj = {};
-	        	obj.key = $('#jobGroup').val();
+	        	obj.key = $('#key').val();
 	        	obj.start = d.start;
 	        	obj.length = d.length;
                 return obj;
@@ -21,18 +22,18 @@ $(function() {
 	    "columns": [
 	                { "data": 'id', "bSortable": false, "visible" : false},
 	                { "data": 'key', "visible" : true},
-					{ "data": 'value', "visible" : true},
+					{ "data": 'intro', "visible" : true},
 	                { "data": '操作' ,
 	                	"render": function ( data, type, row ) {
 	                		return function(){
 								// html
 								var html = '<p id="'+ row.id +'" '+
 									' key="'+ row.key +'" '+
-									' value="'+ row.value +'" '+
+									' intro="'+ row.intro +'" '+
 									'>'+
-									'<button class="btn btn-primary btn-xs job_operate" type="job_trigger" type="button">详细</button>  '+
-									'<button class="btn btn-warning btn-xs update" type="button">编辑</button>  '+
-									'<button class="btn btn-danger btn-xs job_operate" type="job_del" type="button">删除</button>  '+
+									'<button class="btn btn-primary btn-xs cache_manage" type="button">缓存操作</button>  '+
+									'<button class="btn btn-warning btn-xs cache_update" type="button">编辑</button>  '+
+									'<button class="btn btn-danger btn-xs cache_delete" type="button">删除</button>  '+
 									'</p>';
 
 	                			return html;
@@ -66,59 +67,30 @@ $(function() {
 		}
 	});
 	
-	// 搜索按钮
+	// search
 	$('#searchBtn').on('click', function(){
 		jobTable.fnDraw();
 	});
 	
-	// job operate
-	$("#job_list").on('click', '.job_operate',function() {
-		var typeName;
-		var url;
-		var needFresh = false;
-
-		var type = $(this).attr("type");
-		if ("job_pause" == type) {
-			typeName = "暂停";
-			url = base_url + "/jobinfo/pause";
-			needFresh = true;
-		} else if ("job_resume" == type) {
-			typeName = "恢复";
-			url = base_url + "/jobinfo/resume";
-			needFresh = true;
-		} else if ("job_del" == type) {
-			typeName = "删除";
-			url = base_url + "/jobinfo/remove";
-			needFresh = true;
-		} else if ("job_trigger" == type) {
-			typeName = "执行";
-			url = base_url + "/jobinfo/trigger";
-		} else {
-			return;
-		}
-		
-		var jobGroup = $(this).parent('p').attr("jobGroup");
-		var jobName = $(this).parent('p').attr("jobName");
-		
-		ComConfirm.show("确认" + typeName + "?", function(){
+	// cache_delete
+	$("#cache_list").on('click', '.cache_delete',function() {
+		var id = $(this).parent('p').attr("id");
+		ComConfirm.show("确认删除缓存模板?", function(){
 			$.ajax({
-				type : 'POST',
-				url : url,
+				type : 'post',
+				url : base_url + "/memcached/delete",
 				data : {
-					"jobGroup" : jobGroup,
-					"jobName"  : jobName
+					"id":id
 				},
 				dataType : "json",
 				success : function(data){
 					if (data.code == 200) {
-						ComAlert.show(1, typeName + "成功", function(){
-							if (needFresh) {
-								//window.location.reload();
-								jobTable.fnDraw();
-							}
+						ComAlert.show(1, "删除成功", function(){
+							//window.location.reload();
+							jobTable.fnDraw();
 						});
 					} else {
-						ComAlert.show(1, typeName + "失败");
+						ComAlert.show(2, "删除失败");
 					}
 				},
 			});
@@ -126,11 +98,11 @@ $(function() {
 	});
 	
 	// jquery.validate 自定义校验 “英文字母开头，只含有英文字母、数字和下划线”
-	jQuery.validator.addMethod("myValid01", function(value, element) {
+	jQuery.validator.addMethod("keyValid", function(value, element) {
 		var length = value.length;
-		var valid = /^[a-zA-Z][a-zA-Z0-9_]*$/;
+		var valid = /^[a-zA-Z][a-zA-Z0-9_{}]*$/;
 		return this.optional(element) || valid.test(value);
-	}, "只支持英文字母开头，只含有英文字母、数字和下划线");
+	}, "缓存Key应该以英文字母开头，只可包含英文字母、数字、下划线以及占位符'{}'");
 	
 	// 新增
 	$(".add").click(function(){
@@ -141,44 +113,20 @@ $(function() {
         errorClass : 'help-block',
         focusInvalid : true,  
         rules : {
-			jobDesc : {
+			key : {
 				required : true,
-				maxlength: 50
+				keyValid : true
 			},
-            jobCron : {
+			intro : {
             	required : true
-            },
-            executorAddress : {
-            	required : true
-            },
-			executorHandler : {
-				required : false
-			},
-            alarmEmail : {
-            	required : true
-            },
-			author : {
-				required : true
-			}
+            }
         }, 
-        messages : {  
-            jobDesc : {
-            	required :"请输入“描述”."
+        messages : {
+			key : {
+            	required :"请输入“缓存Key”"
             },
-            jobCron : {
-            	required :"请输入“Cron”."
-            },
-            executorAddress : {
-            	required :"请输入“执行器地址”."
-            },
-			executorHandler : {
-				required : "请输入“jobHandler”."
-			},
-            alarmEmail : {
-            	required : "请输入“报警邮件”."
-            },
-            author : {
-            	required : "请输入“负责人”."
+			intro : {
+            	required :"请输入“简介””"
             }
         },
 		highlight : function(element) {  
@@ -192,7 +140,7 @@ $(function() {
             element.parent('div').append(error);  
         },
         submitHandler : function(form) {
-        	$.post(base_url + "/jobinfo/add",  $("#addModal .form").serialize(), function(data, status) {
+        	$.post(base_url + "/memcached/save",  $("#addModal .form").serialize(), function(data, status) {
     			if (data.code == "200") {
     				ComAlert.show(1, "新增任务成功", function(){
     					//window.location.reload();
@@ -214,57 +162,15 @@ $(function() {
 		addModalValidate.resetForm();
 		$("#addModal .form .form-group").removeClass("has-error");
 		$(".remote_panel").show();	// remote
-
-		$("#addModal .form input[name='executorHandler']").removeAttr("readonly");
 	});
 
-	// GLUE模式开启
-	$(".ifGLUE").click(function(){
-		var ifGLUE = $(this).is(':checked');
-		var $executorHandler = $(this).parents("form").find("input[name='executorHandler']");
-		var $glueSwitch = $(this).parents("form").find("input[name='glueSwitch']");
-		if (ifGLUE) {
-			$executorHandler.val("");
-			$executorHandler.attr("readonly","readonly");
-			$glueSwitch.val(1);
-		} else {
-			$executorHandler.removeAttr("readonly");
-			$glueSwitch.val(0);
-		}
-	});
-	
+
 	// 更新
-	$("#job_list").on('click', '.update',function() {
-
+	$("#cache_list").on('click', '.cache_update',function() {
 		// base data
-		$("#updateModal .form input[name='jobGroup']").val($(this).parent('p').attr("jobGroup"));
-		$("#updateModal .form input[name='jobName']").val($(this).parent('p').attr("jobName"));
-		$("#updateModal .form input[name='jobDesc']").val($(this).parent('p').attr("jobDesc"));
-		$("#updateModal .form input[name='jobCron']").val($(this).parent('p').attr("jobCron"));
-		$("#updateModal .form input[name='author']").val($(this).parent('p').attr("author"));
-		$("#updateModal .form input[name='alarmEmail']").val($(this).parent('p').attr("alarmEmail"));
-		$("#updateModal .form input[name='executorAddress']").val($(this).parent('p').attr("executorAddress"));
-		$("#updateModal .form input[name='executorHandler']").val($(this).parent('p').attr("executorHandler"));
-		$("#updateModal .form input[name='executorParam']").val($(this).parent('p').attr("executorParam"));
-        $("#updateModal .form input[name='childJobKey']").val($(this).parent('p').attr("childJobKey"));
-
-		// jobGroupTitle
-		var jobGroupTitle = $("#addModal .form select[name='jobGroup']").find("option[value='" + $(this).parent('p').attr("jobGroup") + "']").text();
-		$("#updateModal .form .jobGroupTitle").val(jobGroupTitle);
-
-        // glueSwitch
-		var glueSwitch = $(this).parent('p').attr("glueSwitch");
-		$("#updateModal .form input[name='glueSwitch']").val(glueSwitch);
-		var $ifGLUE = $("#updateModal .form .ifGLUE");
-		var $executorHandler = $("#updateModal .form input[name='executorHandler']");
-		if (glueSwitch == 1) {
-			$ifGLUE.attr("checked", true);
-			$executorHandler.val("");
-			$executorHandler.attr("readonly","readonly");
-		} else {
-			$ifGLUE.attr("checked", false);
-			$executorHandler.removeAttr("readonly");
-		}
+		$("#updateModal .form input[name='id']").val($(this).parent('p').attr("id"));
+		$("#updateModal .form input[name='key']").val($(this).parent('p').attr("key"));
+		$("#updateModal .form input[name='intro']").val($(this).parent('p').attr("intro"));
 
 		// show
 		$('#updateModal').modal({backdrop: false, keyboard: false}).modal('show');
@@ -273,46 +179,21 @@ $(function() {
 		errorElement : 'span',  
         errorClass : 'help-block',
         focusInvalid : true,
-
 		rules : {
-			jobDesc : {
+			key : {
 				required : true,
-				maxlength: 50
+				keyValid : true
 			},
-			jobCron : {
-				required : true
-			},
-			executorAddress : {
-				required : true
-			},
-			executorHandler : {
-				required : false
-			},
-			alarmEmail : {
-				required : true
-			},
-			author : {
+			intro : {
 				required : true
 			}
 		},
 		messages : {
-			jobDesc : {
-				required :"请输入“描述”."
+			key : {
+				required :"请输入“缓存Key”"
 			},
-			jobCron : {
-				required :"请输入“Cron”."
-			},
-			executorAddress : {
-				required :"请输入“执行器地址”."
-			},
-			executorHandler : {
-				required : "请输入“jobHandler”."
-			},
-			alarmEmail : {
-				required : "请输入“报警邮件”."
-			},
-			author : {
-				required : "请输入“负责人”."
+			intro : {
+				required :"请输入“简介”"
 			}
 		},
 		highlight : function(element) {
@@ -327,7 +208,7 @@ $(function() {
         },
         submitHandler : function(form) {
 			// post
-    		$.post(base_url + "/jobinfo/reschedule", $("#updateModal .form").serialize(), function(data, status) {
+    		$.post(base_url + "/memcached/update", $("#updateModal .form").serialize(), function(data, status) {
     			if (data.code == "200") {
     				ComAlert.show(1, "更新成功", function(){
     					//window.location.reload();
@@ -348,21 +229,111 @@ $(function() {
 		$("#updateModal .form")[0].reset()
 	});
 
+	// 缓存管理
+	$("#cache_list").on('click', '.cache_manage',function() {
+		// base data
+		$("#cacheManageModal .form input[name='key']").val($(this).parent('p').attr("key"));
 
-	/*
-	// 新增-添加参数
-	$("#addModal .addParam").on('click', function () {
-		var html = '<div class="form-group newParam">'+
-				'<label for="lastname" class="col-sm-2 control-label">参数&nbsp;<button class="btn btn-danger btn-xs removeParam" type="button">移除</button></label>'+
-				'<div class="col-sm-4"><input type="text" class="form-control" name="key" placeholder="请输入参数key[将会强转为String]" maxlength="200" /></div>'+
-				'<div class="col-sm-6"><input type="text" class="form-control" name="value" placeholder="请输入参数value[将会强转为String]" maxlength="200" /></div>'+
-			'</div>';
-		$(this).parents('.form-group').parent().append(html);
-		
-		$("#addModal .removeParam").on('click', function () {
-			$(this).parents('.form-group').remove();
+		// hide cacheDetail
+		$("#cacheManageModal .cacheDetail").hide();
+		$("#cacheManageModal .cacheVal").html('');
+
+		// show
+		$('#cacheManageModal').modal({backdrop: false, keyboard: false}).modal('show');
+	});
+	$("#cacheManageModal").on('hide.bs.modal', function () {
+		$("#cacheManageModal .form")[0].reset()
+	});
+
+	// get cache
+	$("#cacheManageModal").on('click', '.getFinalKey',function() {
+
+		// hide cacheDetail
+		$("#cacheManageModal .cacheDetail").hide();
+		$("#cacheManageModal .cacheVal").html('');
+
+		// data used to get final key
+		var key = $("#cacheManageModal .form input[name='key']").val();
+		var params = $("#cacheManageModal .form input[name='params']").val();
+
+		$.post(base_url + "/memcached/getFinalKey", {"key":key, "params":params}, function(data, status) {
+			if (data.code == "200") {
+				var finalKey = data.content;
+				$("#cacheManageModal .form input[name='finalKey']").val(finalKey);
+			} else {
+				if (data.msg) {
+					ComAlert.show(2, data.msg);
+				} else {
+					ComAlert.show(2, "查询失败");
+				}
+			}
+		});
+
+	});
+
+	// get cache
+	$("#cacheManageModal").on('click', '.getCache',function() {
+
+		// hide cacheDetail
+		$("#cacheManageModal .cacheDetail").hide();
+		$("#cacheManageModal .cacheVal").html('');
+		// final key
+		var finalKey = $("#cacheManageModal .form input[name='finalKey']").val();
+		if (!finalKey){
+			ComAlert.show(2, '"FinalKey"不可为空');
+			return;
+		}
+
+		$.post(base_url + "/memcached/getCacheInfo", {"finalKey":finalKey}, function(data, status) {
+			if (data.code == "200") {
+				var temp = '';
+				temp += '<b>类型:</b> ' + data.content.type + '<br><br>';
+				temp += '<b>长度:</b> ' + data.content.length + '<br><br>';
+				temp += '<b>内容:</b> ' + data.content.info + '<br><br>';
+				temp += '<b>JSON:</b> ' + data.content.json + '<br><br>';
+
+				// show cacheDetail
+				$("#cacheManageModal .cacheDetail").show();
+				$("#cacheManageModal .cacheVal").html(temp);
+			} else {
+				if (data.msg) {
+					ComAlert.show(2, data.msg);
+				} else {
+					ComAlert.show(2, "查询失败");
+				}
+			}
+		});
+
+	});
+
+	// remove cache
+	$("#cacheManageModal").on('click', '.removeCache',function() {
+
+		// hide cacheDetail
+		$("#cacheManageModal .cacheDetail").hide();
+		$("#cacheManageModal .cacheVal").html('');
+		// final key
+		var finalKey = $("#cacheManageModal .form input[name='finalKey']").val();
+		if (!finalKey){
+			ComAlert.show(2, '"FinalKey"不可为空');
+			return;
+		}
+
+		ComConfirm.show("确认清除缓存?", function(){
+
+			$.post(base_url + "/memcached/removeCache", {"finalKey":finalKey}, function(data, status) {
+				if (data.code == "200") {
+					ComAlert.show(1, "缓存清除成功");
+				} else {
+					if (data.msg) {
+						ComAlert.show(2, data.msg);
+					} else {
+						ComAlert.show(2, "缓存清除失败,可能缓存数据不存在");
+					}
+				}
+			});
+
 		});
 	});
-	*/
 
 });
