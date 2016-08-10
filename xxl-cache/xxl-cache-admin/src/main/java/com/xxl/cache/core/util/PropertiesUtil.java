@@ -1,7 +1,7 @@
 package com.xxl.cache.core.util;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,10 +14,8 @@ import java.util.Properties;
  * @author xuxueli 2015-6-22 22:36:46
  */
 public class PropertiesUtil {
-	protected static Logger logger = LogManager.getLogger();
-
+	private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
 	public static final String DEFAULT_CONFIG = "config.properties";
-
 	/**
 	 * load prop file
 	 * @param propertyFileName
@@ -62,14 +60,23 @@ public class PropertiesUtil {
 	 * @param key
 	 * @return
 	 */
-	protected static int getInt(Properties prop, String key) {
+	public static int getInt(Properties prop, String key) {
 		return Integer.parseInt(getString(prop, key));
 	}
-	
+
+	/**
+	 * load prop value of boolean
+	 * @param prop
+	 * @param key
+     * @return
+     */
+	public static boolean getBoolean(Properties prop, String key) {
+		return Boolean.valueOf(getString(prop, key));
+	}
+
 	public static void main(String[] args) {
-		Properties prop = loadProperties("config.properties");
-		System.out.println(getString(prop, "memcached.address"));
-		System.out.println(getString(prop, "memcached.weights"));
+		Properties prop = loadProperties(DEFAULT_CONFIG);
+		System.out.println(getString(prop, "login.username"));
 	}
 
 }

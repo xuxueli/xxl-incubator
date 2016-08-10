@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Properties;
 
-import static com.xxl.cache.core.util.PropertiesUtil.DEFAULT_CONFIG;
+
 
 /**
  * Created by xuxueli on 16/7/30.
@@ -50,7 +50,7 @@ public class IndexController {
     @PermessionLimit(limit=false)
     public ReturnT<String> loginDo(HttpServletRequest request, HttpServletResponse response, String userName, String password, String ifRemember){
         if (!PermissionInterceptor.ifLogin(request)) {
-            Properties prop = PropertiesUtil.loadProperties(DEFAULT_CONFIG);
+            Properties prop = PropertiesUtil.loadProperties(PropertiesUtil.DEFAULT_CONFIG);
             if (StringUtils.isNotBlank(userName) && StringUtils.isNotBlank(password)
                     && PropertiesUtil.getString(prop, "login.username").equals(userName)
                     && PropertiesUtil.getString(prop, "login.password").equals(password)) {

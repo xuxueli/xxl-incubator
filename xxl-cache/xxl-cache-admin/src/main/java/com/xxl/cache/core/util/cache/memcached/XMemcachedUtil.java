@@ -1,11 +1,14 @@
-package com.xxl.cache.core.util;
+package com.xxl.cache.core.util.cache.memcached;
 
+import com.xxl.cache.core.util.PropertiesUtil;
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.MemcachedClientBuilder;
 import net.rubyeye.xmemcached.XMemcachedClientBuilder;
 import net.rubyeye.xmemcached.exception.MemcachedException;
 import net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator;
 import net.rubyeye.xmemcached.utils.AddrUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,9 +23,10 @@ import static com.xxl.cache.core.util.PropertiesUtil.DEFAULT_CONFIG;
  * @author xuxueli $2015-4-14 20:13:11
  */
 public final class XMemcachedUtil {
+	private static Logger logger = LogManager.getLogger();
 	
 	// MemcachedClient
-	private static final int cacheExpireTime = 7200;
+	private static final int DEFAULT_EXPIRE_TIME = 7200;	// 2H
 	private static MemcachedClient memcachedClient;
 	private static MemcachedClient getInstance() {
 		if (memcachedClient == null) {
@@ -30,9 +34,9 @@ public final class XMemcachedUtil {
 			synchronized (MemcachedClient.class) {
 				Properties prop = PropertiesUtil.loadProperties(DEFAULT_CONFIG);
 				// client地址
-				String serverAddress = PropertiesUtil.getString(prop, "memcached.address");
+				String serverAddress = PropertiesUtil.getString(prop, "xmemcached.address");
 				// client权重
-				String[] weightsArr = PropertiesUtil.getString(prop, "memcached.weights").split(",");
+				String[] weightsArr = PropertiesUtil.getString(prop, "xmemcached.weights").split(",");
 				int[] weights = new int[weightsArr.length];
 				for (int i = 0; i < weightsArr.length; i++) {
 					weights[i] = Integer.parseInt(weightsArr[i]);
@@ -52,13 +56,14 @@ public final class XMemcachedUtil {
 					memcachedClient.setOpTimeout(1500L);		// 全局等待时间
 					//memcachedClient.addStateListener(new MemcachedListener());
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error("", e);
 				}
+				logger.info(">>>>>>>>>>> xxl-cache, JedisUtil.ShardedJedisPool init success.");
 			}
 
 		}
 		if (memcachedClient == null) {
-			throw new NullPointerException("Null MemcachedClient,please check memcached has been started");
+			throw new NullPointerException(">>>>>>>>>>> xxl-cache, XMemcachedUtil.memcachedClient is null.");
 		}
 		return memcachedClient;
 	}
@@ -70,13 +75,13 @@ public final class XMemcachedUtil {
 	 */
 	public static void set(String key, Object value) {
 		try {
-			getInstance().set(key, cacheExpireTime, value);
+			getInstance().set(key, DEFAULT_EXPIRE_TIME, value);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 	
@@ -90,11 +95,11 @@ public final class XMemcachedUtil {
 		try {
 			getInstance().set(key, expTime, value);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 	
@@ -108,11 +113,11 @@ public final class XMemcachedUtil {
 			Object value = getInstance().get(key);
 			return value;
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
 		return null;
@@ -126,11 +131,11 @@ public final class XMemcachedUtil {
 		try {
 			return getInstance().delete(key);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		return false;
 	}
@@ -143,11 +148,11 @@ public final class XMemcachedUtil {
 		try {			
 			getInstance().incr(key, 1);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 	

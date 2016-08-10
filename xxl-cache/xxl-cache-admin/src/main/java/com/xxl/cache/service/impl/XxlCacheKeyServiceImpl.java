@@ -3,7 +3,7 @@ package com.xxl.cache.service.impl;
 import com.xxl.cache.core.model.XxlCacheKey;
 import com.xxl.cache.core.util.JacksonUtil;
 import com.xxl.cache.core.util.ReturnT;
-import com.xxl.cache.core.util.XMemcachedUtil;
+import com.xxl.cache.core.util.cache.CacheUtil;
 import com.xxl.cache.dao.IXxlCacheKeyDao;
 import com.xxl.cache.service.IXxlCacheKeyService;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +77,7 @@ public class XxlCacheKeyServiceImpl implements IXxlCacheKeyService {
 
     @Override
     public ReturnT<Map<String, Object>> getCacheInfo(String finalKey) {
-        Object cacheVal = XMemcachedUtil.get(finalKey);
+        Object cacheVal = CacheUtil.get(finalKey);
         if (cacheVal==null) {
             return new ReturnT(500, "缓存数据不存在");
         }
@@ -102,7 +102,7 @@ public class XxlCacheKeyServiceImpl implements IXxlCacheKeyService {
 
     @Override
     public ReturnT<String> removeCache(String finalKey) {
-        boolean ret = XMemcachedUtil.delete(finalKey);
+        boolean ret = CacheUtil.delete(finalKey);
         return ret?ReturnT.SUCCESS:ReturnT.FAIL;
     }
 

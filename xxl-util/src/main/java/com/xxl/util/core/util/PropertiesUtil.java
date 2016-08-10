@@ -1,21 +1,21 @@
 package com.xxl.util.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * properties util
  * @author xuxueli 2015-6-22 22:36:46
  */
 public class PropertiesUtil {
-	protected static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
-
+	private static Logger logger = LoggerFactory.getLogger(PropertiesUtil.class);
+	public static final String DEFAULT_CONFIG = "config.properties";
 	/**
 	 * load prop file
 	 * @param propertyFileName
@@ -49,7 +49,6 @@ public class PropertiesUtil {
 	/**
 	 * load prop value of string
 	 * @param key
-	 * @param defaultValue
 	 * @return
 	 */
 	public static String getString(Properties prop, String key) {
@@ -59,15 +58,24 @@ public class PropertiesUtil {
 	/**
 	 * load prop value of int
 	 * @param key
-	 * @param defaultValue
 	 * @return
 	 */
-	protected static int getInt(Properties prop, String key) {
+	public static int getInt(Properties prop, String key) {
 		return Integer.parseInt(getString(prop, key));
 	}
-	
+
+	/**
+	 * load prop value of boolean
+	 * @param prop
+	 * @param key
+	 * @return
+	 */
+	public static boolean getBoolean(Properties prop, String key) {
+		return Boolean.valueOf(getString(prop, key));
+	}
+
 	public static void main(String[] args) {
-		Properties prop = loadProperties("config.properties");
+		Properties prop = loadProperties(DEFAULT_CONFIG);
 		System.out.println(getString(prop, "name"));
 	}
 

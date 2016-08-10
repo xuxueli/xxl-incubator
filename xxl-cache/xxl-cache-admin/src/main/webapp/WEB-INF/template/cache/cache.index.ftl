@@ -63,7 +63,7 @@
 				                <thead>
 					            	<tr>
 					            		<th name="id" >id</th>
-					                	<th name="key" >缓存模板</th>
+					                	<th name="key" >模板</th>
                                         <th name="intro" >简介</th>
 					                  	<th>操作</th>
 					                </tr>
@@ -92,7 +92,7 @@
          	<div class="modal-body">
 				<form class="form-horizontal form" role="form" >
 					<div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">缓存模板<font color="red">*</font></label>
+                        <label for="lastname" class="col-sm-2 control-label">模板<font color="red">*</font></label>
                         <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key”,占位符用{0}、{1}、{2}依次替代" maxlength="250" ></div>
 					</div>
                     <div class="form-group">
@@ -122,7 +122,7 @@
             <div class="modal-body">
                 <form class="form-horizontal form" role="form" >
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">Key<font color="red">*</font></label>
+                        <label for="lastname" class="col-sm-2 control-label">模板<font color="red">*</font></label>
                         <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key,占位符用{0}、{1}、{2}依次替代”" maxlength="250" ></div>
                     </div>
                     <div class="form-group">
@@ -153,11 +153,11 @@
             <div class="modal-body">
                 <form class="form-horizontal form" role="form" >
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">模板Key<font color="red">*</font></label>
+                        <label for="lastname" class="col-sm-2 control-label">模板<font color="red">*</font></label>
                         <div class="col-sm-8"><input type="text" class="form-control" name="key" placeholder="请输入“缓存Key”" maxlength="250" readonly ></div>
                     </div>
                     <div class="form-group">
-                        <label for="lastname" class="col-sm-2 control-label">模板参数<font color="black">*</font></label>
+                        <label for="lastname" class="col-sm-2 control-label">参数<font color="black">*</font></label>
                         <div class="col-sm-8"><input type="text" class="form-control" name="params" placeholder="多个参数逗号分隔,依次替换占位符{0}、{1}、{2}的位置" maxlength="100" ></div>
                     </div>
                     <div class="form-group">
