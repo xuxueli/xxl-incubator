@@ -4,6 +4,7 @@ import com.xxl.cache.controller.annotation.PermessionLimit;
 import com.xxl.cache.core.model.XxlCacheKey;
 import com.xxl.cache.core.util.CacheKeyUtil;
 import com.xxl.cache.core.util.ReturnT;
+import com.xxl.cache.core.util.cache.CacheUtil;
 import com.xxl.cache.service.IXxlCacheKeyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -28,7 +28,8 @@ public class CacheController {
 
     @RequestMapping("")
     @PermessionLimit
-    public String toLogin(Model model, HttpServletRequest request) {
+    public String toLogin(Model model) {
+        model.addAttribute("CACHE_ENUM", CacheUtil.CACHE_ENUM);
         return "cache/cache.index";
     }
 

@@ -21,7 +21,7 @@ public class CacheUtil {
                 if (tmp1 == null) {
                     return JedisUtil.getObjectValue(key);
                 }
-                return null;
+                return tmp1;
             default:
                 return null;
         }
