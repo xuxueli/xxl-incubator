@@ -1,35 +1,54 @@
 package com.xxl.util.core.util;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.concurrent.TimeoutException;
-
+import net.rubyeye.xmemcached.GetsResponse;
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.MemcachedClientBuilder;
 import net.rubyeye.xmemcached.XMemcachedClientBuilder;
 import net.rubyeye.xmemcached.exception.MemcachedException;
 import net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator;
 import net.rubyeye.xmemcached.utils.AddrUtil;
+import net.spy.memcached.compat.log.Logger;
+import net.spy.memcached.compat.log.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.TimeoutException;
+
 
 /**
- * Memcached客户端工具类(Base on Xmemcached)
+ * Memcached客户端工具类(Base on xmemcached)
  * @author xuxueli $2015-4-14 20:13:11
+ *
+ * 	<!-- xmemcached -->
+ * 	<dependency>
+ *		<groupId>com.googlecode.xmemcached</groupId>
+ * 		<artifactId>xmemcached</artifactId>
+ * 		<version>2.0.0</version>
+ * 	</dependency>
+ *
+ * 	# for xmemcached (distributed memcached client config, memcached.address="host01:port,host01back:port host02:port,host02back:port",	memcached.weights=5,5)
+ * 	xmemcached.address=192.168.56.101:11211
+ * 	xmemcached.weights=100
+ *
+ * 	NIO,连接池,节点主备配置,客户端分布式配置,权重
  */
 public final class XMemcachedUtil {
+	private static Logger logger = LoggerFactory.getLogger(XMemcachedUtil.class);
 	
 	// MemcachedClient
-	private static final int cacheExpireTime = 7200;
+	private static final int DEFAULT_EXPIRE_TIME = 7200;	// 2H
 	private static MemcachedClient memcachedClient;
 	private static MemcachedClient getInstance() {
 		if (memcachedClient == null) {
 			// 构建分布式权重client
 			synchronized (MemcachedClient.class) {
-				String propertyFileName = "memcached.properties";
-				Properties prop = PropertiesUtil.loadProperties(propertyFileName);
+				Properties prop = PropertiesUtil.loadProperties("cache.properties");
 				// client地址
-				String serverAddress = PropertiesUtil.getString(prop, "server.address").replace(",", " ");
+				String serverAddress = PropertiesUtil.getString(prop, "xmemcached.address");
 				// client权重
-				String[] weightsArr = PropertiesUtil.getString(prop, "server.weights").split(",");
+				String[] weightsArr = PropertiesUtil.getString(prop, "xmemcached.weights").split(",");
 				int[] weights = new int[weightsArr.length];
 				for (int i = 0; i < weightsArr.length; i++) {
 					weights[i] = Integer.parseInt(weightsArr[i]);
@@ -49,13 +68,14 @@ public final class XMemcachedUtil {
 					memcachedClient.setOpTimeout(1500L);		// 全局等待时间
 					//memcachedClient.addStateListener(new MemcachedListener());
 				} catch (IOException e) {
-					e.printStackTrace();
+					logger.error("", e);
 				}
+				logger.info(">>>>>>>>>>> xxl-cache, JedisUtil.ShardedJedisPool init success.");
 			}
 
 		}
 		if (memcachedClient == null) {
-			throw new NullPointerException("Null MemcachedClient,please check memcached has been started");
+			throw new NullPointerException(">>>>>>>>>>> xxl-cache, XMemcachedUtil.memcachedClient is null.");
 		}
 		return memcachedClient;
 	}
@@ -67,13 +87,13 @@ public final class XMemcachedUtil {
 	 */
 	public static void set(String key, Object value) {
 		try {
-			getInstance().set(key, cacheExpireTime, value);
+			getInstance().set(key, DEFAULT_EXPIRE_TIME, value);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 	
@@ -87,12 +107,32 @@ public final class XMemcachedUtil {
 		try {
 			getInstance().set(key, expTime, value);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
+	}
+
+	/**
+	 * Cas	原子性Set
+	 * @param key
+	 * @param value
+	 * @param expTime
+	 * @param cas
+	 */
+	public static boolean cas(String key, Object value, int expTime, long cas) {
+		try {
+			return getInstance().cas(key, expTime, value, cas);
+		} catch (TimeoutException e) {
+			logger.error("", e);
+		} catch (InterruptedException e) {
+			logger.error("", e);
+		} catch (MemcachedException e) {
+			logger.error("", e);
+		}
+		return false;
 	}
 	
 	/**
@@ -105,13 +145,32 @@ public final class XMemcachedUtil {
 			Object value = getInstance().get(key);
 			return value;
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 		
+		return null;
+	}
+
+	/**
+	 * 查询		和Cas匹配使用,可查询缓存Cas版本
+	 * @param key
+	 * @return
+     */
+	public static GetsResponse<Object> gets(String key){
+		try {
+			GetsResponse<Object> response = getInstance().gets(key);
+			return response;
+		} catch (TimeoutException e) {
+			logger.error("", e);
+		} catch (InterruptedException e) {
+			logger.error("", e);
+		} catch (MemcachedException e) {
+			logger.error("", e);
+		}
 		return null;
 	}
 
@@ -119,16 +178,17 @@ public final class XMemcachedUtil {
 	 * 删除
 	 * @param key
 	 */
-	public static void delete(String key) {
+	public static boolean delete(String key) {
 		try {
-			getInstance().delete(key);
+			return getInstance().delete(key);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
+		return false;
 	}
 
 	/**
@@ -139,17 +199,32 @@ public final class XMemcachedUtil {
 		try {			
 			getInstance().incr(key, 1);
 		} catch (TimeoutException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} catch (MemcachedException e) {
-			e.printStackTrace();
+			logger.error("", e);
 		}
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
-		set("asd", 500);
-		System.out.println(get("asd"));
+		String key = "key02";
+
+		List<String> list = new ArrayList<String>();
+		list.add("jack");
+		list.add("rose");
+
+		set(key, list);
+		System.out.println(get(key));
+
+		GetsResponse<Object> val = gets(key);
+		System.out.println(val);
+
+		System.out.println(cas(key, "val2222", DEFAULT_EXPIRE_TIME, 99L));
+		System.out.println(get(key));
+
+		System.out.println(cas(key, "val2222", DEFAULT_EXPIRE_TIME, val.getCas()));
+		System.out.println(get(key));
 	}
-	
+
 }

@@ -503,28 +503,23 @@ public class UtilDemoController {
 	
 	/**
 	 * <pre>
-	21、XMemcachedUtil.java
+	21、XMemcachedUtil.java/SpyMemcachedUtil.java/MemcachedJavaClientUtil.java、JedisUtil.java
 		功能简介：
-			Md5加密工具类
+	 		memcached分布式缓存的客户端工具,三种实现方式; redis分布式缓存客户端jedis工具
 		使用步骤
-			1、maven依赖
-				<dependency>
-					<groupId>com.googlecode.xmemcached</groupId>
-					<artifactId>xmemcached</artifactId>
-					<version>2.0.0</version>
-				</dependency>
-			2、配置memcached.properties中的，地址列表，和权重
-				# distributed memcached client config :address="hostMain1:port,hostBack1:port hostMain2:port,hostBack2:port",	weights={1, 2}
-				server.address=127.0.0.1:11211,127.0.0.1:11211 127.0.0.1:11211,127.0.0.1:11211
-				server.weights=5,5
-			3、引入XMemcachedUtil.java文件
-			4、如何使用：直接调用即可，如 “Md5Util.encrypt("test")”
+			1、maven依赖;
+			2、配置"cache.properties";
+			3、引入工具类文件: XMemcachedUtil.java/SpyMemcachedUtil.java/MemcachedJavaClientUtil.java、JedisUtil.java
+			4、如何使用：直接调用即可;
 	 * </pre>
 	 */
-	@RequestMapping("/XMemcachedUtil")
+	@RequestMapping("/CacheUtil")
 	@ResponseBody
-	public String XMemcachedUtil(){
+	public String CacheUtil(){
 		XMemcachedUtil.set("test", "666");
+		SpyMemcachedUtil.get("test");
+		MemcachedJavaClientUtil.get("test");
+		JedisUtil.getStringValue("test");
 		return (String) XMemcachedUtil.get("test");
 	}
 	

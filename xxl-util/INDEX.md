@@ -66,8 +66,8 @@ Standby skill points
 * 20、KaptchaUtil	(Kaptcha验证码生成)
 > 详细：见：com.xxl.util.controller.UtilDemoController.KaptchaUtil()
 
-* 21、XMemcachedUtil.java	(memcached分布式缓存的客户端工具)
-> 详细：见：com.xxl.util.controller.UtilDemoController.XMemcachedUtil()
+* 21、XMemcachedUtil.java/SpyMemcachedUtil.java/MemcachedJavaClientUtil.java、JedisUtil.java	(memcached分布式缓存的客户端工具,三种实现方式; redis分布式缓存客户端jedis工具)
+> 详细：见：com.xxl.util.controller.UtilDemoController.CacheUtil()
 
 * 22、LoginUtil.java		(分布式，登陆验证器，cookie + memcached实现)
 > 详细：见：com.xxl.util.controller.UtilDemoController.LoginUtil()
