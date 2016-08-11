@@ -1,6 +1,7 @@
 package com.xxl.cache.core.util.cache.memcached;
 
 import com.xxl.cache.core.util.PropertiesUtil;
+import net.rubyeye.xmemcached.GetsResponse;
 import net.rubyeye.xmemcached.MemcachedClient;
 import net.rubyeye.xmemcached.MemcachedClientBuilder;
 import net.rubyeye.xmemcached.XMemcachedClientBuilder;
@@ -19,8 +20,17 @@ import java.util.concurrent.TimeoutException;
 import static com.xxl.cache.core.util.PropertiesUtil.DEFAULT_CONFIG;
 
 /**
- * Memcached客户端工具类(Base on Xmemcached)
+ * Memcached客户端工具类(Base on xmemcached)
  * @author xuxueli $2015-4-14 20:13:11
+ *
+ * 	<!-- xmemcached -->
+ * 	<dependency>
+ *		<groupId>com.googlecode.xmemcached</groupId>
+ * 		<artifactId>xmemcached</artifactId>
+ * 		<version>2.0.0</version>
+ * 	</dependency>
+ *
+ * 	NIO,连接池,节点主备配置,客户端分布式配置,权重
  */
 public final class XMemcachedUtil {
 	private static Logger logger = LogManager.getLogger();
@@ -102,6 +112,26 @@ public final class XMemcachedUtil {
 			logger.error("", e);
 		}
 	}
+
+	/**
+	 * Cas	原子性Set
+	 * @param key
+	 * @param value
+	 * @param expTime
+	 * @param cas
+	 */
+	public static boolean cas(String key, Object value, int expTime, long cas) {
+		try {
+			return getInstance().cas(key, expTime, value, cas);
+		} catch (TimeoutException e) {
+			logger.error("", e);
+		} catch (InterruptedException e) {
+			logger.error("", e);
+		} catch (MemcachedException e) {
+			logger.error("", e);
+		}
+		return false;
+	}
 	
 	/**
 	 * 查询
@@ -120,6 +150,25 @@ public final class XMemcachedUtil {
 			logger.error("", e);
 		}
 		
+		return null;
+	}
+
+	/**
+	 * 查询		和Cas匹配使用,可查询缓存Cas版本
+	 * @param key
+	 * @return
+     */
+	public static GetsResponse<Object> gets(String key){
+		try {
+			GetsResponse<Object> response = getInstance().gets(key);
+			return response;
+		} catch (TimeoutException e) {
+			logger.error("", e);
+		} catch (InterruptedException e) {
+			logger.error("", e);
+		} catch (MemcachedException e) {
+			logger.error("", e);
+		}
 		return null;
 	}
 
@@ -157,11 +206,23 @@ public final class XMemcachedUtil {
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
+		String key = "key02";
+
 		List<String> list = new ArrayList<String>();
 		list.add("jack");
 		list.add("rose");
-		set("key02", list);
-		System.out.println(get("key02"));
+
+		set(key, list);
+		System.out.println(get(key));
+
+		GetsResponse<Object> val = gets(key);
+		System.out.println(val);
+
+		System.out.println(cas(key, "val2222", DEFAULT_EXPIRE_TIME, 99L));
+		System.out.println(get(key));
+
+		System.out.println(cas(key, "val2222", DEFAULT_EXPIRE_TIME, val.getCas()));
+		System.out.println(get(key));
 	}
 
 }
