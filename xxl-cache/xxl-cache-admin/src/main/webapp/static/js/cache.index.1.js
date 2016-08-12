@@ -90,7 +90,7 @@ $(function() {
 							jobTable.fnDraw();
 						});
 					} else {
-						ComAlert.show(2, "删除失败");
+						toastr.error("删除失败");
 					}
 				},
 			});
@@ -149,10 +149,10 @@ $(function() {
     				});
     			} else {
     				if (data.msg) {
-    					ComAlert.show(2, data.msg);
+						toastr.error(data.msg);
     				} else {
-    					ComAlert.show(2, "新增失败");
-    				}
+						toastr.error("新增失败");
+					}
     			}
     		});
 		}
@@ -217,9 +217,9 @@ $(function() {
     				});
     			} else {
     				if (data.msg) {
-    					ComAlert.show(2, data.msg);
+						toastr.error(data.msg);
 					} else {
-						ComAlert.show(2, "更新失败");
+						toastr.error("更新失败");
 					}
     			}
     		});
@@ -245,7 +245,7 @@ $(function() {
 		$("#cacheManageModal .form")[0].reset()
 	});
 
-	// get cache
+	// get final key
 	$("#cacheManageModal").on('click', '.getFinalKey',function() {
 
 		// hide cacheDetail
@@ -260,11 +260,13 @@ $(function() {
 			if (data.code == "200") {
 				var finalKey = data.content;
 				$("#cacheManageModal .form input[name='finalKey']").val(finalKey);
+				//toastr.options = {"progressBar": true, "positionClass": "top-center"};
+				toastr.success("FinalKey已刷新", null, {"progressBar": true, "positionClass": "toast-top-center"});
 			} else {
 				if (data.msg) {
-					ComAlert.show(2, data.msg);
+					toastr.error(data.msg);
 				} else {
-					ComAlert.show(2, "查询失败");
+					toastr.error("查询失败");
 				}
 			}
 		});
@@ -280,7 +282,7 @@ $(function() {
 		// final key
 		var finalKey = $("#cacheManageModal .form input[name='finalKey']").val();
 		if (!finalKey){
-			ComAlert.show(2, '"FinalKey"不可为空');
+			toastr.warning('"FinalKey"不可为空');
 			return;
 		}
 
@@ -297,9 +299,9 @@ $(function() {
 				$("#cacheManageModal .cacheVal").html(temp);
 			} else {
 				if (data.msg) {
-					ComAlert.show(2, data.msg);
+					toastr.error(data.msg);
 				} else {
-					ComAlert.show(2, "查询失败");
+					toastr.error("查询失败");
 				}
 			}
 		});
@@ -315,7 +317,7 @@ $(function() {
 		// final key
 		var finalKey = $("#cacheManageModal .form input[name='finalKey']").val();
 		if (!finalKey){
-			ComAlert.show(2, '"FinalKey"不可为空');
+			toastr.warning('"FinalKey"不可为空');
 			return;
 		}
 
@@ -323,12 +325,13 @@ $(function() {
 
 			$.post(base_url + "/cache/removeCache", {"finalKey":finalKey}, function(data, status) {
 				if (data.code == "200") {
-					ComAlert.show(1, "缓存清除成功");
+					toastr.options.success("缓存清除成功");
 				} else {
 					if (data.msg) {
-						ComAlert.show(2, data.msg);
+						toastr.options = {"progressBar": true, "positionClass": "top-center"}
+						toastr.error(data.msg);
 					} else {
-						ComAlert.show(2, "缓存清除失败,可能缓存数据不存在");
+						toastr.error("缓存清除失败,可能缓存数据不存在");
 					}
 				}
 			});
