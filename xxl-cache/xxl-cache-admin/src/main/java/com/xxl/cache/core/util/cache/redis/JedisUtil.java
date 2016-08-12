@@ -94,290 +94,277 @@ public class JedisUtil {
 		return shardedJedis;
 	}
 
-	/**
-	 * 释放ShardedJedis资源
-	 * @param shardJedis	采用redis池方式调用,必须返还实例，否则链接占用过多，会导致异常：JedisConnectionException: Could not get a resource from the pool
-	 */
-	public static void returnInstance(final ShardedJedis  shardJedis) {
-		if (shardJedis != null) {
-			shardedJedisPool.returnResourceObject(shardJedis);
-		}
-	}
-
-	// ------------------------ serialize and unserialize ------------------------
-	/**
-	 * 将对象-->byte[] (由于jedis中不支持直接存储object所以转换成byte[]存入)
-	 * 
-	 * @param object
-	 * @return
-	 */
-	private static byte[] serialize(Object object) {
-		ObjectOutputStream oos = null;
-		ByteArrayOutputStream baos = null;
-		try {
-			// 序列化
-			baos = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(baos);
-			oos.writeObject(object);
-			byte[] bytes = baos.toByteArray();
-			return bytes;
-		} catch (Exception e) {
-			logger.error("{}", e);
-		} finally {
-			try {
-				oos.close();
-				baos.close();
-			} catch (IOException e) {
-				logger.error("{}", e);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * 将byte[] -->Object
-	 * 
-	 * @param bytes
-	 * @return
-	 */
-	private static Object unserialize(byte[] bytes) {
-		ByteArrayInputStream bais = null;
-		try {
-			// 反序列化
-			bais = new ByteArrayInputStream(bytes);
-			ObjectInputStream ois = new ObjectInputStream(bais);
-			return ois.readObject();
-		} catch (Exception e) {
-			logger.error("{}", e);
-		} finally {
-			try {
-				bais.close();
-			} catch (IOException e) {
-				logger.error("{}", e);
-			}
-		}
-		return null;
-	}
-
-	// ------------------------ jedis util ------------------------
-	/**
-	 * 存储简单的字符串或者是Object 因为jedis没有分装直接存储Object的方法，所以在存储对象需斟酌下
-	 * 存储对象的字段是不是非常多而且是不是每个字段都用到，如果是的话那建议直接存储对象，
-	 * 否则建议用集合的方式存储，因为redis可以针对集合进行日常的操作很方便而且还可以节省空间
-	 */
-
-	/**
-	 * Set String
-	 * @param key
-	 * @param value
-	 * @param seconds	存活时间,单位/秒
+    // ------------------------ serialize and unserialize ------------------------
+    /**
+     * 将对象-->byte[] (由于jedis中不支持直接存储object所以转换成byte[]存入)
+     *
+     * @param object
      * @return
      */
-	public static String setStringValue(String key, String value, int seconds) {
-		String result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.setex(key, seconds, value);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    private static byte[] serialize(Object object) {
+        ObjectOutputStream oos = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            // 序列化
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            byte[] bytes = baos.toByteArray();
+            return bytes;
+        } catch (Exception e) {
+            logger.error("{}", e);
+        } finally {
+            try {
+                oos.close();
+                baos.close();
+            } catch (IOException e) {
+                logger.error("{}", e);
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Set String (默认存活时间, 2H)
-	 * @param key
-	 * @param value
+    /**
+     * 将byte[] -->Object
+     *
+     * @param bytes
      * @return
      */
-	public static String setStringValue(String key, String value) {
-		return setStringValue(key, value, DEFAULT_EXPIRE_TIME);
-	}
+    private static Object unserialize(byte[] bytes) {
+        ByteArrayInputStream bais = null;
+        try {
+            // 反序列化
+            bais = new ByteArrayInputStream(bytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            return ois.readObject();
+        } catch (Exception e) {
+            logger.error("{}", e);
+        } finally {
+            try {
+                bais.close();
+            } catch (IOException e) {
+                logger.error("{}", e);
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * Set Object
-	 * 
-	 * @param key
-	 * @param obj
-	 * @param seconds	存活时间,单位/秒
-	 */
-	public static String setObjectValue(String key, Object obj, int seconds) {
-		String result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.setex(key.getBytes(), seconds, serialize(obj));
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    // ------------------------ jedis util ------------------------
+    /**
+     * 存储简单的字符串或者是Object 因为jedis没有分装直接存储Object的方法，所以在存储对象需斟酌下
+     * 存储对象的字段是不是非常多而且是不是每个字段都用到，如果是的话那建议直接存储对象，
+     * 否则建议用集合的方式存储，因为redis可以针对集合进行日常的操作很方便而且还可以节省空间
+     */
 
-	/**
-	 * Set Object (默认存活时间, 2H)
-	 * @param key
-	 * @param obj
+    /**
+     * Set String
+     * @param key
+     * @param value
+     * @param seconds	存活时间,单位/秒
      * @return
      */
-	public static String setObjectValue(String key, Object obj) {
-		return setObjectValue(key, obj, DEFAULT_EXPIRE_TIME);
-	}
+    public static String setStringValue(String key, String value, int seconds) {
+        String result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.setex(key, seconds, value);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-	/**
-	 * Get String
-	 * @param key
-	 * @return
-	 */
-	public static String getStringValue(String key) {
-		String value = null;
-		ShardedJedis client = getInstance();
-		try {
-			value = client.get(key);
-		} catch (Exception e) {
-			logger.info("", e);
-		} finally {
-			returnInstance(client);
-		}
-		return value;
-	}
-
-	/**
-	 * Get Object
-	 * @param key
-	 * @return
+    /**
+     * Set String (默认存活时间, 2H)
+     * @param key
+     * @param value
+     * @return
      */
-	public static Object getObjectValue(String key) {
-		Object obj = null;
-		ShardedJedis client = getInstance();
-		try {
-			byte[] bytes = client.get(key.getBytes());
-			if (bytes != null && bytes.length > 0) {
-				obj = unserialize(bytes);
-			}
-		} catch (Exception e) {
-			logger.info("", e);
-		} finally {
-			returnInstance(client);
-		}
-		return obj;
-	}
+    public static String setStringValue(String key, String value) {
+        return setStringValue(key, value, DEFAULT_EXPIRE_TIME);
+    }
 
-	/**
-	 * Delete
-	 * @param key
-	 * @return Integer reply, specifically:
-	 * 		an integer greater than 0 if one or more keys were removed
-	 *      0 if none of the specified key existed
-	 */
-	public static Long del(String key) {
-		Long result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.del(key);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    /**
+     * Set Object
+     *
+     * @param key
+     * @param obj
+     * @param seconds	存活时间,单位/秒
+     */
+    public static String setObjectValue(String key, Object obj, int seconds) {
+        String result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.setex(key.getBytes(), seconds, serialize(obj));
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-	/**
-	 * incrBy	value值加i
-	 * @param key
-	 * @param i
-	 * @return new value after incr
-	 */
-	public static Long incrBy(String key, int i) {
-		Long result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.incrBy(key, i);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    /**
+     * Set Object (默认存活时间, 2H)
+     * @param key
+     * @param obj
+     * @return
+     */
+    public static String setObjectValue(String key, Object obj) {
+        return setObjectValue(key, obj, DEFAULT_EXPIRE_TIME);
+    }
 
-	/**
-	 * exists
-	 * @param key
-	 * @return Boolean reply, true if the key exists, otherwise false
-	 */
-	public static boolean exists(String key) {
-		Boolean result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.exists(key);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    /**
+     * Get String
+     * @param key
+     * @return
+     */
+    public static String getStringValue(String key) {
+        String value = null;
+        ShardedJedis client = getInstance();
+        try {
+            value = client.get(key);
+        } catch (Exception e) {
+            logger.info("", e);
+        } finally {
+            client.close();
+        }
+        return value;
+    }
 
-	/**
-	 * expire	重置存活时间
-	 * @param key
-	 * @param seconds	存活时间,单位/秒
-	 * @return Integer reply, specifically:
-	 * 		1: the timeout was set.
-	 * 		0: the timeout was not set since the key already has an associated timeout (versions lt 2.1.3), or the key does not exist.
-	 */
-	public static long expire(String key, int seconds) {
-		Long result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.expire(key, seconds);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    /**
+     * Get Object
+     * @param key
+     * @return
+     */
+    public static Object getObjectValue(String key) {
+        Object obj = null;
+        ShardedJedis client = getInstance();
+        try {
+            byte[] bytes = client.get(key.getBytes());
+            if (bytes != null && bytes.length > 0) {
+                obj = unserialize(bytes);
+            }
+        } catch (Exception e) {
+            logger.info("", e);
+        } finally {
+            client.close();
+        }
+        return obj;
+    }
 
-	/**
-	 * expireAt		设置存活截止时间
-	 * @param key
-	 * @param unixTime		存活截止时间戳
-	 * @return
-	 */
-	public static long expireAt(String key, long unixTime) {
-		Long result = null;
-		ShardedJedis client = getInstance();
-		try {
-			result = client.expireAt(key, unixTime);
-		} catch (Exception e) {
-			logger.info("{}", e);
-		} finally {
-			returnInstance(client);
-		}
-		return result;
-	}
+    /**
+     * Delete
+     * @param key
+     * @return Integer reply, specifically:
+     * 		an integer greater than 0 if one or more keys were removed
+     *      0 if none of the specified key existed
+     */
+    public static Long del(String key) {
+        Long result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.del(key);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-	public static void main(String[] args) {
-		/*long start = System.currentTimeMillis();
-		for (int i = 0; i < 100000; i++) {
-			setObjectValue("key" + i, "value" + i);
-		}
-		System.out.println(getObjectValue("key" + 5555));
-		long end = System.currentTimeMillis();
-		System.out.println("cost:" + (end - start));*/
+    /**
+     * incrBy	value值加i
+     * @param key
+     * @param i
+     * @return new value after incr
+     */
+    public static Long incrBy(String key, int i) {
+        Long result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.incrBy(key, i);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-		// JedisSimpleFactry-100000:11996/11938/11848
-		// JedisSimpleFactry-100000:35061
-		// ShardedJedisPoolFactry-100000:8G:84449		4G:235939
+    /**
+     * exists
+     * @param key
+     * @return Boolean reply, true if the key exists, otherwise false
+     */
+    public static boolean exists(String key) {
+        Boolean result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.exists(key);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-		setStringValue("key02", "999");
-		System.out.println(getStringValue("key02"));
+    /**
+     * expire	重置存活时间
+     * @param key
+     * @param seconds	存活时间,单位/秒
+     * @return Integer reply, specifically:
+     * 		1: the timeout was set.
+     * 		0: the timeout was not set since the key already has an associated timeout (versions lt 2.1.3), or the key does not exist.
+     */
+    public static long expire(String key, int seconds) {
+        Long result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.expire(key, seconds);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
 
-	}
+    /**
+     * expireAt		设置存活截止时间
+     * @param key
+     * @param unixTime		存活截止时间戳
+     * @return
+     */
+    public static long expireAt(String key, long unixTime) {
+        Long result = null;
+        ShardedJedis client = getInstance();
+        try {
+            result = client.expireAt(key, unixTime);
+        } catch (Exception e) {
+            logger.info("{}", e);
+        } finally {
+            client.close();
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 100000; i++) {
+            setObjectValue("key" + i, "value" + i);
+        }
+        System.out.println(getObjectValue("key" + 5555));
+        long end = System.currentTimeMillis();
+        System.out.println("cost:" + (end - start));
+
+        // JedisSimpleFactry-100000:11996/11938/11848
+        // JedisSimpleFactry-100000:35061
+        // ShardedJedisPoolFactry-100000:8G:84449		4G:235939
+
+    }
 
 }

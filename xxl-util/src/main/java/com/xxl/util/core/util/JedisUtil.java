@@ -102,20 +102,10 @@ public class JedisUtil {
 		return shardedJedis;
 	}
 
-	/**
-	 * 释放ShardedJedis资源
-	 * @param shardJedis	采用redis池方式调用,必须返还实例，否则链接占用过多，会导致异常：JedisConnectionException: Could not get a resource from the pool
-	 */
-	public static void returnInstance(final ShardedJedis  shardJedis) {
-		if (shardJedis != null) {
-			shardedJedisPool.returnResourceObject(shardJedis);
-		}
-	}
-
 	// ------------------------ serialize and unserialize ------------------------
 	/**
 	 * 将对象-->byte[] (由于jedis中不支持直接存储object所以转换成byte[]存入)
-	 * 
+	 *
 	 * @param object
 	 * @return
 	 */
@@ -144,7 +134,7 @@ public class JedisUtil {
 
 	/**
 	 * 将byte[] -->Object
-	 * 
+	 *
 	 * @param bytes
 	 * @return
 	 */
@@ -179,8 +169,8 @@ public class JedisUtil {
 	 * @param key
 	 * @param value
 	 * @param seconds	存活时间,单位/秒
-     * @return
-     */
+	 * @return
+	 */
 	public static String setStringValue(String key, String value, int seconds) {
 		String result = null;
 		ShardedJedis client = getInstance();
@@ -189,7 +179,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -198,15 +188,15 @@ public class JedisUtil {
 	 * Set String (默认存活时间, 2H)
 	 * @param key
 	 * @param value
-     * @return
-     */
+	 * @return
+	 */
 	public static String setStringValue(String key, String value) {
 		return setStringValue(key, value, DEFAULT_EXPIRE_TIME);
 	}
 
 	/**
 	 * Set Object
-	 * 
+	 *
 	 * @param key
 	 * @param obj
 	 * @param seconds	存活时间,单位/秒
@@ -219,7 +209,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -228,8 +218,8 @@ public class JedisUtil {
 	 * Set Object (默认存活时间, 2H)
 	 * @param key
 	 * @param obj
-     * @return
-     */
+	 * @return
+	 */
 	public static String setObjectValue(String key, Object obj) {
 		return setObjectValue(key, obj, DEFAULT_EXPIRE_TIME);
 	}
@@ -247,7 +237,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return value;
 	}
@@ -256,7 +246,7 @@ public class JedisUtil {
 	 * Get Object
 	 * @param key
 	 * @return
-     */
+	 */
 	public static Object getObjectValue(String key) {
 		Object obj = null;
 		ShardedJedis client = getInstance();
@@ -268,7 +258,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return obj;
 	}
@@ -288,7 +278,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -307,7 +297,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -325,7 +315,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -346,7 +336,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
@@ -365,7 +355,7 @@ public class JedisUtil {
 		} catch (Exception e) {
 			logger.info("{}", e);
 		} finally {
-			returnInstance(client);
+			client.close();
 		}
 		return result;
 	}
