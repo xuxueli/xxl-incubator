@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Memcached客户端工具类(Base on spymemcached)
@@ -35,17 +36,22 @@ public class SpyMemcachedUtil {
     private static long UPDATE_TIMEOUT_MS = 2500;
 
     private static MemcachedClient memcachedClient;
+    private static ReentrantLock INSTANCE_INIT_LOCL = new ReentrantLock(false);
     private static MemcachedClient getInstance(){
         if (memcachedClient == null){
-            synchronized (SpyMemcachedUtil.class) {
-                try {
-                    Properties prop = PropertiesUtil.loadProperties("cache.properties");
-                    String servers = PropertiesUtil.getString(prop, "spymemcached.address");
+            try {
+                if (INSTANCE_INIT_LOCL.tryLock(2, TimeUnit.SECONDS)){
+                    try {
+                        Properties prop = PropertiesUtil.loadProperties("cache.properties");
+                        String servers = PropertiesUtil.getString(prop, "spymemcached.address");
 
-                    memcachedClient = new MemcachedClient(new BinaryConnectionFactory(), AddrUtil.getAddresses(servers));
-                } catch (IOException e) {
-                    logger.error("", e);
+                        memcachedClient = new MemcachedClient(new BinaryConnectionFactory(), AddrUtil.getAddresses(servers));
+                    } catch (IOException e) {
+                        logger.error("", e);
+                    }
                 }
+            } catch (InterruptedException e) {
+                logger.error("", e);
             }
         }
         return memcachedClient;

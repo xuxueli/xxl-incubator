@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.xxl.cache.core.util.PropertiesUtil.DEFAULT_CONFIG;
 
@@ -38,39 +40,42 @@ public final class XMemcachedUtil {
 	// MemcachedClient
 	private static final int DEFAULT_EXPIRE_TIME = 7200;	// 2H
 	private static MemcachedClient memcachedClient;
+	private static ReentrantLock INSTANCE_INIT_LOCK = new ReentrantLock(true);
 	private static MemcachedClient getInstance() {
-		if (memcachedClient == null) {
-			// 构建分布式权重client
-			synchronized (MemcachedClient.class) {
-				Properties prop = PropertiesUtil.loadProperties(DEFAULT_CONFIG);
-				// client地址
-				String serverAddress = PropertiesUtil.getString(prop, "xmemcached.address");
-				// client权重
-				String[] weightsArr = PropertiesUtil.getString(prop, "xmemcached.weights").split(",");
-				int[] weights = new int[weightsArr.length];
-				for (int i = 0; i < weightsArr.length; i++) {
-					weights[i] = Integer.parseInt(weightsArr[i]);
-				}
+		try {
+			if (INSTANCE_INIT_LOCK.tryLock(2, TimeUnit.SECONDS)) {
+                // 构建分布式权重client
+                Properties prop = PropertiesUtil.loadProperties(DEFAULT_CONFIG);
+                // client地址
+                String serverAddress = PropertiesUtil.getString(prop, "xmemcached.address");
+                // client权重
+                String[] weightsArr = PropertiesUtil.getString(prop, "xmemcached.weights").split(",");
+                int[] weights = new int[weightsArr.length];
+                for (int i = 0; i < weightsArr.length; i++) {
+                    weights[i] = Integer.parseInt(weightsArr[i]);
+                }
 
-				// 连接池：高负载下nio单连接有瓶颈,设置连接池可分担memcached请求负载,从而提高系统吞吐量
-				MemcachedClientBuilder builder = new XMemcachedClientBuilder(AddrUtil.getAddressMap(serverAddress), weights);
-				builder.setConnectionPoolSize(5);	// 设置连接池大小，即客户端个数 NIO
-				builder.setFailureMode(true);		// 宕机报警 
-				builder.setSessionLocator(new KetamaMemcachedSessionLocator());	//  分布策略:一致性哈希
+                // 连接池：高负载下nio单连接有瓶颈,设置连接池可分担memcached请求负载,从而提高系统吞吐量
+                MemcachedClientBuilder builder = new XMemcachedClientBuilder(AddrUtil.getAddressMap(serverAddress), weights);
+                builder.setConnectionPoolSize(5);	// 设置连接池大小，即客户端个数 NIO
+                builder.setFailureMode(true);		// 宕机报警
+                builder.setSessionLocator(new KetamaMemcachedSessionLocator());	//  分布策略:一致性哈希
 
-				// 客户端
-				try {
-					memcachedClient = builder.build();
-					memcachedClient.setPrimitiveAsString(true);	// 
-					memcachedClient.setConnectTimeout(3000L);	// 连接超时
-					memcachedClient.setOpTimeout(1500L);		// 全局等待时间
-					//memcachedClient.addStateListener(new MemcachedListener());
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-				logger.info(">>>>>>>>>>> xxl-cache, JedisUtil.ShardedJedisPool init success.");
-			}
+                // 客户端
+                try {
+                    memcachedClient = builder.build();
+                    memcachedClient.setPrimitiveAsString(true);	//
+                    memcachedClient.setConnectTimeout(3000L);	// 连接超时
+                    memcachedClient.setOpTimeout(1500L);		// 全局等待时间
+                    //memcachedClient.addStateListener(new MemcachedListener());
+                } catch (IOException e) {
+                    logger.error("", e);
+                }
+                logger.info(">>>>>>>>>>> xxl-cache, JedisUtil.ShardedJedisPool init success.");
 
+            }
+		} catch (InterruptedException e) {
+			logger.error("", e);
 		}
 		if (memcachedClient == null) {
 			throw new NullPointerException(">>>>>>>>>>> xxl-cache, XMemcachedUtil.memcachedClient is null.");
