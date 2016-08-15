@@ -3,6 +3,7 @@ package com.xxl.util.core.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +30,35 @@ public class PropertiesUtil {
 			URL url = loder.getResource(propertyFileName); // 方式1：配置更新不需要重启JVM
 			in = new FileInputStream(url.getPath());
 			// in = loder.getResourceAsStream(propertyFileName); // 方式2：配置更新需重启JVM
+			if (in != null) {
+				prop.load(in);
+			}
+		} catch (IOException e) {
+			logger.error("load {} error!", propertyFileName);
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					logger.error("close {} error!", propertyFileName);
+				}
+			}
+		}
+		return prop;
+	}
+
+	/**
+	 * load prop file, from disk path
+	 * @param propertyFileName
+	 * @return
+     */
+	public static Properties loadFileProperties(String propertyFileName) {
+		Properties prop = new Properties();
+		InputStream in = null;
+		try {
+			ClassLoader loder = Thread.currentThread().getContextClassLoader();
+			URL url = url = new File(propertyFileName).toURI().toURL();
+			in = new FileInputStream(url.getPath());
 			if (in != null) {
 				prop.load(in);
 			}
