@@ -1,24 +1,23 @@
 package com.xxl.util.core.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.util.Map;
-
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateHashModel;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
+import java.io.*;
+import java.util.Map;
 
 /**
  * HTML模板.Util
+ *
+ * 	功能简介：
+ * 		1、根据Ftl生成Html字符串；
+ * 		2、根据Ftl生成Html文件（网站静态化）；
+ * 		3、Ftl支持使用静态类方法；
+ *
  * @author xuxueli
  */
 public class HtmlTemplateUtil  {
@@ -52,9 +51,8 @@ public class HtmlTemplateUtil  {
 	/**
 	 * 生成HTML字符串
 	 * 
-	 * @param freeMarkerConfig	: FreeMarker配置
 	 * @param content			: 页面传参
-	 * @param templatePathName	: 模板名称路径,相对于模板目录
+	 * @param templateName		: 模板名称路径,相对于模板目录
 	 */
 	public static String generateString(Map<?, ?> content, String templateName) {
 		String htmlText = "";
@@ -68,15 +66,9 @@ public class HtmlTemplateUtil  {
 		return htmlText;
 	}
 
-	public static void main(String[] args) {
-		String temp = generateString(null, "hello.ftl");
-		System.out.println(temp);
-	}
-	
 	/**
 	 * 生成HTML文件
 	 * 
-	 * @param freeMarkerConfig	: FreeMarker配置
 	 * @param content			: 页面传参
 	 * @param templatePathName	: 模板名称路径,相对于模板目录
 	 * @param filePathName		: 文件名称路径,相对于项目跟目录
@@ -113,6 +105,20 @@ public class HtmlTemplateUtil  {
 				}
 			}
 		}
+	}
+
+	public static void main(String[] args) {
+		String temp = generateString(null, "hello.ftl");
+		System.out.println(temp);
+
+		/*// generate String
+		Map<String, Object> params= new HashMap<String, Object>();
+		params.put("WebPathUtil", HtmlTemplateUtil.generateStaticModel(WebPathUtil.class.getName()));
+
+		String result = HtmlTemplateUtil.generateString(params, "freemarker-test.ftl");
+
+		// generate Html File
+		HtmlTemplateUtil.generateFile(params, "freemarker-test.ftl", "freemarker-test.html");*/
 	}
 	
 }
