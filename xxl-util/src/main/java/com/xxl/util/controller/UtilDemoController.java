@@ -1,5 +1,7 @@
 package com.xxl.util.controller;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.xxl.util.core.util.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.codehaus.jackson.map.util.JSONPObject;
@@ -663,6 +665,28 @@ public class UtilDemoController {
 		paramJsonObj.put("msg", "终于成功了");
 		// 封装JSONP
 		return new JSONPObject(callback, paramJsonObj);
+	}
+
+	/**
+	 * <pre>
+	 25、MongoDBUtil.java
+	 	功能简介：MongoDB工具类
+
+	 	步骤1: 引入maven依赖, 见 "MongoDBUtil.java" 注释;
+	 	步骤2: 引入 "MongoDBUtil.java", 使用启动方法即可;
+
+	 </pre>
+	 */
+	@RequestMapping(value = "/mongodb" )
+	@ResponseBody
+	public Object mongodb() {
+		// 查询该记录
+		DBObject query = new BasicDBObject();
+		query.put("name", "jack");
+		DBObject fields = new BasicDBObject();
+		DBObject result = MongoDBUtil.findOne(MongoDBUtil.defauleDbName, "test", query, fields);
+
+		return result;
 	}
 
 	

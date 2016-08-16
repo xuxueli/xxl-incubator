@@ -84,6 +84,9 @@ Standby skill points
 - 26、Jsonp接口开发  (方式1：Jackson之JSONPObject方式; 方式2：SpringMVC4之MappingJacksonValue方式)
 > 详细：见：com.xxl.util.controller.UtilDemoController.jsonp()
 
+- 27、MongoDBUtil.java  (MongoDB工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.mongodb()
+
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()

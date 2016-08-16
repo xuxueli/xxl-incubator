@@ -26,7 +26,15 @@ import com.mongodb.WriteConcern;
  * 设计为单例模式， 因 MongoDB的Java驱动是线程安全的，对于一般的应用，只要一个Mongo实例即可
  * Mongo有个内置的连接池（默认为10个） 对于有大量写和读的环境中，为了确保在一个Session中使用同一个DB时，
  * DB和DBCollection是绝对线程安全的
- * 
+ *
+ *
+ *	 <!-- mongodb -->
+	 <dependency>
+		 <groupId>org.mongodb</groupId>
+		 <artifactId>mongo-java-driver</artifactId>
+		 <version>2.13.2</version>
+	 </dependency>
+ *
  * @author xuxueli 2015-7-16 20:00:18
  */
 public class MongoDBUtil {
@@ -230,7 +238,7 @@ public class MongoDBUtil {
  
     /**
      * 条件查询, 单条
-     * @param collection
+     * @param dbName
      * @param query
      * @param fields
      * @return
