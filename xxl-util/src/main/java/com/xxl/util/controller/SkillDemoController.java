@@ -4,6 +4,7 @@ import com.xxl.util.core.skill.crawler.htmlparser.downpage.DownPageUtil;
 import com.xxl.util.core.skill.crawler.jsoup.explainpage.HtmlExplainUtil;
 import com.xxl.util.core.skill.flowcontrol.ReturnT;
 import com.xxl.util.core.skill.flowcontrol.WebException;
+import com.xxl.util.core.skill.serializer.Serializer;
 import com.xxl.util.core.skill.threadpool.ThreadPoolLinkedHelper;
 import com.xxl.util.core.skill.threadpool.ThreadPoolQueueHelper;
 import com.xxl.util.core.skill.xml.model.User;
@@ -245,6 +246,39 @@ public class SkillDemoController {
 			DownPageUtil.run("http://www.pook.com/");
 		}
 		return new ReturnT<String>("");
+	}
+
+	/**
+	 * <pre>
+	 6、JacksonSerializer.java/ProtostuffSerializer.java/HessianSerializer.java
+	 功能简介:  序列化工具(Object-字节数组): Jackson、Protostuff、Hessian等
+
+	 使用步骤：
+	 1、maven依赖 (官网：http://jsoup.org/download )
+	 <dependency>
+	         		<groupId>org.jsoup</groupId>
+	         		<artifactId>jsoup</artifactId>
+	         		<version>1.7.3</version>
+	 </dependency>
+	 2、引入 JsoupUtil.java, 使用其中静态方法调用即可;
+	 方式B："HtmlParserUtil.java"方式
+	 特点：HTML Parser 是一个对HTML进行分析的快速实时的解析器。由于HtmlParser自2006年以后就再没更新，目前很多人推荐使用jsoup代替它。
+	 (DownPageUtil(线程池并发操作) + HtmlParser(解析统计link) + PageDownLoader(根据URL下载整个页面,保存本地文件))
+	 使用步骤：
+	 1、引入依赖: 见"Serializer.java" 的注释
+	 2、引入 "JacksonSerializer.java/ProtostuffSerializer.java/HessianSerializer.java", 使用其中静态方法调用即可;
+	 </pre>
+	 * @return
+	 */
+	@RequestMapping(value="/serializer")
+	@ResponseBody
+	public ReturnT<String> serializer(int type) {
+		Serializer serializer = Serializer.getInstance(null);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("aaa", "111");
+		map.put("bbb", "222");
+		Object temp = serializer.deserialize(serializer.serialize("ddddddd"), String.class);
+		return new ReturnT<String>(String.valueOf(temp));
 	}
 	
 }

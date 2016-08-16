@@ -99,3 +99,6 @@ Standby skill points
 
 - 5、JsoupUtil.java/HtmlParserUtil.java    (页面爬虫工具)
 > 详细：见：com.xxl.util.controller.SkillDemoController.crawler()
+
+- 6、JacksonSerializer.java/ProtostuffSerializer.java/HessianSerializer.java    (序列化工具(Object-字节数组): Jackson、Protostuff、Hessian等)
+> 详细：见：com.xxl.util.controller.SkillDemoController.serializer()
