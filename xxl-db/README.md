@@ -12,6 +12,10 @@
 
 git地址：https://github.com/xuxueli/xxl-incubator
 
+
+zebra : https://github.com/ainilife/zebra-dao
+
+
 #### 1、问题：
 - 1、单个表数据量太大
 - 2、单个库数据量太大
