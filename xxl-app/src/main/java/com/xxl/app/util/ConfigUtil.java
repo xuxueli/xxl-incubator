@@ -10,7 +10,7 @@ import java.util.LinkedHashSet;
  * Created by xuxueli on 16/8/18.
  */
 public class ConfigUtil {
-    private static final String FILE_NAME = "xxl-cip.conf";
+    private static final String FILE_NAME = "xxl-app.conf";
 
     private enum ModelEnum{
         KeyWord, SiteTemplate;
@@ -75,13 +75,13 @@ public class ConfigUtil {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage(), null,JOptionPane.PLAIN_MESSAGE);
         } finally {
             if (ins != null) {
                 try {
                     ins.close();
                 } catch (IOException e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage(), null,JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
                 }
             }
@@ -89,7 +89,7 @@ public class ConfigUtil {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, e.getMessage(), null,JOptionPane.ERROR_MESSAGE);
                 }
             }
         }

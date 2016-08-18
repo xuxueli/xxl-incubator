@@ -98,7 +98,6 @@ public class WebSitePanel extends Panel implements ActionListener {
                 String url = siteTemplate.replaceAll("\\{0\\}", URLEncoder.encode(appName, "utf-8"));
                 BrowseUtil.browse(url);
             } catch (Exception e1) {
-                e1.printStackTrace();
                 JOptionPane.showMessageDialog(instance, "调用浏览器失败:"+e1.getMessage(), null,JOptionPane.ERROR_MESSAGE);
             }
         } else if (e.getSource() == exitBtn) {
