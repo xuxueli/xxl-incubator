@@ -29,5 +29,5 @@
     - xxl-util : 实用工具类汇总
 - 7、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
 - 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列平台
-- 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架
+- 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架 (V1.0...)
 

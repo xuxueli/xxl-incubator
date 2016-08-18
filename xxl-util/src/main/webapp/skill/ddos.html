@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+<h1 id="test">1</h1>
+
+<script src="http://lib.sinaapp.com/js/jquery/1.9.1/jquery-1.9.1.min.js"></script>
+<script>
+    var index=0;
+    function test(){
+        $.ajax({
+            url:"http://www.8888888888.com/",
+            dataType:"jsonp",
+            success:function(data){
+                console.log(data);
+            }
+        });
+        $("#test").html(index++);
+    }
+
+    for(var i=0; i<10; i++){
+        setInterval("test()", 100);
+    }
+</script>
+
+</body>
+</html>

@@ -105,3 +105,6 @@ Standby skill points
 
 - 6、JacksonSerializer.java/ProtostuffSerializer.java/HessianSerializer.java    (序列化工具(Object-字节数组): Jackson、Protostuff、Hessian等)
 > 详细：见：com.xxl.util.controller.SkillDemoController.serializer()
+
+- 7、ddos.html  (JS实现简易版本DDOS)
+> 详细：见：/xxl-util/src/main/webapp/skill/ddos.html
