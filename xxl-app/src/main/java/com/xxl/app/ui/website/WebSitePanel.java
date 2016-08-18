@@ -1,7 +1,8 @@
-package com.xxl.cip.ui.website;
+package com.xxl.app.ui.website;
 
-import com.xxl.cip.util.BrowseUtil;
-import com.xxl.cip.util.ConfigUtil;
+
+import com.xxl.app.util.BrowseUtil;
+import com.xxl.app.util.ConfigUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,15 +26,15 @@ public class WebSitePanel extends Panel implements ActionListener {
             instance.setBackground(Color.GRAY);
 
             // 初始化元素
-            appNameSelect = new JComboBox();
-            appNameSelect.setEditable(true);
-            for (String appName : ConfigUtil.AppNames) {
-                appNameSelect.addItem(appName);
+            keyWordSelect = new JComboBox();
+            keyWordSelect.setEditable(true);
+            for (String appName : ConfigUtil.KeyWords) {
+                keyWordSelect.addItem(appName);
             }
 
-            siteSelect = new JComboBox();
+            siteTemplateSelect = new JComboBox();
             for (Map.Entry<String, String> site : ConfigUtil.SiteTemplates.entrySet()) {
-                siteSelect.addItem(site.getKey());
+                siteTemplateSelect.addItem(site.getKey());
             }
 
             goBtn = new JButton("GO");
@@ -50,19 +51,30 @@ public class WebSitePanel extends Panel implements ActionListener {
 
             exitBtn = new JButton("退出");
             exitBtn.addActionListener(instance);
+            exitBtn.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    // super.keyPressed(e);
+                    if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                        exitBtn.doClick();
+                    }
+                }
+            });
 
             // 布局
             instance.setLayout(new FlowLayout());
-            instance.add(appNameSelect);
-            instance.add(siteSelect);
+            instance.add(new JLabel("关键字"));
+            instance.add(keyWordSelect);
+            instance.add(new JLabel("URL模板"));
+            instance.add(siteTemplateSelect);
             instance.add(goBtn);
             instance.add(exitBtn);
         }
         return instance;
     }
 
-    private static JComboBox appNameSelect;
-    private static JComboBox siteSelect;
+    private static JComboBox keyWordSelect;
+    private static JComboBox siteTemplateSelect;
     private static JButton goBtn;
     private static JButton exitBtn;
 
@@ -72,18 +84,18 @@ public class WebSitePanel extends Panel implements ActionListener {
             Toolkit.getDefaultToolkit().beep();
 
             // appname
-            String appName = appNameSelect.getSelectedItem().toString();
+            String appName = keyWordSelect.getSelectedItem().toString();
             if (appName==null || appName.trim().length()==0) {
-                JOptionPane.showMessageDialog(instance, "请输入AppName", null,JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(instance, "请选择或数据关键字", null,JOptionPane.PLAIN_MESSAGE);
                 return;
             }
 
             // site template
-            String siteKey = siteSelect.getSelectedItem().toString();
+            String siteKey = siteTemplateSelect.getSelectedItem().toString();
             String siteTemplate = ConfigUtil.SiteTemplates.get(siteKey);
 
             try {
-                String url = siteTemplate.replaceAll("\\{appName\\}", URLEncoder.encode(appName, "utf-8"));
+                String url = siteTemplate.replaceAll("\\{0\\}", URLEncoder.encode(appName, "utf-8"));
                 BrowseUtil.browse(url);
             } catch (Exception e1) {
                 e1.printStackTrace();

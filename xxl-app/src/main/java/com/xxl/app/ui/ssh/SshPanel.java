@@ -1,4 +1,4 @@
-package com.xxl.cip.ui.ssh;
+package com.xxl.app.ui.ssh;
 
 import java.awt.*;
 

@@ -1,7 +1,8 @@
-package com.xxl.cip.ui;
+package com.xxl.app.ui;
 
-import com.xxl.cip.ui.ssh.SshPanel;
-import com.xxl.cip.ui.website.WebSitePanel;
+
+import com.xxl.app.ui.ssh.SshPanel;
+import com.xxl.app.ui.website.WebSitePanel;
 
 import javax.swing.*;
 

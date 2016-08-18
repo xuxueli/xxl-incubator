@@ -1,4 +1,4 @@
-package com.xxl.cip.util;
+package com.xxl.app.util;
 
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;

@@ -1,4 +1,4 @@
-package com.xxl.cip.util;
+package com.xxl.app.util;
 
 import javax.swing.*;
 import java.io.*;
@@ -13,12 +13,12 @@ public class ConfigUtil {
     private static final String FILE_NAME = "xxl-cip.conf";
 
     private enum ModelEnum{
-        AppName, SiteTemplate;
+        KeyWord, SiteTemplate;
         public String model(){
             return MessageFormat.format("[{0}]", this.name());
         }
     }
-    public static LinkedHashSet<String> AppNames = new LinkedHashSet<String>();
+    public static LinkedHashSet<String> KeyWords = new LinkedHashSet<String>();
     public static LinkedHashMap<String, String> SiteTemplates = new LinkedHashMap<String, String>();
 
     static{
@@ -46,8 +46,8 @@ public class ConfigUtil {
                 String content = null;
                 while ((content = reader.readLine()) != null) {
                     if (content != null && content.trim().length() > 0 && content.indexOf("#") == -1) {
-                        if (ModelEnum.AppName.model().equals(content.trim())) {
-                            model = ModelEnum.AppName;
+                        if (ModelEnum.KeyWord.model().equals(content.trim())) {
+                            model = ModelEnum.KeyWord;
                             continue;
                         } else if (ModelEnum.SiteTemplate.model().equals(content.trim())) {
                             model = ModelEnum.SiteTemplate;
@@ -56,8 +56,8 @@ public class ConfigUtil {
 
                         if (model!=null) {
                             switch (model){
-                                case AppName:{
-                                    AppNames.add(content.trim());
+                                case KeyWord:{
+                                    KeyWords.add(content.trim());
                                     break;
                                 }
                                 case SiteTemplate:{
@@ -96,7 +96,7 @@ public class ConfigUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(AppNames);
+        System.out.println(KeyWords);
         System.out.println(SiteTemplates);
     }
 

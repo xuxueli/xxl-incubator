@@ -11,6 +11,7 @@
 		<module>xxl-seckill</module>
 		<module>xxl-util</module>
         <module>xxl-search</module>
+		<module>xxl-app</module>
 		<module>demo</module>
     </modules>
 </project>

@@ -1,6 +1,7 @@
-package com.xxl.cip.main;
+package com.xxl.app.main;
 
-import com.xxl.cip.ui.IndexUI;
+
+import com.xxl.app.ui.IndexUI;
 
 /**
  * Created by xuxueli on 16/8/18.
