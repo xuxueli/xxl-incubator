@@ -9,10 +9,10 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 
 public class Test {
-    public static String host = "192.168.229.133";
-    public static int port = 58422;
-    public static String username = "betauser";
-    public static String password = "user4beta";
+    public static String host = "127.0.0.1";
+    public static int port = 22;
+    public static String username = "root";
+    public static String password = "xuxueli";
 
     public static void main(String[] args) {
         try {
