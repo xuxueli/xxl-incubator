@@ -1,11 +1,11 @@
 package com.xxl.util.core.skill.threadpool;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 生产消费者模型，“FIFO队列，线程池，异步”，“ThreadPoolExecutor”方式实现
@@ -15,10 +15,10 @@ import org.slf4j.LoggerFactory;
 public class ThreadPoolLinkedHelper {
 	private static Logger logger = LoggerFactory.getLogger(ThreadPoolLinkedHelper.class);
 
-	private ThreadPoolExecutor executor = new ThreadPoolExecutor(3, 5, 200L,
-			TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(3000), 
+	private ThreadPoolExecutor executor = new ThreadPoolExecutor(3, Integer.MAX_VALUE, 60L,
+			TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(Integer.MAX_VALUE),
 			new ThreadPoolExecutor.CallerRunsPolicy());
-	
+
 	public ThreadPoolLinkedHelper(){
 		// producer thread, can be replaced by method "pushData()"
 		executor.execute(new Runnable() {
