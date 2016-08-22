@@ -1,4 +1,4 @@
-package com.xxl.app.main;
+package com.xxl.app;
 
 
 import com.xxl.app.ui.IndexUI;

@@ -35,7 +35,7 @@
                             <!-- 所有的依赖项应该位于 lib文件夹 -->
                             <classpathPrefix>lib/</classpathPrefix>
                             <!-- 当用户使用 lib命令执行JAR文件时，使用该元素定义将要执行的类名 -->
-                            <mainClass>com.xxl.app.main.Application</mainClass>
+                            <mainClass>com.xxl.app.Application</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

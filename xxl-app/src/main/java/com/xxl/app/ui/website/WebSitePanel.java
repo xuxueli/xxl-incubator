@@ -23,21 +23,31 @@ public class WebSitePanel extends Panel implements ActionListener {
         if (instance==null) {
             // 主界面
             instance = new WebSitePanel();
-            instance.setBackground(Color.GRAY);
+            instance.setBackground(Color.LIGHT_GRAY);
 
-            // 初始化元素
+            // Key
             keyWordSelect = new JComboBox();
             keyWordSelect.setEditable(true);
+            //keyWordSelect.setFont(new Font("Arial",Font.PLAIN,16));
+            keyWordSelect.setMaximumSize(new Dimension(250, 25));
+            keyWordSelect.setMinimumSize(new Dimension(250, 25));
+            keyWordSelect.setPreferredSize(new Dimension(250, 25));
             for (String appName : ConfigUtil.KeyWords) {
                 keyWordSelect.addItem(appName);
             }
 
+            // URL
             siteTemplateSelect = new JComboBox();
+            siteTemplateSelect.setMaximumSize(new Dimension(250, 25));
+            siteTemplateSelect.setMinimumSize(new Dimension(250, 25));
+            siteTemplateSelect.setPreferredSize(new Dimension(250, 25));
             for (Map.Entry<String, String> site : ConfigUtil.SiteTemplates.entrySet()) {
                 siteTemplateSelect.addItem(site.getKey());
             }
 
+            // go
             goBtn = new JButton("GO");
+            goBtn.setBackground(Color.BLACK);
             goBtn.addActionListener(instance);
             goBtn.addKeyListener(new KeyAdapter() {
                 @Override
@@ -49,7 +59,9 @@ public class WebSitePanel extends Panel implements ActionListener {
                 }
             });
 
-            exitBtn = new JButton("退出");
+            // exit
+            exitBtn = new JButton("EXIT");
+            exitBtn.setBackground(Color.GRAY);
             exitBtn.addActionListener(instance);
             exitBtn.addKeyListener(new KeyAdapter() {
                 @Override
@@ -62,10 +74,11 @@ public class WebSitePanel extends Panel implements ActionListener {
             });
 
             // 布局
-            instance.setLayout(new FlowLayout());
-            instance.add(new JLabel("关键字"));
+            //instance.setLayout(new FlowLayout());
+            instance.setLayout(new BoxLayout(instance, BoxLayout.LINE_AXIS));
+            instance.add(new JLabel("关键字:"));
             instance.add(keyWordSelect);
-            instance.add(new JLabel("URL模板"));
+            instance.add(new JLabel("URL模板:"));
             instance.add(siteTemplateSelect);
             instance.add(goBtn);
             instance.add(exitBtn);
