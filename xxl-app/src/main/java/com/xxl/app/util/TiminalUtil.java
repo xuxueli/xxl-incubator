@@ -13,7 +13,7 @@ public class TiminalUtil {
         OSUtil.OSEnum os = OSUtil.os();
         switch (os) {
             case Windows:{
-                JOptionPane.showMessageDialog(null, "暂未支持", null,JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Windows暂未支持", null,JOptionPane.PLAIN_MESSAGE);
                 break;
             }
             case Mac:{
@@ -30,11 +30,10 @@ public class TiminalUtil {
                 //dos.writeBytes("exit \n");
                 dos.flush();*/
 
-
                 break;
             }
             case LinuxOrUnix:{
-                JOptionPane.showMessageDialog(null, "暂未支持", null,JOptionPane.PLAIN_MESSAGE);
+                JOptionPane.showMessageDialog(null, "LinuxOrUnix暂未支持", null,JOptionPane.PLAIN_MESSAGE);
                 break;
             }
         }
