@@ -7,6 +7,8 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
@@ -14,7 +16,9 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -141,6 +145,69 @@ public class HttpClientUtil {
 				}
 			}
 		}
+	}
+
+	/**
+	 * post request
+	 */
+	public static byte[] postRequestByte(String url, byte[] date) {
+		byte[] responseBytes = null;
+
+		HttpPost httpPost = new HttpPost(url);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		try {
+			// init post datas
+			if (date != null) {
+				httpPost.setEntity(new ByteArrayEntity(date, ContentType.DEFAULT_BINARY));
+			}
+			// do post
+			HttpResponse response = httpClient.execute(httpPost);
+			HttpEntity entity = response.getEntity();
+			if (null != entity) {
+				responseBytes = EntityUtils.toByteArray(entity);
+				EntityUtils.consume(entity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			httpPost.releaseConnection();
+			try {
+				httpClient.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return responseBytes;
+	}
+
+	/**
+	 * read bytes from http request
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
+	public static final byte[] readRequestByte(HttpServletRequest request) throws IOException {
+		request.setCharacterEncoding("UTF-8");
+		int contentLen = request.getContentLength();
+		InputStream is = request.getInputStream();
+		if (contentLen > 0) {
+			int readLen = 0;
+			int readLengthThisTime = 0;
+			byte[] message = new byte[contentLen];
+			try {
+				while (readLen != contentLen) {
+					readLengthThisTime = is.read(message, readLen, contentLen - readLen);
+					if (readLengthThisTime == -1) {
+						break;
+					}
+					readLen += readLengthThisTime;
+				}
+				return message;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return new byte[] {};
 	}
 	
 	public static void main(String[] args) {
