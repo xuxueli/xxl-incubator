@@ -631,7 +631,7 @@ public class UtilDemoController {
 
 	/**
 	 * <pre>
-	 25、Jsonp接口开发
+	 26、Jsonp接口开发
 		 功能简介：Jsonp接口开发
 		 方式1： JSONP (Jackson之JSONPObject方式)
 				@RequestMapping(value = "/jsonp" )
@@ -669,7 +669,7 @@ public class UtilDemoController {
 
 	/**
 	 * <pre>
-	 25、MongoDBUtil.java
+	 27、MongoDBUtil.java
 	 	功能简介：MongoDB工具类
 
 	 	步骤1: 引入maven依赖, 见 "MongoDBUtil.java" 注释;
@@ -689,5 +689,20 @@ public class UtilDemoController {
 		return result;
 	}
 
-	
+	/**
+	 * <pre>
+	 28、ZookeeperUtil.java
+	 功能简介：Zookeeper工具类
+
+	 步骤1: 引入maven依赖, 见 "ZookeeperUtil.java" 注释;
+	 步骤2: 引入 "ZookeeperUtil.java", 使用启动方法即可;
+
+	 </pre>
+	 */
+	@RequestMapping(value = "/ZookeeperUtil" )
+	@ResponseBody
+	public Object ZookeeperUtil() {
+		return ZookeeperUtil.getAllData();
+	}
+
 }

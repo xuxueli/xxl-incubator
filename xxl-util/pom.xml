@@ -238,6 +238,13 @@
 			<version>2.5.4</version>
 		</dependency>
 
+		<!-- zookeeper -->
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
