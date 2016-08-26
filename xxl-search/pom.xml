@@ -102,13 +102,11 @@
             <artifactId>lucene-queryparser</artifactId>
             <version>${lucene.version}</version>
         </dependency>
-        <!-- 不兼容 -->
-        <!--<dependency>
-            <groupId>org.wltea.ik-analyzer</groupId>
-            <artifactId>ik-analyzer</artifactId>
-            <version>3.2.8</version>
-        </dependency>-->
-        <!-- lucene end -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
 
 
         <!--elasticsearch -->
