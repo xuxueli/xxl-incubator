@@ -87,8 +87,11 @@ Standby skill points
 - 27、MongoDBUtil.java  (MongoDB工具类)
 > 详细：见：com.xxl.util.controller.UtilDemoController.mongodb()
 
-- 27、ZookeeperUtil.java  (Zookeeper工具类)
+- 28、ZookeeperUtil.java  (Zookeeper工具类)
 > 详细：见：com.xxl.util.controller.UtilDemoController.ZookeeperUtil()
+
+- 29、com.xxl.util.core.util.IpUtil.java  (IP工具类)
+> 详细：见：com.xxl.util.controller.UtilDemoController.IpUtil()
 
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)

@@ -705,4 +705,14 @@ public class UtilDemoController {
 		return ZookeeperUtil.getAllData();
 	}
 
+	/**
+	 * 29、com.xxl.util.core.util.IpUtil.java  (IP工具类)
+	 * @return
+     */
+	@RequestMapping(value = "/IpUtil" )
+	@ResponseBody
+	public Object IpUtil() {
+		return IpUtil.getIp();
+	}
+
 }
