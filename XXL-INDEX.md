@@ -28,7 +28,7 @@
     - xxl-seckill : 秒杀系统
     - xxl-util : 实用工具类汇总
 - 7、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
-- 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.0...)
+- 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
 - 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架 (V1.1)
 - 10、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)
 
