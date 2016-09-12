@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <File name="file" fileName="/data/applogs/xxl-search/xxl-search.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+    </appenders>
+    <loggers>
+        <root level="info">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="file"/>
+        </root>
+        <!-- additivity:false-不会打印在父logger
+        <logger name="com.xxl.search.service" level="info" additivity="false">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="file"/>
+        </logger>
+        -->
+    </loggers>
+
+</configuration>

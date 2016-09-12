@@ -11,11 +11,6 @@ import java.util.List;
 @RequestMapping("/client2")
 public class Client2Controller {
 
-	@RequestMapping("")
-	public String test01(){
-		return "lucene/lucene";
-	}
-	
 	@RequestMapping("/init")
 	@ResponseBody
 	public String init (){

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.xxl</groupId>
+        <artifactId>xxl-search</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>xxl-search-client2</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <lucene.version>5.5.2</lucene.version>
+    </properties>
+
+    <dependencies>
+
+        <!-- lucene start (lucene-highlighter、lucene-queries、lucene-core、lucene-analyzers-common、lucene-join、lucene-momney; lucene-queryparser、lucene-sandbox) -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+            <version>${lucene.version}</version>
+        </dependency>
+
+        <!-- log4j 2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.6.2</version>
+        </dependency>
+
+    </dependencies>
+
+
+</project>
