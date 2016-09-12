@@ -19,16 +19,17 @@
 - 2、[xxl-cache](https://github.com/xuxueli/xxl-cache)   分布式缓存管理平台（V1.0）
 - 3、[xxl-conf](https://github.com/xuxueli/xxl-conf)     分布式配置管理平台 (V1.1)
 - 4、[xxl-glue](https://github.com/xuxueli/xxl-glue)     分布式逻辑管理平台（V1.1）
-- 5、[xxl-hex](https://github.com/xuxueli/xxl-hex)       基于16进制数据传输的服务框架
-- 6、[xxl-incubator](https://github.com/xuxueli/xxl-incubator)   技能孵化器（...）
+- 5、[xxl-hex](https://github.com/xuxueli/xxl-hex)       Mobile Api平台 (...)
+- 6、[xxl-incubator](https://github.com/xuxueli/xxl-incubator)   技能孵化器
     - /demo : 一些demo项目
+    - xxl-app : 个人APP
     - xxl-db : 分库分表中间件
     - xxl-pm : 工作流驱动的项目管理平台
-    - xxl-search : 搜索引擎
+    - xxl-search : 搜索引擎(实现搜索列表页)    (...)
     - xxl-seckill : 秒杀系统
     - xxl-util : 实用工具类汇总
 - 7、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
 - 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
 - 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架 (V1.1)
-- 10、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)
+- 10、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  主页
 
