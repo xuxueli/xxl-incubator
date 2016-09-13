@@ -13,9 +13,9 @@
 * http://blog.csdn.net/xuxueli0323 （仅同步）
 
 
-### 开源产品汇总 (文档,见各项目的RM文件)
+### 开源产品汇总 (文档见各项目的RM文件;按照字母顺序拍戏)
 ***
-- 1、[xxl-blog](https://github.com/xuxueli/xxl-oa)       企业信息系统开发模板（...）
+- 1、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  个人站项目, MD编辑, 图床, 静态化 (...)
 - 2、[xxl-cache](https://github.com/xuxueli/xxl-cache)   分布式缓存管理平台（V1.0）
 - 3、[xxl-conf](https://github.com/xuxueli/xxl-conf)     分布式配置管理平台 (V1.1)
 - 4、[xxl-glue](https://github.com/xuxueli/xxl-glue)     分布式逻辑管理平台（V1.1）
@@ -32,6 +32,7 @@
     - (xxl-ai, 智能机器人, 自助学习的机器人)
 - 7、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
 - 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
-- 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架 (V1.1)
-- 10、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  个人站项目, MD编辑, 图床, 静态化 (...)
+- 9、[xxl-oa](https://github.com/xuxueli/xxl-oa)         企业信息系统开发模板（...）
+- 10、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)      分布式服务通讯框架 (V1.1)
+
 
