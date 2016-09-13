@@ -32,7 +32,6 @@
     - (xxl-ai, 智能机器人, 自助学习的机器人)
 - 7、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
 - 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
-- 9、[xxl-oa](https://github.com/xuxueli/xxl-oa)         企业信息系统开发模板（...）
-- 10、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)      分布式服务通讯框架 (V1.1)
+- 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)      分布式服务通讯框架 (V1.1)
 
 
