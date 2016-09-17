@@ -1,4 +1,4 @@
-package com.xxl.search.client.util;
+package com.xxl.search.client.es;
 
 
 import com.fasterxml.jackson.core.JsonGenerationException;

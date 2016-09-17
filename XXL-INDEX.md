@@ -25,7 +25,7 @@
     - xxl-app : 个人APP
     - xxl-db : 分库分表中间件
     - xxl-pm : 工作流驱动的项目管理平台
-    - xxl-search : 搜索引擎(结果: 实现搜索列表页)                (...)
+    - xxl-search : 搜索引擎(结果: 实现搜索列表页)                (V1.0)
     - xxl-seckill : 秒杀系统
     - xxl-util : 实用工具类汇总
     - (xxl-push, ws服务端集群; 结果: 实现,IM单聊+群聊, 消息推送)  (...)

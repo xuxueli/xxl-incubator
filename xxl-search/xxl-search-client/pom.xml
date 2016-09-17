@@ -11,25 +11,31 @@
     <artifactId>xxl-search-client</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <spring.version>4.3.2.RELEASE</spring.version>
-        <lucene.version>5.5.2</lucene.version>
-    </properties>
-
     <dependencies>
 
         <!--elasticsearch -->
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>2.2.1</version>
+            <version>2.4.0</version>
         </dependency>
 
-        <!-- jackson (版本和ES保持一致) -->
+        <!-- for only lucene, use elasticsearch's version
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-highlighter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
+        </dependency>
+        -->
+
+        <!-- jackson (use elasticsearch's version) -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.6.2</version>
+            <version>2.8.1</version>
         </dependency>
 
         <!-- log4j 2 -->

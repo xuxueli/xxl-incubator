@@ -1,4 +1,4 @@
-package com.xxl.search.client.util;
+package com.xxl.search.client.es;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

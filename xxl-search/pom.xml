@@ -10,7 +10,6 @@
 
     <modules>
         <module>xxl-search-client</module>
-        <module>xxl-search-client2</module>
         <module>xxl-search-example</module>
     </modules>
 

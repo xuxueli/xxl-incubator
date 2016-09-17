@@ -14,10 +14,16 @@
     <properties>
         <xxl-search.version>1.0.0</xxl-search.version>
         <spring.version>4.3.2.RELEASE</spring.version>
-        <lucene.version>5.5.2</lucene.version>
     </properties>
 
     <dependencies>
+
+        <!-- xxl-search-client -->
+        <dependency>
+            <groupId>com.xxl</groupId>
+            <artifactId>xxl-search-client</artifactId>
+            <version>${xxl-search.version}</version>
+        </dependency>
 
         <!-- spring -->
         <dependency>
@@ -84,23 +90,6 @@
             <scope>test</scope>
         </dependency>
 
-
-        <!-- xxl-search-client -->
-        <dependency>
-            <groupId>com.xxl</groupId>
-            <artifactId>xxl-search-client</artifactId>
-            <version>${xxl-search.version}</version>
-        </dependency>
-
-        <!-- xxl-search-client2 -->
-        <dependency>
-            <groupId>com.xxl</groupId>
-            <artifactId>xxl-search-client2</artifactId>
-            <version>${xxl-search.version}</version>
-        </dependency>
-
-
     </dependencies>
-
 
 </project>

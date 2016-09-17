@@ -1,4 +1,4 @@
-package com.xxl.search.client2.util;
+package com.xxl.search.client.lucene;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
