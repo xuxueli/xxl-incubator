@@ -6,5 +6,9 @@
 </head>
 <body>
 
+<#list shoplist as shop>
+    ${shop.shopname}
+</#list>
+
 </body>
 </html>

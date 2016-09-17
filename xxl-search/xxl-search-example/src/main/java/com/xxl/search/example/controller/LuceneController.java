@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/client2")
-public class Client2Controller {
+@RequestMapping("/lucene")
+public class LuceneController {
+
+	@RequestMapping("")
+	public String index (){
+		return "lucene";
+	}
 
 	@RequestMapping("/init")
 	@ResponseBody
