@@ -2,9 +2,7 @@ package com.xxl.search.example.core.enums;
 
 import com.xxl.search.example.core.model.ShopDTO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by xuxueli on 16/9/17.
@@ -25,6 +23,12 @@ public class ShopEnum {
             this.cityid = cityid;
             this.cityname = cityname;
         }
+        public int getCityid() {
+            return cityid;
+        }
+        public String getCityname() {
+            return cityname;
+        }
     }
 
     /**
@@ -44,22 +48,28 @@ public class ShopEnum {
             this.tagid = tagid;
             this.tagname = tagname;
         }
+        public int getTagid() {
+            return tagid;
+        }
+        public String getTagname() {
+            return tagname;
+        }
     }
 
     // 初始化MOCK数据
-    public static List<ShopDTO> shoplist = new ArrayList<ShopDTO>();
+    public static Map<Integer, ShopDTO> shopOriginMap = new HashMap<Integer, ShopDTO>();
     static {
-        shoplist.add(new ShopDTO(100001, "和平饭店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 100, 90));
-        shoplist.add(new ShopDTO(100002, "香格里拉酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 95, 70));
-        shoplist.add(new ShopDTO(100003, "希尔顿酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 90, 60));
-        shoplist.add(new ShopDTO(100004, "小南国花园酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 85, 100));
-        shoplist.add(new ShopDTO(100005, "丽思卡尔顿酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 80, 30));
-        shoplist.add(new ShopDTO(100006, "绅公馆", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 75, 20));
-        shoplist.add(new ShopDTO(100007, "新天地朗庭酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 70, 10));
-        shoplist.add(new ShopDTO(100008, "四季酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 65, 45));
-        shoplist.add(new ShopDTO(100009, "皇冠假日酒店", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 60, 35));
-        shoplist.add(new ShopDTO(100010, "峰味香黄焖鸡米饭", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG07.tagid), 55, 15));
-        shoplist.add(new ShopDTO(100011, "沙县小吃", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG07.tagid), 50, 95));
+        shopOriginMap.put(100001, new ShopDTO(100001, "和平饭店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 100, 90));
+        shopOriginMap.put(100002, new ShopDTO(100002, "香格里拉酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 95, 70));
+        shopOriginMap.put(100003, new ShopDTO(100003, "希尔顿酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG01.tagid, TagEnum.TAG02.tagid), 90, 60));
+        shopOriginMap.put(100004, new ShopDTO(100004, "小南国花园酒店", CityEnum.BEIJING.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 85, 100));
+        shopOriginMap.put(100005, new ShopDTO(100005, "丽思卡尔顿酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 80, 30));
+        shopOriginMap.put(100006, new ShopDTO(100006, "绅公馆", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG03.tagid, TagEnum.TAG04.tagid), 75, 20));
+        shopOriginMap.put(100007, new ShopDTO(100007, "新天地朗庭酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 70, 10));
+        shopOriginMap.put(100008, new ShopDTO(100008, "四季酒店", CityEnum.SHNGHAI.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 65, 45));
+        shopOriginMap.put(100009, new ShopDTO(100009, "皇冠假日酒店", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG05.tagid, TagEnum.TAG06.tagid), 60, 35));
+        shopOriginMap.put(100010, new ShopDTO(100010, "峰味香黄焖鸡米饭", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG07.tagid), 55, 15));
+        shopOriginMap.put(100011, new ShopDTO(100011, "沙县小吃", CityEnum.GUANGZHOU.cityid, Arrays.asList(TagEnum.TAG07.tagid), 50, 95));
     }
 
 }

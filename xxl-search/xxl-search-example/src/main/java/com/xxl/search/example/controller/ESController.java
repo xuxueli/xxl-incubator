@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ESController {
     private static Logger logger = LogManager.getLogger(ESController.class.getName());
 
-    @RequestMapping()
+    @RequestMapping("")
     public String index (Model model){
-        model.addAttribute("shoplist", ShopEnum.shoplist);
+        model.addAttribute("shopOriginMapVal", ShopEnum.shopOriginMap.values());
+        model.addAttribute("cityEnum", ShopEnum.CityEnum.values());
+        model.addAttribute("tagEnum", ShopEnum.TagEnum.values());
         return "index";
     }
 

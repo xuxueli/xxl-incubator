@@ -67,18 +67,13 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>springmvc</servlet-name>
-		<url-pattern>/</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</servlet-mapping>
 
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/error.html</location>
-	</error-page>
 
 
 </web-app>
