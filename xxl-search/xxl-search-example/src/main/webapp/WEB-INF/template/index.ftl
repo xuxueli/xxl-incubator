@@ -3,6 +3,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Elasticsearch</title>
+    <script>var base_url = '${request.contextPath}';</script>
+
+
 </head>
 <body>
 

@@ -20,7 +20,7 @@
 
         $("#init").click(function(){
             $.ajax({
-                url:"/client2/init",
+                url:"/lucene/init",
                 success:function(data){
                     if (data == 'S') {
                         alert('生成索引库文件成功');
@@ -34,7 +34,7 @@
         $("#search").click(function(){
             $.ajax({
                 type:'post',
-                url:"client2/search",
+                url:"lucene/search",
                 data:{
                     'content':$("#content").val()
                 },
