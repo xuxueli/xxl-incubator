@@ -70,4 +70,72 @@ public class ShopDTO {
 	public void setHotscore(int hotscore) {
 		this.hotscore = hotscore;
 	}
+
+
+
+	/**
+	 * 城市字典
+	 */
+	public enum CityEnum{
+		BEIJING(1, "北京"),
+		SHNGHAI(2, "上海"),
+		GUANGZHOU(3, "深圳");
+
+		public final int cityid;
+		public final String cityname;
+		CityEnum(int cityid, String cityname) {
+			this.cityid = cityid;
+			this.cityname = cityname;
+		}
+		public int getCityid() {
+			return cityid;
+		}
+		public String getCityname() {
+			return cityname;
+		}
+
+		public static CityEnum match(int cityid){
+			for (CityEnum city: CityEnum.values()) {
+				if (city.cityid==cityid) {
+					return city;
+				}
+			}
+			return null;
+		}
+	}
+
+	/**
+	 * 标签字典
+	 */
+	public enum TagEnum{
+		TAG01(1, "地铁沿线"),
+		TAG02(2, "独立门面"),
+		TAG03(3, "西式"),
+		TAG04(4, "中式"),
+		TAG05(5, "草坪"),
+		TAG06(6, "免费WIFI"),
+		TAG07(7, "免费停车");
+		public final int tagid;
+		public final String tagname;
+		TagEnum(int tagid, String tagname) {
+			this.tagid = tagid;
+			this.tagname = tagname;
+		}
+		public int getTagid() {
+			return tagid;
+		}
+		public String getTagname() {
+			return tagname;
+		}
+
+		public static TagEnum match(int tagid){
+			for (TagEnum tag: TagEnum.values()) {
+				if (tag.tagid==tagid) {
+					return tag;
+				}
+			}
+			return null;
+		}
+	}
+
 }

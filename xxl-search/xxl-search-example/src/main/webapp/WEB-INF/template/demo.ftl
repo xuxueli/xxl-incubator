@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Elasticsearch</title>
+	<title>Search</title>
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="${request.contextPath}/static/plugin/bootstrap-3.3.4/css/bootstrap.min.css" >
@@ -56,7 +56,7 @@
                             <div>
                             <#list cityEnum as city>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="${city.cityid}">${city.cityname}
+                                    <input type="checkbox" id="inlineCheckbox1" value="${city.cityid}">${city.cityname}(${city.cityid})
                                 </label>
                             </#list>
                             </div>
@@ -67,7 +67,7 @@
                             <div>
                             <#list tagEnum as tag>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="${tag.tagid}">${tag.tagname}
+                                    <input type="checkbox" id="inlineCheckbox1" value="${tag.tagid}">${tag.tagname}(${tag.tagid})
                                 </label>
                             </#list>
                             </div>
@@ -104,7 +104,7 @@
                                 <td>${shop.shopid}</td>
                                 <td>${shop.shopname}</td>
                                 <td>${shop.cityid}</td>
-                                <td>${shop.taglist?size}</td>
+                                <td><#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if></td>
                                 <td>${shop.score}</td>
                                 <td>${shop.hotscore}</td>
                             </tr>
@@ -141,7 +141,7 @@
                         <td><input name="shopid" value="${shop.shopid}" readonly /></td>
                         <td><input name="shopname" value="${shop.shopname}" /></td>
                         <td><input name="cityid" value="${shop.cityid}" /></td>
-                        <td><input name="taglist" value="${shop.taglist?size}" /></td>
+                        <td><input name="taglist" value="<#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if>" /></td>
                         <td><input name="score" value="${shop.score}" /></td>
                         <td><input name="hotscore" value="${shop.hotscore}" /></td>
                         <td><a href="javascript:;" class="save" >更新</a>&nbsp;&nbsp;<a href="javascript:;" class="delete" >删除</a></td>
@@ -169,7 +169,7 @@ $(function(){
     // 新增一行
     $("#shopOriginData .add_one_line").click(function(){
         var temp = '<tr class="info" >' +
-            '<td><input name="shopid" value="" readonly /></td>' +
+            '<td><input name="shopid" value="" /></td>' +
             '<td><input name="shopname" value="" /></td>' +
             '<td><input name="cityid" value="" /></td>' +
             '<td><input name="taglist" value="" /></td>' +
@@ -182,8 +182,42 @@ $(function(){
     });
 
     // 更新
-    $("#shopOriginData .save").click(function(){
-        alert('更新一条索引');
+    $("#shopOriginData").on('click', '.save',function() {
+
+        var data = {
+            shopid : $(this).parent().parent().find('input[name="shopid"]').val() ,
+            shopname : $(this).parent().parent().find('input[name="shopname"]').val() ,
+            cityid : $(this).parent().parent().find('input[name="cityid"]').val() ,
+            taglist : $(this).parent().parent().find('input[name="taglist"]').val() ,
+            score : $(this).parent().parent().find('input[name="score"]').val() ,
+            hotscore : $(this).parent().parent().find('input[name="hotscore"]').val()
+        };
+
+        $.post(base_url + "/saveOrUpdateIndex", data, function(data, status) {
+            if (data == "S") {
+                alert("操作成功");
+                window.location.reload();
+            } else {
+                alert(data);
+            }
+        });
+
+    });
+
+    // 删除
+    $("#shopOriginData").on('click', '.delete',function() {
+        var data = {
+            shopid : $(this).parent().parent().find('input[name="shopid"]').val()
+        };
+
+        $.post(base_url + "/removeIndex", data, function(data, status) {
+            if (data == "S") {
+                alert("操作成功");
+                window.location.reload();
+            } else {
+                alert(data);
+            }
+        });
     });
 
 
