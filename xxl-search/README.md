@@ -1,10 +1,4 @@
-搜索列表页,实现
 
------------------------------
-/xxl-search
-    /xxl-search-client      (es 封装的client)
-    /xxl-search-client2     (lucene 封装的client)
-    /xxl-search-example     (示例Demo, 一张搜索列表页)
     
 功能列表: 每条业务线一个索引库, 每条索引拥有主键ID作为删除和修改的依据(类似一张拥有主键和其余字段的表, 如商户搜索列表, 多条件搜索出主键shopid)
 - 增 : 拥有主键ID的一条索引记录
@@ -31,17 +25,6 @@
 
 lucene-analyzers-smartcn 官网中文分词器
 
-1、spring mvc 4.3.2
-2、log4j2
-3、jsonp
-
-...
-jdk1.7 (lucene5.5.2 需要 jdk1.7)
-servlet3 (springmvc4 需要 servlet3.0)
-
-# xxl-search
----
-[xxl-search地址](https://github.com/xuxueli/xxl-incubator/tree/master/xxl-search)
 
 # Lucene 的用法
 ---
@@ -64,49 +47,6 @@ apache lucene是apache下一个著名的开源搜索引擎内核，基于Java技
     - 搜索关键字："开源社区"
     - 如果这个内容是存在数据库的，就搜不到，如果使用Lucene就可以搜到
 
-### 开发步骤
-- 1、maven依赖:
-```
-<properties>
-    <jdk.version>1.7</jdk.version>
-    <spring.version>4.3.2.RELEASE</spring.version>
-    <lucene.version>5.5.2</lucene.version>
-</properties>
--------------
-<!-- lucene start (lucene-highlighter、lucene-queries、lucene-core、lucene-analyzers-common、lucene-join、lucene-momney; lucene-queryparser、lucene-sandbox) -->
-<dependency>
-    <groupId>org.apache.lucene</groupId>
-    <artifactId>lucene-highlighter</artifactId>
-    <version>${lucene.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.apache.lucene</groupId>
-    <artifactId>lucene-queryparser</artifactId>
-    <version>${lucene.version}</version>
-</dependency>
-```
-- 2、参考"com.xxl.search.core.util.LuceneUtilAiticleSearch.java"类和google文档
-
-### 使用流程
-- 1、建立索引:新建索引库、分词Writer;
-- 2、查询:定位索引库、分词Reader、处理查询结果;
-
-### 索引文件分析
-- Index: 类似数据库实例
-    - 一个目录一个索引，在Lucene中一个索引是放在一个文件夹中的。
-    - 同一文件夹中的所有的文件构成一个Lucene索引。
-- Segment: 类似数据库分表
-    - 一个索引可以包含多个段，段与段之间是独立的，添加新文档可以生成新的段，不同的段可以合并。在建立索引的时候对性能影响最大的地方就是在将索引写入文件的时候, 所以在具体应用的时候就需要对此加以控制，段(Segment) 就是实现这种控制的。
-    - 具有相同前缀文件的属同一个段，如文件两个段 "_0" 和 "_1"。
-    - segments.gen和segments_5是段的元数据文件，也即它们保存了段的属性信息。
-- Document: 类似数据库行数据
-    - 文档是我们建索引的基本单位，不同的文档是保存在不同的段中的，一个段可以包含多篇文档。
-    - 新添加的文档是单独保存在一个新生成的段中，随着段的合并，不同的文档合并到同一个段中。
-- Field: 类似数据库列
-    - 一篇文档包含不同类型的信息，可以分开索引，比如标题，时间，正文，作者等，都可以保存在不同的域里。
-    - 不同域的索引方式可以不同。
-- Term: 
-    - 词是索引的最小单位，是经过词法分析和语言处理后的字符串。
 
 ------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------

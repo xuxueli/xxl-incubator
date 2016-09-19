@@ -11,30 +11,8 @@
 </head>
 <body>
 
-    <#-- 导航 -->
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-12 column">
-                <nav class="navbar navbar-default" role="navigation">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">XXLSearch</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li class="active">
-                                <a href="#">ES</a>
-                            </li>
-                            <li>
-                                <a href="${request.contextPath}/lucene">Lucene</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </div>
-
     <#-- 搜索条件 -->
+    <hr>
     <div class="container">
         <div class="row clearfix">
 
@@ -120,7 +98,8 @@
     <div class="container" id="shopOriginData" >
         <div class="row clearfix">
             <div class="col-md-12 column">
-                <label class="col-md-2">商户原始数据(更新、删除操作, 将会触发索引操作):</label>&nbsp;&nbsp;
+                <label class="col-md-2">商户原始数据:</label>&nbsp;&nbsp;
+                <a href="javascript:;" class="index_all_remove">索引全部清除</a>&nbsp;&nbsp;
                 <a href="javascript:;" class="index_all_update">索引全量更新</a>&nbsp;&nbsp;
                 <a href="javascript:;" class="add_one_line">新增一行</a>
                 <table class="table table-bordered" >
@@ -132,7 +111,7 @@
                         <th>标签列表</th>
                         <th>业务分数</th>
                         <th>热门分数</th>
-                        <th>操作</th>
+                        <th>操作(数据+索引)</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -200,6 +179,8 @@ $(function(){
             } else {
                 alert(data);
             }
+        }).error(function(){
+            alert("接口异常");
         });
 
     });
@@ -217,6 +198,8 @@ $(function(){
             } else {
                 alert(data);
             }
+        }).error(function(){
+            alert("接口异常");
         });
     });
 

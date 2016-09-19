@@ -1,6 +1,5 @@
 package com.xxl.search.example.controller;
 
-import com.xxl.search.client.lucene.LuceneUtilAiticleSearch;
 import com.xxl.search.example.core.model.ShopDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,15 +39,6 @@ public class DemoController {
     @RequestMapping("/search")
     @ResponseBody
     public String search (Model model){
-
-        List<String> result;
-        try {
-            result = LuceneUtilAiticleSearch.search(null, "");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
         model.addAttribute("total", 0);
         return "index";
     }
@@ -79,12 +69,6 @@ public class DemoController {
     @RequestMapping("/removeIndexAll")
     @ResponseBody
     public String removeIndexAll (){
-        try {
-            LuceneUtilAiticleSearch.initArticleIndex();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "E";
-        }
         return "S";
     }
 
@@ -128,7 +112,11 @@ public class DemoController {
             return "hotscore error";
         }
 
+        // 原始数据操作
         shopOriginMap.put(shopid, new ShopDTO(shopid, shopname, cityid, taglistReal, score, hotscore));
+
+        // 索引操作
+
         return "S";
     }
 
@@ -139,7 +127,13 @@ public class DemoController {
     @RequestMapping("/removeIndex")
     @ResponseBody
     public String removeIndex (int shopid){
+
+        // 原始数据操作
         shopOriginMap.remove(shopid);
+
+        // 索引操作
+
+
         return "S";
     }
 

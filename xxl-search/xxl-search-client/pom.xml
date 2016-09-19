@@ -20,7 +20,7 @@
             <version>2.4.0</version>
         </dependency>
 
-        <!-- for only lucene, use elasticsearch's version
+        <!-- for only lucene, use elasticsearch's version, 5.x require jdk1.7
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-highlighter</artifactId>
