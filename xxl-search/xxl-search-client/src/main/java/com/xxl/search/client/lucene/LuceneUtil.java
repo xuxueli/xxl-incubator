@@ -64,7 +64,7 @@ public class LuceneUtil {
 	// FieldType for IntField sort
 	public static final FieldType INT_FIELD_TYPE_STORED_SORTED = new FieldType(IntField.TYPE_STORED);
 	static {
-		INT_FIELD_TYPE_STORED_SORTED.setDocValuesType(DocValuesType.NUMERIC);
+		INT_FIELD_TYPE_STORED_SORTED.setDocValuesType(DocValuesType.NUMERIC);	// 设置排序value
 		INT_FIELD_TYPE_STORED_SORTED.freeze();
 	}
 
@@ -300,7 +300,7 @@ public class LuceneUtil {
 		querys.add(NumericRangeQuery.newIntRange("cityid", 1, 1, true, true));
 		querys.add(new TermQuery(new Term("group", "group")));
 
-		Sort scoreSort = new Sort(new SortField("score", SortField.Type.INT, true));
+		Sort scoreSort = new Sort(new SortField("score", SortField.Type.INT, true));	// INT=按照int值排序
 		Sort hotScoreSort = new Sort(new SortField("hotscore", SortField.Type.INT, true));
 
 		LuceneSearchResult result = search(querys, scoreSort, 0, 20);
