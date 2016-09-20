@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -154,18 +155,35 @@ public class DemoController {
      * @return
      */
     @RequestMapping("")
-    public String index (Model model, String cityidarr){
+    public String index (Model model, String cityidarr, String shopname, Integer sortType){
 
-        List<Integer> cityids = null;
+        // cityidarr
+        List<Integer> cityids = cityids = new ArrayList<>();
         if (cityidarr!=null && cityidarr.trim().length()>0) {
-            cityids = new ArrayList<>();
             for (String cityidStr: cityidarr.split(",")) {
                 cityids.add(Integer.valueOf(cityidStr));
             }
+        } else {
+            cityids.add(ShopDTO.CityEnum.SHNGHAI.cityid);
         }
         model.addAttribute("cityids", cityids);
 
-        LuceneSearchResult result = luceneSearchServiceImpl.search(cityids);
+        // shopname
+        try {
+            if (shopname!=null && shopname.trim().length()>0) {
+                shopname = java.net.URLDecoder.decode(shopname,"utf-8");
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("shopname", shopname);
+
+        // sortType
+        sortType = sortType!=null?sortType:0;
+        model.addAttribute("sortType", sortType);
+
+        // search
+        LuceneSearchResult result = luceneSearchServiceImpl.search(cityids, shopname, sortType);
         model.addAttribute("result", result);
 
         // 原始数据

@@ -6,10 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TrackingIndexWriter;
+import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -44,12 +41,33 @@ import java.util.List;
 		- Term:
 			- 词是索引的最小单位，是经过词法分析和语言处理后的字符串。
 	《Field区别》
+		- IntField 可定制积分排序等
 		- StringField 不分词索引
 		- TextField 分词索引
+	《功能》
+		- 1、清空索引
+		- 2、新增一条索引: int(排序查询)、String、Text(分词)
+		- 3、更新一条索引
+		- 4、删除一条索引
+		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
+			- IntField/StringField, 精确查询;
+			- TextField, 分词查询
+			- IntField("id", "{1,2,3}"), 同一属性, 多值范围内查询;
+			- Field01 And Field02..., 不同属性, 联合查询
+			- 分页
+			- 排序
 	</pre>
  */
 public class LuceneUtil {
 	private static Logger logger = LogManager.getLogger();
+
+	// FieldType for IntField sort
+	public static final FieldType INT_FIELD_TYPE_STORED_SORTED = new FieldType(IntField.TYPE_STORED);
+	static {
+		INT_FIELD_TYPE_STORED_SORTED.setDocValuesType(DocValuesType.NUMERIC);
+		INT_FIELD_TYPE_STORED_SORTED.freeze();
+	}
+
 
 	// index path
 	public static final String INDEX_DIRECTORY = "/Users/xuxueli/Downloads/tmp/LuceneUtil";
@@ -255,8 +273,8 @@ public class LuceneUtil {
 			doc.add(new IntField("cityid", 1, Field.Store.YES));
 			doc.add(new TextField("shopname", "文章内容"+i, Field.Store.YES));
 			doc.add(new StringField("group", "group", Field.Store.YES));
-			doc.add(new IntField("score", 5000+i, Field.Store.YES));
-			doc.add(new IntField("hotscore", 5000-i, Field.Store.YES));
+			doc.add(new IntField("score", 5000+i, INT_FIELD_TYPE_STORED_SORTED));
+			doc.add(new IntField("hotscore", 5000-i, INT_FIELD_TYPE_STORED_SORTED));
 			addDocument(doc, true);
 		}
 		//commitDocument();
@@ -282,10 +300,10 @@ public class LuceneUtil {
 		querys.add(NumericRangeQuery.newIntRange("cityid", 1, 1, true, true));
 		querys.add(new TermQuery(new Term("group", "group")));
 
-		Sort scoreSort = new Sort(new SortField("score", SortField.Type.DOC, false));
-		Sort hotScoreSort = new Sort(new SortField("hotscore", SortField.Type.DOC, false));
+		Sort scoreSort = new Sort(new SortField("score", SortField.Type.INT, true));
+		Sort hotScoreSort = new Sort(new SortField("hotscore", SortField.Type.INT, true));
 
-		LuceneSearchResult result = search(querys, hotScoreSort, 0, 20);
+		LuceneSearchResult result = search(querys, scoreSort, 0, 20);
 		for (Document item: result.getDocuments()) {
 			System.out.println(item);
 		}

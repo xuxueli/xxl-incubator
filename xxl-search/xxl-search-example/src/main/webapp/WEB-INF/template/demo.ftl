@@ -22,7 +22,7 @@
                         <#-- 商户名 -->
                         <div class="form-group col-md-12 column">
                             <label class="col-md-2">商户:</label>
-                            <input type="shopname" class="form-control" />
+                            <input type="text" class="form-control" name="shopname" value="${shopname}" />
                             <input type="button" class="btn btn-default" value="查询" id="search">
                         </div>
 
@@ -54,6 +54,15 @@
                                     <input type="checkbox" name="tags" value="${tag.tagid}">${tag.tagname}(${tag.tagid})
                                 </label>
                             </#list>
+                            </div>
+                        </div>
+
+                        <#-- 排序 -->
+                        <div class="btn-group col-md-12 column">
+                            <label class="col-md-2">排序:</label>
+                            <div>
+                                <input type="radio" name="sortType" value="0" <#if 0 == sortType>checked</#if> >默认排序
+                                <input type="radio" name="sortType" value="1"<#if 1 == sortType>checked</#if> >热门排序
                             </div>
                         </div>
 
@@ -155,7 +164,16 @@ $(function(){
         $('.search-from input[name="cityid"]:checked').each(function(){
             cityids.push($(this).val());
         });
-        window.location.href = base_url + "?cityidarr=" + cityids;
+
+        // shopname
+        var shopname = $('.search-from input[name="shopname"]').val();
+        shopname = encodeURI(shopname);
+        shopname = encodeURI(shopname);
+
+        // sort
+        var sortType = $('.search-from input[name="sortType"]:checked').val();
+
+        window.location.href = base_url + "?cityidarr=" + cityids + "&shopname=" + shopname + "&sortType=" + sortType;
     });
 
 
