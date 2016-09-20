@@ -6,8 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TrackingIndexWriter;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -168,13 +170,6 @@ public class LuceneUtil {
 		return false;
 	}
 
-	// FieldType for int
-	public static final FieldType INT_FIELD_TYPE_STORED_SORTED = new FieldType(IntField.TYPE_STORED);
-	static {
-		INT_FIELD_TYPE_STORED_SORTED.setDocValuesType(DocValuesType.NUMERIC);
-		INT_FIELD_TYPE_STORED_SORTED.freeze();
-	}
-
 	/**
 	 * 索引查询
 	 * @throws Exception
@@ -256,22 +251,22 @@ public class LuceneUtil {
 		// addDocument
 		for (int i = 0; i < 10; i++) {
 			Document doc = new Document();
-			doc.add(new IntField("id", i, IntField.TYPE_STORED));
-			doc.add(new IntField("cityid", 1, Store.YES));
-			doc.add(new TextField("shopname", "文章内容"+i, Store.YES));
-			doc.add(new StringField("group", "group", Store.YES));
-			doc.add(new IntField("score", 5000+i, IntField.TYPE_STORED));
-			doc.add(new IntField("hotscore", 5000-i, IntField.TYPE_STORED));
-			addDocument(doc, false);
+			doc.add(new IntField("id", i, Field.Store.YES));
+			doc.add(new IntField("cityid", 1, Field.Store.YES));
+			doc.add(new TextField("shopname", "文章内容"+i, Field.Store.YES));
+			doc.add(new StringField("group", "group", Field.Store.YES));
+			doc.add(new IntField("score", 5000+i, Field.Store.YES));
+			doc.add(new IntField("hotscore", 5000-i, Field.Store.YES));
+			addDocument(doc, true);
 		}
-		commitDocument();
+		//commitDocument();
 
 		// updateDocument
 		Document doc = new Document();
-		doc.add(new IntField("id", 0, IntField.TYPE_STORED));
-		doc.add(new IntField("cityid", 1, Store.YES));
-		doc.add(new TextField("shopname", "asdfasdfasdf", Store.YES));
-		doc.add(new StringField("group", "group", Store.YES));
+		doc.add(new IntField("id", 1, Field.Store.YES));
+		doc.add(new IntField("cityid", 1, Field.Store.YES));
+		doc.add(new TextField("shopname", "asdfasdfasdf", Field.Store.YES));
+		doc.add(new StringField("group", "group", Field.Store.YES));
 
 		BytesRefBuilder bytes = new BytesRefBuilder();
 		NumericUtils.intToPrefixCoded(1, 0, bytes);

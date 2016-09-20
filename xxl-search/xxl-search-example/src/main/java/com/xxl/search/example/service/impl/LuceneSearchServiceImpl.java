@@ -6,10 +6,7 @@ import com.xxl.search.example.core.model.ShopDTO;
 import com.xxl.search.example.service.IXxlSearchService;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.util.BytesRefBuilder;
 import org.apache.lucene.util.NumericUtils;
 import org.springframework.stereotype.Service;
@@ -34,9 +31,10 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
 
         document.add(new IntField(ShopDTO.ShopParam.SHOP_ID, shopDTO.getShopid(), Field.Store.YES));
         document.add(new TextField(ShopDTO.ShopParam.SHOP_NAME, shopDTO.getShopname(), Field.Store.YES));
-        document.add(new StringField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid()+"", Field.Store.YES));
-        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
-        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
+        //document.add(new StringField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid()+"", Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid(), Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), Field.Store.YES));
 
         boolean ret = LuceneUtil.addDocument(document, true);
         return ret;
@@ -48,9 +46,9 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
 
         document.add(new IntField(ShopDTO.ShopParam.SHOP_ID, shopDTO.getShopid(), Field.Store.YES));
         document.add(new TextField(ShopDTO.ShopParam.SHOP_NAME, shopDTO.getShopname(), Field.Store.YES));
-        document.add(new StringField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid()+"", Field.Store.YES));
-        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
-        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
+        document.add(new IntField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid(), Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), Field.Store.YES));
 
         BytesRefBuilder bytes = new BytesRefBuilder();
         NumericUtils.intToPrefixCoded(shopDTO.getShopid(), 0, bytes);
@@ -71,17 +69,22 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
     }
 
     @Override
-    public LuceneSearchResult search(int cityid) {
+    public LuceneSearchResult search(List<Integer> cityids) {
 
         // query
         List<Query> querys = new ArrayList<>();
-        if (cityid > 0) {
-            querys.add(new TermQuery(new Term(ShopDTO.ShopParam.CITY_ID, cityid+"")));
+        if (cityids!=null && cityids.size() > 0) {
+            BooleanQuery.Builder cityBooleanBuild = new BooleanQuery.Builder();
+            for (int cityid: cityids) {
+                cityBooleanBuild.add(NumericRangeQuery.newIntRange(ShopDTO.ShopParam.CITY_ID, cityid, cityid, true, true), BooleanClause.Occur.SHOULD);
+            }
+            querys.add(cityBooleanBuild.build());
         }
+
         // sort
-        Sort sort = new Sort(new SortField(ShopDTO.ShopParam.SCORE, SortField.Type.SCORE));
+        Sort scoreSort = new Sort(new SortField(ShopDTO.ShopParam.SCORE, SortField.Type.DOC, true));
         // result
-        LuceneSearchResult result = LuceneUtil.search(querys, sort, 0, 20);
+        LuceneSearchResult result = LuceneUtil.search(querys, scoreSort, 0, 20);
         return result;
     }
 

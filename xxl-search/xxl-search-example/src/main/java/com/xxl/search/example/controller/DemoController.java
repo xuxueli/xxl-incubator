@@ -28,27 +28,6 @@ public class DemoController {
         return luceneSearchServiceImpl;
     }
 
-    /**
-     * 首页
-     * @param model
-     * @return
-     */
-    @RequestMapping("")
-    public String index (Model model, Integer cityid){
-
-        int cityIdFinal = cityid!=null?cityid:0;
-
-        LuceneSearchResult result = luceneSearchServiceImpl.search(cityIdFinal);
-        model.addAttribute("result", result);
-
-        // 原始数据
-        model.addAttribute("shopOriginMapVal", shopOriginMap.values());
-        model.addAttribute("cityEnum", ShopDTO.CityEnum.values());
-        model.addAttribute("tagEnum", ShopDTO.TagEnum.values());
-        model.addAttribute("cityid", cityid);
-        return "demo";
-    }
-
     // ---------------------- 原始数据, 索引操作 ----------------------
     /**
      * 初始化MOCK数据
@@ -97,7 +76,7 @@ public class DemoController {
     }
 
     /**
-     * 新增/覆盖, 一条索引
+     * 新增/更新, 一条索引
      * @return
      */
     @RequestMapping("/addDocument")
@@ -167,6 +146,33 @@ public class DemoController {
         boolean ret = luceneSearchServiceImpl.deleteDocument(shopid);
 
         return ret?"S":"E";
+    }
+
+    /**
+     * 首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("")
+    public String index (Model model, String cityidarr){
+
+        List<Integer> cityids = null;
+        if (cityidarr!=null && cityidarr.trim().length()>0) {
+            cityids = new ArrayList<>();
+            for (String cityidStr: cityidarr.split(",")) {
+                cityids.add(Integer.valueOf(cityidStr));
+            }
+        }
+        model.addAttribute("cityids", cityids);
+
+        LuceneSearchResult result = luceneSearchServiceImpl.search(cityids);
+        model.addAttribute("result", result);
+
+        // 原始数据
+        model.addAttribute("shopOriginMapVal", shopOriginMap.values());
+        model.addAttribute("cityEnum", ShopDTO.CityEnum.values());
+        model.addAttribute("tagEnum", ShopDTO.TagEnum.values());
+        return "demo";
     }
 
 }

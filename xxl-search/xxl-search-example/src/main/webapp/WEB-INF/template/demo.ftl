@@ -16,42 +16,48 @@
         <div class="row clearfix">
 
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body search-from">
 
-
-                    <form role="form" class="form-inline">
-                    <#-- 商户名 -->
+                    <form class="form-inline">
+                        <#-- 商户名 -->
                         <div class="form-group col-md-12 column">
                             <label class="col-md-2">商户:</label>
                             <input type="shopname" class="form-control" />
-                            <button type="submit" class="btn btn-default">查询</button>
+                            <input type="button" class="btn btn-default" value="查询" id="search">
                         </div>
 
-                    <#-- 城市 -->
+                        <#-- 城市 -->
                         <div class="btn-group col-md-12 column">
                             <label class="col-md-2">城市:</label>
                             <div>
                             <#list cityEnum as city>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="cityid" value="${city.cityid}" <#if cityid?exists && cityid==city.cityid>checked</#if>>${city.cityname}(${city.cityid})
+                                    <#assign isChecked = false />
+                                    <#if cityids?exists >
+                                        <#list cityids as cityid>
+                                            <#if cityid==city.cityid>
+                                                <#assign isChecked = true />
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                    <input type="checkbox" name="cityid" value="${city.cityid}" <#if isChecked >checked</#if> >${city.cityname}(${city.cityid})
                                 </label>
                             </#list>
                             </div>
                         </div>
-
+                        <#-- 标签 -->
                         <div class="btn-group col-md-12 column">
                             <label class="col-md-2">标签:</label>
                             <div>
                             <#list tagEnum as tag>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="${tag.tagid}">${tag.tagname}(${tag.tagid})
+                                    <input type="checkbox" name="tags" value="${tag.tagid}">${tag.tagname}(${tag.tagid})
                                 </label>
                             </#list>
                             </div>
                         </div>
 
                     </form>
-
                 </div>
             </div>
 
@@ -141,6 +147,18 @@
 <script>
 var base_url = '${request.contextPath}';
 $(function(){
+
+    // 搜索按钮
+    $("#search").click(function(){
+        // cityid
+        var cityids =[];
+        $('.search-from input[name="cityid"]:checked').each(function(){
+            cityids.push($(this).val());
+        });
+        window.location.href = base_url + "?cityidarr=" + cityids;
+    });
+
+
     // 清空索引库
     $("#shopOriginData .deleteAllIndex").click(function(){
         $.post(base_url + "/deleteAllIndex", function(data, status) {
@@ -184,7 +202,7 @@ $(function(){
         $("#shopOriginData").find('tbody').append(temp);
     });
 
-    // 更新
+    // 新增/更新
     $("#shopOriginData").on('click', '.save',function() {
 
         var data = {
@@ -196,7 +214,7 @@ $(function(){
             hotscore : $(this).parent().parent().find('input[name="hotscore"]').val()
         };
 
-        $.post(base_url + "/createDocument", data, function(data, status) {
+        $.post(base_url + "/addDocument", data, function(data, status) {
             if (data == "S") {
                 alert("操作成功");
                 window.location.reload();
