@@ -1,8 +1,16 @@
 package com.xxl.search.example.controller;
 
+import com.xxl.search.client.lucene.LuceneSearchResult;
+import com.xxl.search.client.lucene.LuceneUtil;
 import com.xxl.search.example.core.model.ShopDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.lucene.document.*;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,23 +32,24 @@ public class DemoController {
      * @return
      */
     @RequestMapping("")
-    public String index (Model model){
+    public String index (Model model, Integer cityid){
+        // 搜索
+        List<Query> querys = new ArrayList<>();
+        if (cityid!=null) {
+            querys.add(new TermQuery(new Term(ShopDTO.ShopParam.CITY_ID, cityid+"")));
+        }
+
+        Sort sort = new Sort(new SortField(ShopDTO.ShopParam.SCORE, SortField.Type.SCORE));
+
+        LuceneSearchResult result = LuceneUtil.search(querys, sort, 0, 20);
+        model.addAttribute("result", result);
+
+        // 原始数据
         model.addAttribute("shopOriginMapVal", shopOriginMap.values());
         model.addAttribute("cityEnum", ShopDTO.CityEnum.values());
         model.addAttribute("tagEnum", ShopDTO.TagEnum.values());
+        model.addAttribute("cityid", cityid);
         return "demo";
-    }
-
-    /**
-     * 搜索操作
-     * @param model
-     * @return
-     */
-    @RequestMapping("/search")
-    @ResponseBody
-    public String search (Model model){
-        model.addAttribute("total", 0);
-        return "index";
     }
 
     // ---------------------- 原始数据, 索引操作 ----------------------
@@ -66,19 +75,50 @@ public class DemoController {
      * 清空索引库
      * @return
      */
-    @RequestMapping("/removeIndexAll")
+    @RequestMapping("/deleteAllIndex")
     @ResponseBody
-    public String removeIndexAll (){
-        return "S";
+    public String deleteAllIndex (){
+        boolean ret = LuceneUtil.deleteAll();
+        return ret?"S":"E";
+    }
+
+    /**
+     * 全量索引
+     * @return
+     */
+    @RequestMapping("/createAllIndex")
+    @ResponseBody
+    public String createAllIndex (){
+        boolean ret = true;
+        for (Map.Entry<Integer, ShopDTO> item: shopOriginMap.entrySet()) {
+            boolean temp = addDocument(item.getValue());
+            if (!temp) {
+                ret = false;
+            }
+        }
+        return ret?"S":"E";
+    }
+
+    public boolean addDocument(ShopDTO shopDTO){
+        Document document = new Document();
+
+        document.add(new IntField(ShopDTO.ShopParam.SHOP_ID, shopDTO.getShopid(), Field.Store.YES));
+        document.add(new TextField(ShopDTO.ShopParam.SHOP_NAME, shopDTO.getShopname(), Field.Store.YES));
+        document.add(new StringField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid()+"", Field.Store.YES));
+        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
+        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
+
+        boolean ret = LuceneUtil.addDocument(document, true);
+        return ret;
     }
 
     /**
      * 新增/覆盖, 一条索引
      * @return
      */
-    @RequestMapping("/saveOrUpdateIndex")
+    @RequestMapping("/createDocument")
     @ResponseBody
-    public Object saveOrUpdateIndex (Integer shopid, String shopname, Integer cityid, String taglist, Integer score, Integer hotscore){
+    public Object createDocument (Integer shopid, String shopname, Integer cityid, String taglist, Integer score, Integer hotscore){
 
         // shopid
         if (shopid==null || shopid<=0) {
@@ -113,28 +153,30 @@ public class DemoController {
         }
 
         // 原始数据操作
-        shopOriginMap.put(shopid, new ShopDTO(shopid, shopname, cityid, taglistReal, score, hotscore));
+        ShopDTO shopDTO = new ShopDTO(shopid, shopname, cityid, taglistReal, score, hotscore);
+        shopOriginMap.put(shopDTO.getShopid(), shopDTO);
 
         // 索引操作
+        boolean ret = addDocument(shopDTO);
 
-        return "S";
+        return ret?"S":"E";
     }
 
     /**
      * 删除, 一条索引
      * @return
      */
-    @RequestMapping("/removeIndex")
+    @RequestMapping("/deleteDocument")
     @ResponseBody
-    public String removeIndex (int shopid){
+    public String deleteDocument (int shopid){
 
         // 原始数据操作
         shopOriginMap.remove(shopid);
 
         // 索引操作
+        boolean ret = LuceneUtil.deleteDocument(new Term(ShopDTO.ShopParam.SHOP_ID, shopid+""));
 
-
-        return "S";
+        return ret?"S":"E";
     }
 
 }

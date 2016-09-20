@@ -10,7 +10,6 @@
 
 </head>
 <body>
-
     <#-- 搜索条件 -->
     <hr>
     <div class="container">
@@ -34,7 +33,7 @@
                             <div>
                             <#list cityEnum as city>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" id="inlineCheckbox1" value="${city.cityid}">${city.cityname}(${city.cityid})
+                                    <input type="checkbox" name="cityid" value="${city.cityid}" <#if cityid?exists && cityid==city.cityid>checked</#if>>${city.cityname}(${city.cityid})
                                 </label>
                             </#list>
                             </div>
@@ -77,16 +76,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <#list shopOriginMapVal as shop>
-                            <tr class="<#if shop_index%3==0>success<#elseif shop_index%3==1>error<#elseif shop_index%3==2>warning<#elseif shop_index%4==3>info</#if>" >
-                                <td>${shop.shopid}</td>
-                                <td>${shop.shopname}</td>
-                                <td>${shop.cityid}</td>
-                                <td><#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if></td>
-                                <td>${shop.score}</td>
-                                <td>${shop.hotscore}</td>
-                            </tr>
-                        </#list>
+                        <#if result?exists && result.documents?exists && result.documents?size gt 0 >
+                            <#list result.documents as shop>
+                                <tr class="<#if shop_index%3==0>success<#elseif shop_index%3==1>error<#elseif shop_index%3==2>warning<#elseif shop_index%4==3>info</#if>" >
+                                    <td>${shop.shopid}</td>
+                                    <td>${shop.shopname}</td>
+                                    <td>${shop.cityid}</td>
+                                    <td> <#--<#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if>--> </td>
+                                    <td>${shop.score}</td>
+                                    <td>${shop.hotscore}</td>
+                                </tr>
+                            </#list>
+                        </#if>
                     </tbody>
                 </table>
             </div>
@@ -99,8 +100,8 @@
         <div class="row clearfix">
             <div class="col-md-12 column">
                 <label class="col-md-2">商户原始数据:</label>&nbsp;&nbsp;
-                <a href="javascript:;" class="index_all_remove">索引全部清除</a>&nbsp;&nbsp;
-                <a href="javascript:;" class="index_all_update">索引全量更新</a>&nbsp;&nbsp;
+                <a href="javascript:;" class="deleteAllIndex">清空索引库</a>&nbsp;&nbsp;
+                <a href="javascript:;" class="createAllIndex">全量索引</a>&nbsp;&nbsp;
                 <a href="javascript:;" class="add_one_line">新增一行</a>
                 <table class="table table-bordered" >
                     <thead>
@@ -140,9 +141,32 @@
 <script>
 var base_url = '${request.contextPath}';
 $(function(){
-    // 索引全量更新
-    $("#shopOriginData .index_all_update").click(function(){
+    // 清空索引库
+    $("#shopOriginData .deleteAllIndex").click(function(){
+        $.post(base_url + "/deleteAllIndex", function(data, status) {
+            if (data == "S") {
+                alert("操作成功");
+                window.location.reload();
+            } else {
+                alert(data);
+            }
+        }).error(function(){
+            alert("接口异常");
+        });
+    });
 
+    // 全量索引
+    $("#shopOriginData .createAllIndex").click(function(){
+        $.post(base_url + "/createAllIndex", function(data, status) {
+            if (data == "S") {
+                alert("操作成功");
+                window.location.reload();
+            } else {
+                alert(data);
+            }
+        }).error(function(){
+            alert("接口异常");
+        });
     });
 
     // 新增一行
@@ -172,7 +196,7 @@ $(function(){
             hotscore : $(this).parent().parent().find('input[name="hotscore"]').val()
         };
 
-        $.post(base_url + "/saveOrUpdateIndex", data, function(data, status) {
+        $.post(base_url + "/createDocument", data, function(data, status) {
             if (data == "S") {
                 alert("操作成功");
                 window.location.reload();
@@ -191,7 +215,7 @@ $(function(){
             shopid : $(this).parent().parent().find('input[name="shopid"]').val()
         };
 
-        $.post(base_url + "/removeIndex", data, function(data, status) {
+        $.post(base_url + "/deleteDocument", data, function(data, status) {
             if (data == "S") {
                 alert("操作成功");
                 window.location.reload();

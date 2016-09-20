@@ -30,6 +30,11 @@
             <artifactId>lucene-queryparser</artifactId>
         </dependency>
         -->
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-smartcn</artifactId>
+            <version>5.5.2</version>
+        </dependency>
 
         <!-- jackson (use elasticsearch's version) -->
         <dependency>

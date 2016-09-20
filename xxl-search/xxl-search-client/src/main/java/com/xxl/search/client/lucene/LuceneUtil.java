@@ -4,14 +4,15 @@ import com.xxl.search.client.es.JacksonUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.*;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.BytesRefBuilder;
+import org.apache.lucene.util.NumericUtils;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -51,106 +52,127 @@ public class LuceneUtil {
 	// index path
 	public static final String INDEX_DIRECTORY = "/Users/xuxueli/Downloads/tmp/LuceneUtil";
 
+	private static Directory directory = null;
+	private static IndexWriter indexWriter = null;
+	private static SearcherManager searcherManager = null;
+	static {	init();	}
+	private static void init() {
+		if (indexWriter==null || searcherManager==null) {
+			try {
+				directory = new SimpleFSDirectory(Paths.get(INDEX_DIRECTORY));
+
+				Analyzer analyzer = new SmartChineseAnalyzer();
+				IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
+				indexWriter = new IndexWriter(directory, indexWriterConfig);
+
+				searcherManager = new SearcherManager(indexWriter, false, new SearcherFactory());
+				TrackingIndexWriter trackingIndexWriter = new TrackingIndexWriter(indexWriter);
+				ControlledRealTimeReopenThread controlledRealTimeReopenThread = new ControlledRealTimeReopenThread<IndexSearcher>(trackingIndexWriter, searcherManager, 5.0, 0.025);
+				controlledRealTimeReopenThread.setDaemon(true);//设为后台进程
+				controlledRealTimeReopenThread.start();
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+		}
+	}
+
+	private static void destory() {
+		try {
+			if (indexWriter!=null) {
+				indexWriter.commit();
+				indexWriter.close();
+			}
+			if (directory!=null) {
+				directory.close();
+			}
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+	}
+
 	/**
 	 * 删除全部索引
 	 * @throws Exception
 	 */
-	public static void deleteAll() throws Exception {
-		long start = System.currentTimeMillis();
-		logger.info("deleteAll start:{}", start);
-
-		// init index writer
-		Directory directory = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-		Analyzer analyzer = new StandardAnalyzer();
-		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-		IndexWriter indexWriter = new IndexWriter(directory, indexWriterConfig);
-
-		// delete all index
-		indexWriter.deleteAll();
-
-		// writer close
-		indexWriter.close();
-		directory.close();
-		long end = System.currentTimeMillis();
-		logger.info("deleteAll end:{}, cost:{}", new Object[]{start, (end - start)});
+	public static boolean deleteAll() {
+		try {
+			indexWriter.deleteAll();
+			indexWriter.commit();
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
+		}
+		return false;
 	}
 
 	/**
 	 * 创建一条索引	(create or overwrite index)
 	 * @throws Exception
 	 */
-	public static void createDocument(List<Field> fields) {
-		if (fields==null || fields.size()<1) {
-			return;
-		}
-
-		Directory directory = null;
-		Analyzer analyzer = null;
-		IndexWriter indexWriter = null;
-
+	public static boolean addDocument(Document document, boolean ifCommit) {
 		try {
-			// init index writer
-			directory = FSDirectory.open(Paths.get(INDEX_DIRECTORY));		// 1、index directory
-			analyzer = new StandardAnalyzer();								// 2、analyzer (StandardAnalyzer)
-			IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);	// 3、index writer config ( OpenMode.CREATE = create or overwrite index)
-			indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-			indexWriter = new IndexWriter(directory, indexWriterConfig);// 4、index writer
-
-			// write index
-			Document doc = new Document();											// 5、write ducument index
-			for (Field field: fields) {
-				doc.add(field);
-			}
-			indexWriter.addDocument(doc);
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// writer close
+			indexWriter.addDocument(document);
+			if (ifCommit) {
 				indexWriter.commit();
-				indexWriter.close();													// 5、writer close
-				directory.close();
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
 		}
-
+		return false;
+	}
+	public static boolean commitDocument() {
+		try {
+			indexWriter.commit();
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
+		}
+		return false;
 	}
 
 	/**
-	 * 删除一条索引
+	 * 更新一条索引	(更新一行,多条则更新最后一条,没有则新增)
 	 * @param term
+	 * @param document
+     * @return
      */
-	public static void deleteDocument(Term term){
-		if (term==null) {
-			return;
-		}
-
-		Directory directory = null;
-		Analyzer analyzer = null;
-		IndexWriter indexWriter = null;
+	public static boolean updateDocument(Term term, Document document) {
 		try {
-			// init index writer
-			directory = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-			analyzer = new StandardAnalyzer();
-			IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
-			indexWriter = new IndexWriter(directory, indexWriterConfig);
-
-			// delete document by term
-			indexWriter.deleteDocuments(term);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				// writer close
-				indexWriter.commit();
-				indexWriter.close();
-				directory.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			indexWriter.updateDocument(term, document);
+			indexWriter.commit();
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
 		}
+		return false;
+	}
+
+	/**
+	 * 删除一条/多条索引
+	 * @param terms
+     */
+	public static boolean deleteDocument(Term... terms){
+		try {
+			indexWriter.deleteDocuments(terms);	// Query... queries
+			indexWriter.commit();
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
+		}
+		return false;
+	}
+
+	// FieldType for int
+	public static final FieldType INT_FIELD_TYPE_STORED_SORTED = new FieldType(IntField.TYPE_STORED);
+	static {
+		INT_FIELD_TYPE_STORED_SORTED.setDocValuesType(DocValuesType.NUMERIC);
+		INT_FIELD_TYPE_STORED_SORTED.freeze();
 	}
 
 	/**
@@ -160,28 +182,30 @@ public class LuceneUtil {
 	public static LuceneSearchResult search(List<Query> queries, Sort sort, int offset, int pagesize) {
 		LuceneSearchResult result = new LuceneSearchResult();
 
-		Directory directory = null;
-		Analyzer analyzer = null;
-		IndexReader indexReader = null;
+		IndexSearcher indexSearcher = null;
 		try {
-			// init index reader
-			directory = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-			indexReader = DirectoryReader.open(directory);
-			IndexSearcher indexSearcher = new IndexSearcher(indexReader);
-
 			// init query
 			BooleanQuery.Builder booleanBuild = booleanBuild = new BooleanQuery.Builder();	// Occur (MUST=与、SHOULD=或、MUST_OUT-非)
 			if (queries!=null && queries.size()>0) {
 				for (Query query: queries) {
 					booleanBuild.add(query, BooleanClause.Occur.MUST);
+					// new TermQuery(new Term("key", "value"));
+					// NumericRangeQuery.newIntRange("key", value, value, true, true);
 				}
 			}
 			BooleanQuery booleanQuery = booleanBuild.build();
 
-			// search
+			// TopFieldCollector
 			TopFieldCollector topFieldCollector = TopFieldCollector.create(sort, offset+pagesize, false, false, false);
 
+			// IndexSearcher
+			searcherManager.maybeRefresh();
+			indexSearcher =  searcherManager.acquire();
+
+			// search
 			indexSearcher.search(booleanQuery, topFieldCollector);
+
+			// parse result
 			ScoreDoc[] scoreDocs = topFieldCollector.topDocs(offset, pagesize).scoreDocs;
 			logger.info(">>>>>>>>>>> search result, query:{}, result:{}", queries, JacksonUtil.writeValueAsString(topFieldCollector));
 
@@ -196,15 +220,28 @@ public class LuceneUtil {
 				}
 				result.setDocuments(documents);
 			}
+
+			/*TopDocs topDocs = searcher.search(booleanQuery, offset+pagesize, sort);
+			ScoreDoc[] hits = topDocs.scoreDocs;
+			if (offset > topDocs.totalHits) {
+				throw new Exception("totalHits is less than start");
+			}
+			Integer end = Math.min(offset + pagesize, topDocs.totalHits);
+			List<Document> list = new ArrayList<>();
+			for (int i = offset; i < end; i++) {
+				ScoreDoc hit = hits[i];
+				Document hitDoc = searcher.doc(hit.doc);
+				list.add(hitDoc);
+			}
+			return list;*/
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("", e);
 		} finally {
 			try {
-				// indexReader close
-				indexReader.close();
-				directory.close();
+				// release
+				searcherManager.release(indexSearcher);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("", e);
 			}
 		}
 
@@ -213,28 +250,51 @@ public class LuceneUtil {
 	
 	public static void main(String[] args) throws Exception {
 
-		// 清空
+		// deleteAll
 		deleteAll();
 
-		// 初始化
-		for (int i = 1; i <= 100; i++) {
-			List<Field> fields = new ArrayList<>();
-			fields.add(new IntField("id", i, Store.YES));
-			fields.add(new StringField("title", "标题"+i, Store.YES));
-			fields.add(new TextField("content", "文章内容"+i, Store.YES));
-			createDocument(fields);
+		// addDocument
+		for (int i = 0; i < 10; i++) {
+			Document doc = new Document();
+			doc.add(new IntField("id", i, IntField.TYPE_STORED));
+			doc.add(new IntField("cityid", 1, Store.YES));
+			doc.add(new TextField("shopname", "文章内容"+i, Store.YES));
+			doc.add(new StringField("group", "group", Store.YES));
+			doc.add(new IntField("score", 5000+i, IntField.TYPE_STORED));
+			doc.add(new IntField("hotscore", 5000-i, IntField.TYPE_STORED));
+			addDocument(doc, false);
 		}
+		commitDocument();
+
+		// updateDocument
+		Document doc = new Document();
+		doc.add(new IntField("id", 0, IntField.TYPE_STORED));
+		doc.add(new IntField("cityid", 1, Store.YES));
+		doc.add(new TextField("shopname", "asdfasdfasdf", Store.YES));
+		doc.add(new StringField("group", "group", Store.YES));
+
+		BytesRefBuilder bytes = new BytesRefBuilder();
+		NumericUtils.intToPrefixCoded(1, 0, bytes);
+		Term term = new Term("id", bytes);
+
+		updateDocument(term, doc);
+
+		// deleteDocument
+		deleteDocument(term);
 
 		// 查询
 		List<Query> querys = new ArrayList<>();
-		//querys.add(new TermQuery(new Term("title", "标题")));
-		querys.add(new QueryParser("content", new StandardAnalyzer()).parse("文章内容"));
+		querys.add(NumericRangeQuery.newIntRange("cityid", 1, 1, true, true));
+		querys.add(new TermQuery(new Term("group", "group")));
 
-		Sort sort = new Sort(new SortField("id", SortField.Type.INT));
+		Sort scoreSort = new Sort(new SortField("score", SortField.Type.DOC, false));
+		Sort hotScoreSort = new Sort(new SortField("hotscore", SortField.Type.DOC, false));
 
-		LuceneSearchResult result = search(querys, sort, 0, 10);
-		System.out.println(result);
+		LuceneSearchResult result = search(querys, hotScoreSort, 0, 20);
+		for (Document item: result.getDocuments()) {
+			System.out.println(item);
+		}
+
 	}
-
 
 }
