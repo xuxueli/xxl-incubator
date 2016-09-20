@@ -103,9 +103,9 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
         // sort
         Sort scoreSort = null;
         if (sortType==1) {
-            scoreSort = new Sort(new SortField(ShopDTO.ShopParam.SCORE, SortField.Type.DOC, true));
+            scoreSort = new Sort(new SortField(ShopDTO.ShopParam.HOT_SCORE, SortField.Type.INT, true));
         } else {
-            scoreSort = new Sort(new SortField(ShopDTO.ShopParam.HOT_SCORE, SortField.Type.DOC, true));
+            scoreSort = new Sort(new SortField(ShopDTO.ShopParam.SCORE, SortField.Type.INT, true));
         }
 
         // result
