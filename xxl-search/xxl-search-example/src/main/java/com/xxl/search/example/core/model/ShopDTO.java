@@ -118,13 +118,10 @@ public class ShopDTO {
 	 * 标签字典
 	 */
 	public enum TagEnum{
-		TAG01(1, "地铁沿线"),
-		TAG02(2, "独立门面"),
-		TAG03(3, "西式"),
-		TAG04(4, "中式"),
-		TAG05(5, "草坪"),
-		TAG06(6, "免费WIFI"),
-		TAG07(7, "免费停车");
+		TAG01(1, "地铁"),
+		TAG02(2, "西式"),
+		TAG03(3, "中式"),
+		TAG04(4, "草坪");
 		public final int tagid;
 		public final String tagname;
 		TagEnum(int tagid, String tagname) {

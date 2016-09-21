@@ -40,7 +40,7 @@
                                             </#if>
                                         </#list>
                                     </#if>
-                                    <input type="checkbox" name="cityid" value="${city.cityid}" <#if isChecked >checked</#if> >${city.cityname}(${city.cityid})
+                                    <input type="radio" name="cityid" value="${city.cityid}" <#if isChecked >checked</#if> >${city.cityname}(${city.cityid})
                                 </label>
                             </#list>
                             </div>
@@ -61,8 +61,12 @@
                         <div class="btn-group col-md-12 column">
                             <label class="col-md-2">排序:</label>
                             <div>
-                                <input type="radio" name="sortType" value="0" <#if 0 == sortType>checked</#if> >默认排序
-                                <input type="radio" name="sortType" value="1"<#if 1 == sortType>checked</#if> >热门排序
+                                <label class="checkbox-inline">
+                                    <input type="radio" name="sortType" value="0" <#if 0 == sortType>checked</#if> >默认排序
+                                </label>
+                                <label class="checkbox-inline">
+                                    <input type="radio" name="sortType" value="1" <#if 1 == sortType>checked</#if> >热门排序
+                                </label>
                             </div>
                         </div>
 
@@ -135,8 +139,22 @@
                     <tr class="info" >
                         <td><input name="shopid" value="${shop.shopid}" readonly /></td>
                         <td><input name="shopname" value="${shop.shopname}" /></td>
-                        <td><input name="cityid" value="${shop.cityid}" /></td>
-                        <td><input name="taglist" value="<#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if>" /></td>
+                        <td>
+                            <#list cityEnum as city>
+                                <input type="radio" name="cityid_${shop.shopid}" value="${city.cityid}" <#if shop.cityid==city.cityid >checked</#if> />${city.cityname}
+                            </#list>
+                        </td>
+                        <td>
+                            <#list tagEnum as tag>
+                                <label class="checkbox-inline">
+                                    <#assign isChecked = false />
+                                    <#if shop.taglist?exists && shop.taglist?seq_contains(tag.tagid) >
+                                        <#assign isChecked = true />
+                                    </#if>
+                                    <input type="checkbox" name="tagid_${shop.shopid}" value="${tag.tagid}" <#if isChecked>checked</#if> >${tag.tagname}
+                                </label>
+                            </#list>
+                        </td>
                         <td><input name="score" value="${shop.score}" /></td>
                         <td><input name="hotscore" value="${shop.hotscore}" /></td>
                         <td><a href="javascript:;" class="save" >更新</a>&nbsp;&nbsp;<a href="javascript:;" class="delete" >删除</a></td>
@@ -223,14 +241,23 @@ $(function(){
     // 新增/更新
     $("#shopOriginData").on('click', '.save',function() {
 
+        var shopid = $(this).parent().parent().find('input[name="shopid"]').val();
+
+        var taglist =[];
+        $(this).parent().parent().find('input[name=tagid_'+ shopid +']:checked').each(function(){
+            taglist.push($(this).val());
+        });
+
         var data = {
-            shopid : $(this).parent().parent().find('input[name="shopid"]').val() ,
+            shopid : shopid ,
             shopname : $(this).parent().parent().find('input[name="shopname"]').val() ,
-            cityid : $(this).parent().parent().find('input[name="cityid"]').val() ,
-            taglist : $(this).parent().parent().find('input[name="taglist"]').val() ,
+            cityid : $(this).parent().parent().find('input[name=cityid_'+ shopid +']:checked').val() ,
+            taglist : taglist+"" ,
             score : $(this).parent().parent().find('input[name="score"]').val() ,
             hotscore : $(this).parent().parent().find('input[name="hotscore"]').val()
         };
+
+        alert(data);
 
         $.post(base_url + "/addDocument", data, function(data, status) {
             if (data == "S") {

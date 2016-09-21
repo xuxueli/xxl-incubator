@@ -1,6 +1,7 @@
 package com.xxl.search.example.controller;
 
 import com.xxl.search.client.lucene.LuceneSearchResult;
+import com.xxl.search.client.lucene.LuceneUtil;
 import com.xxl.search.example.core.model.ShopDTO;
 import com.xxl.search.example.service.IXxlSearchService;
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +47,9 @@ public class DemoController {
         shopOriginMap.put(100009, new ShopDTO(100009, "皇冠假日酒店", ShopDTO.CityEnum.GUANGZHOU.cityid, Arrays.asList(ShopDTO.TagEnum.TAG01.tagid), 60, 35));
         shopOriginMap.put(100010, new ShopDTO(100010, "峰味香黄焖鸡米饭", ShopDTO.CityEnum.GUANGZHOU.cityid, Arrays.asList(ShopDTO.TagEnum.TAG01.tagid), 55, 15));
         shopOriginMap.put(100011, new ShopDTO(100011, "沙县小吃", ShopDTO.CityEnum.GUANGZHOU.cityid, Arrays.asList(ShopDTO.TagEnum.TAG01.tagid), 50, 95));
+
+        // 清空索引库
+        LuceneUtil.deleteAll();
     }
 
     /**
