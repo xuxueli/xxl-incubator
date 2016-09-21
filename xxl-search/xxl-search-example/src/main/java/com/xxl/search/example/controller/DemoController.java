@@ -24,9 +24,12 @@ public class DemoController {
 
     @Resource
     private IXxlSearchService luceneSearchServiceImpl;
+    @Resource
+    private IXxlSearchService eSSearchServiceImpl;
 
     public IXxlSearchService getXxlSearchService(){
-        return luceneSearchServiceImpl;
+        //return luceneSearchServiceImpl;
+        return eSSearchServiceImpl;
     }
 
     // ---------------------- 原始数据, 索引操作 ----------------------
