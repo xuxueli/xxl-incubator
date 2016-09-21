@@ -137,7 +137,7 @@
                     <tbody>
                     <#list shopOriginMapVal as shop>
                     <tr class="info" >
-                        <td><input name="shopid" value="${shop.shopid}" readonly /></td>
+                        <td><input name="shopid" value="${shop.shopid}" readonly onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
                         <td><input name="shopname" value="${shop.shopname}" /></td>
                         <td>
                             <#list cityEnum as city>
@@ -155,9 +155,9 @@
                                 </label>
                             </#list>
                         </td>
-                        <td><input name="score" value="${shop.score}" /></td>
-                        <td><input name="hotscore" value="${shop.hotscore}" /></td>
-                        <td><a href="javascript:;" class="save" >更新</a>&nbsp;&nbsp;<a href="javascript:;" class="delete" >删除</a></td>
+                        <td><input name="score" value="${shop.score}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+                        <td><input name="hotscore" value="${shop.hotscore}" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" /></td>
+                        <td><a href="javascript:;" class="save" data-oldshopid="${shop.shopid}" >更新</a>&nbsp;&nbsp;<a href="javascript:;" class="delete" >删除</a></td>
                     </tr>
                     </#list>
                     </tbody>
@@ -225,15 +225,25 @@ $(function(){
 
     // 新增一行
     $("#shopOriginData .add_one_line").click(function(){
-        var temp = '<tr class="info" >' +
-            '<td><input name="shopid" value="" /></td>' +
-            '<td><input name="shopname" value="" /></td>' +
-            '<td><input name="cityid" value="" /></td>' +
-            '<td><input name="taglist" value="" /></td>' +
-            '<td><input name="score" value="" /></td>' +
-            '<td><input name="hotscore" value="" /></td>' +
-            '<td><a href="javascript:;" class="save" >更新</a>&nbsp;&nbsp;<a href="javascript:;" class="delete" >删除</a></td>' +
-            '</tr>';
+        var temp = '<tr class="info" >'+
+                '<td><input name="shopid" value="${shop.shopid}" /></td>'+
+                '<td><input name="shopname" value="${shop.shopname}" /></td>'+
+                '<td>'+
+                    '<#list cityEnum as city>'+
+                        '<input type="radio" name="cityid_" value="${city.cityid}" />${city.cityname}'+
+                    '</#list>'+
+                '</td>'+
+                '<td>'+
+                    '<#list tagEnum as tag>'+
+                    '<label class="checkbox-inline">'+
+                        '<input type="checkbox" name="tagid_" value="${tag.tagid}" >${tag.tagname}'+
+                    '</label>'+
+                    '</#list>'+
+                '</td>'+
+                '<td><input name="score" value="${shop.score}"   /></td>'+
+                '<td><input name="hotscore" value="${shop.hotscore}"  /></td>'+
+                '<td><a href="javascript:;" class="save" data-oldshopid="" >保存</a></td>'+
+                '</tr>';
 
         $("#shopOriginData").find('tbody').append(temp);
     });
@@ -241,23 +251,21 @@ $(function(){
     // 新增/更新
     $("#shopOriginData").on('click', '.save',function() {
 
-        var shopid = $(this).parent().parent().find('input[name="shopid"]').val();
+        var oldshopid = $(this).attr("data-oldshopid");
 
         var taglist =[];
-        $(this).parent().parent().find('input[name=tagid_'+ shopid +']:checked').each(function(){
+        $(this).parent().parent().find('input[name=tagid_'+ oldshopid +']:checked').each(function(){
             taglist.push($(this).val());
         });
 
         var data = {
-            shopid : shopid ,
+            shopid : $(this).parent().parent().find('input[name="shopid"]').val() ,
             shopname : $(this).parent().parent().find('input[name="shopname"]').val() ,
-            cityid : $(this).parent().parent().find('input[name=cityid_'+ shopid +']:checked').val() ,
+            cityid : $(this).parent().parent().find('input[name=cityid_'+ oldshopid +']:checked').val() ,
             taglist : taglist+"" ,
             score : $(this).parent().parent().find('input[name="score"]').val() ,
             hotscore : $(this).parent().parent().find('input[name="hotscore"]').val()
         };
-
-        alert(data);
 
         $.post(base_url + "/addDocument", data, function(data, status) {
             if (data == "S") {
@@ -274,11 +282,10 @@ $(function(){
 
     // 删除
     $("#shopOriginData").on('click', '.delete',function() {
-        var data = {
-            shopid : $(this).parent().parent().find('input[name="shopid"]').val()
-        };
 
-        $.post(base_url + "/deleteDocument", data, function(data, status) {
+        var shopid = $(this).parent().parent().find('input[name="shopid"]').val();
+
+        $.post(base_url + "/deleteDocument", {"shopid":shopid}, function(data, status) {
             if (data == "S") {
                 alert("操作成功");
                 window.location.reload();
