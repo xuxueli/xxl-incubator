@@ -1,6 +1,5 @@
 package com.xxl.search.example.controller;
 
-import com.xxl.search.client.lucene.LuceneSearchResult;
 import com.xxl.search.client.lucene.LuceneUtil;
 import com.xxl.search.example.core.model.ShopDTO;
 import com.xxl.search.example.service.IXxlSearchService;
@@ -203,10 +202,11 @@ public class DemoController {
         int offset = (page-1) * pagesize;
 
         // search
-        LuceneSearchResult result = luceneSearchServiceImpl.search(offset, pagesize, shopname, cityids, tagids, sortType);
-        model.addAttribute("result", result);
+        Map<String, Object> result = luceneSearchServiceImpl.search(offset, pagesize, shopname, cityids, tagids, sortType);
+        model.addAttribute("data", result.get("data"));
 
-        int pageNum = (result.getTotalHits()%pagesize==0)?result.getTotalHits()/pagesize:(result.getTotalHits()/pagesize+1);
+        int total = Integer.valueOf(result.get("total").toString());
+        int pageNum = (total%pagesize==0)?total/pagesize:(total/pagesize+1);
         model.addAttribute("page", page);
         model.addAttribute("pageNum", pageNum);
 

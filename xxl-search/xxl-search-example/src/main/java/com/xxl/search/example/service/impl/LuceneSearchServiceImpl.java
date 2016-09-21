@@ -19,7 +19,9 @@ import org.apache.lucene.util.NumericUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xuxueli on 16/9/20.
@@ -83,7 +85,7 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
     }
 
     @Override
-    public LuceneSearchResult search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType) {
+    public Map<String, Object> search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType) {
 
         // query
         List<Query> querys = new ArrayList<>();
@@ -127,8 +129,11 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
         }
 
         // result
+        Map<String, Object> retMap = new HashMap();
         LuceneSearchResult result = LuceneUtil.search(querys, scoreSort, offset, pagesize);
-        return result;
+        retMap.put("total", result.getTotalHits());
+        retMap.put("data", result.getDocuments());
+        return retMap;
     }
 
 }

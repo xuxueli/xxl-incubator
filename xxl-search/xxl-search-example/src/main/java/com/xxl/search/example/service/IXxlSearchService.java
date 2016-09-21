@@ -1,9 +1,9 @@
 package com.xxl.search.example.service;
 
-import com.xxl.search.client.lucene.LuceneSearchResult;
 import com.xxl.search.example.core.model.ShopDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by xuxueli on 16/9/20.
@@ -28,6 +28,6 @@ public interface IXxlSearchService {
      * @param sortType  排序
      * @return
      */
-    public LuceneSearchResult search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType);
+    public Map<String, Object> search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType);
 
 }

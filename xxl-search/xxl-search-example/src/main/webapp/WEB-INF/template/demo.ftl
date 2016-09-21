@@ -104,8 +104,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                        <#if result?exists && result.documents?exists && result.documents?size gt 0 >
-                            <#list result.documents as shop>
+                        <#if data?exists && data?size gt 0 >
+                            <#list data as shop>
                                 <tr class="<#if shop_index%3==0>success<#elseif shop_index%3==1>error<#elseif shop_index%3==2>warning<#elseif shop_index%4==3>info</#if>" >
                                     <td>${shop.shopid}</td>
                                     <td>${shop.shopname}</td>
