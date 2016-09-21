@@ -34,28 +34,35 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
 
     @Override
     public boolean addDocument(ShopDTO shopDTO) {
+
+        Document document = buildDucument(shopDTO);
+
+        boolean ret = LuceneUtil.addDocument(document, true);
+        return ret;
+    }
+
+    private Document buildDucument(ShopDTO shopDTO){
         Document document = new Document();
 
         document.add(new IntField(ShopDTO.ShopParam.SHOP_ID, shopDTO.getShopid(), Field.Store.YES));
         document.add(new TextField(ShopDTO.ShopParam.SHOP_NAME, shopDTO.getShopname(), Field.Store.YES));
         //document.add(new StringField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid()+"", Field.Store.YES));
         document.add(new IntField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid(), Field.Store.YES));
+        if (shopDTO.getTaglist()!=null && shopDTO.getTaglist().size()>0) {
+            for (int tagid: shopDTO.getTaglist()) {
+                document.add(new IntField(ShopDTO.ShopParam.TAG_ID, tagid, Field.Store.YES));
+            }
+        }
         document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
         document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
 
-        boolean ret = LuceneUtil.addDocument(document, true);
-        return ret;
+        return document;
     }
 
     @Override
     public boolean updateDocument(ShopDTO shopDTO) {
-        Document document = new Document();
 
-        document.add(new IntField(ShopDTO.ShopParam.SHOP_ID, shopDTO.getShopid(), Field.Store.YES));
-        document.add(new TextField(ShopDTO.ShopParam.SHOP_NAME, shopDTO.getShopname(), Field.Store.YES));
-        document.add(new IntField(ShopDTO.ShopParam.CITY_ID, shopDTO.getCityid(), Field.Store.YES));
-        document.add(new IntField(ShopDTO.ShopParam.SCORE, shopDTO.getScore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
-        document.add(new IntField(ShopDTO.ShopParam.HOT_SCORE, shopDTO.getHotscore(), LuceneUtil.INT_FIELD_TYPE_STORED_SORTED));
+        Document document = buildDucument(shopDTO);
 
         BytesRefBuilder bytes = new BytesRefBuilder();
         NumericUtils.intToPrefixCoded(shopDTO.getShopid(), 0, bytes);
@@ -76,17 +83,10 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
     }
 
     @Override
-    public LuceneSearchResult search(List<Integer> cityids, String shopname, int sortType) {
+    public LuceneSearchResult search(String shopname, List<Integer> cityids, List<Integer> tagids, int sortType) {
 
         // query
         List<Query> querys = new ArrayList<>();
-        if (cityids!=null && cityids.size() > 0) {
-            BooleanQuery.Builder cityBooleanBuild = new BooleanQuery.Builder();
-            for (int cityid: cityids) {
-                cityBooleanBuild.add(NumericRangeQuery.newIntRange(ShopDTO.ShopParam.CITY_ID, cityid, cityid, true, true), BooleanClause.Occur.SHOULD);
-            }
-            querys.add(cityBooleanBuild.build());
-        }
 
         // shopname
         if (shopname!=null && shopname.trim().length()>0) {
@@ -98,6 +98,24 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+        }
+
+        // cityids
+        if (cityids!=null && cityids.size() > 0) {
+            BooleanQuery.Builder cityBooleanBuild = new BooleanQuery.Builder();
+            for (int cityid: cityids) {
+                cityBooleanBuild.add(NumericRangeQuery.newIntRange(ShopDTO.ShopParam.CITY_ID, cityid, cityid, true, true), BooleanClause.Occur.SHOULD);
+            }
+            querys.add(cityBooleanBuild.build());
+        }
+
+        // tagids
+        if (tagids!=null && tagids.size() > 0) {
+            BooleanQuery.Builder cityBooleanBuild = new BooleanQuery.Builder();
+            for (int tagid: tagids) {
+                cityBooleanBuild.add(NumericRangeQuery.newIntRange(ShopDTO.ShopParam.TAG_ID, tagid, tagid, true, true), BooleanClause.Occur.SHOULD);
+            }
+            querys.add(cityBooleanBuild.build());
         }
 
         // sort

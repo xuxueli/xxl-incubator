@@ -51,7 +51,15 @@
                             <div>
                             <#list tagEnum as tag>
                                 <label class="checkbox-inline">
-                                    <input type="checkbox" name="tags" value="${tag.tagid}">${tag.tagname}(${tag.tagid})
+                                    <#assign isChecked = false />
+                                    <#if tagids?exists >
+                                        <#list tagids as tagid>
+                                            <#if tagid==tag.tagid >
+                                                <#assign isChecked = true />
+                                            </#if>
+                                        </#list>
+                                    </#if>
+                                    <input type="checkbox" name="tagid" value="${tag.tagid}" <#if isChecked>checked</#if> >${tag.tagname}(${tag.tagid})
                                 </label>
                             </#list>
                             </div>
@@ -183,6 +191,12 @@ $(function(){
             cityids.push($(this).val());
         });
 
+        // tagid
+        var tagids =[];
+        $('.search-from input[name="tagid"]:checked').each(function(){
+            tagids.push($(this).val());
+        });
+
         // shopname
         var shopname = $('.search-from input[name="shopname"]').val();
         shopname = encodeURI(shopname);
@@ -191,7 +205,7 @@ $(function(){
         // sort
         var sortType = $('.search-from input[name="sortType"]:checked').val();
 
-        window.location.href = base_url + "?cityidarr=" + cityids + "&shopname=" + shopname + "&sortType=" + sortType;
+        window.location.href = base_url + "?cityidarr=" + cityids + "&tagidarr=" + tagids + "&shopname=" + shopname + "&sortType=" + sortType;
     });
 
 

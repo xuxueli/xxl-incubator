@@ -159,7 +159,7 @@ public class DemoController {
      * @return
      */
     @RequestMapping("")
-    public String index (Model model, String cityidarr, String shopname, Integer sortType){
+    public String index (Model model, String cityidarr, String tagidarr,String shopname, Integer sortType){
 
         // cityidarr
         List<Integer> cityids = cityids = new ArrayList<>();
@@ -171,6 +171,15 @@ public class DemoController {
             cityids.add(ShopDTO.CityEnum.SHNGHAI.cityid);
         }
         model.addAttribute("cityids", cityids);
+
+        // tagidarr
+        List<Integer> tagids = new ArrayList<>();
+        if (tagidarr!=null && tagidarr.trim().length()>0) {
+            for (String tagidStr: tagidarr.split(",")) {
+                tagids.add(Integer.valueOf(tagidStr));
+            }
+        }
+        model.addAttribute("tagids", tagids);
 
         // shopname
         try {
@@ -187,7 +196,7 @@ public class DemoController {
         model.addAttribute("sortType", sortType);
 
         // search
-        LuceneSearchResult result = luceneSearchServiceImpl.search(cityids, shopname, sortType);
+        LuceneSearchResult result = luceneSearchServiceImpl.search(shopname, cityids, tagids, sortType);
         model.addAttribute("result", result);
 
         // 原始数据

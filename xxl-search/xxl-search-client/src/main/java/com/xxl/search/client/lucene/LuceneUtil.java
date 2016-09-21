@@ -46,14 +46,19 @@ import java.util.List;
 		- TextField 分词索引
 	《功能》
 		- 1、清空索引
-		- 2、新增一条索引: int(排序查询)、String、Text(分词)
+		- 2、新增一条索引:
+			- IntField: int索引, 不分词。 可作为排序字段
+			- StringField: string索引, 部分次
+			- TextField: string索引, 可分词
+			- 一个Field支持索引绑定多个值, 实现一对多索引List功能;
 		- 3、更新一条索引
 		- 4、删除一条索引
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
-			- IntField/StringField, 精确查询;
-			- TextField, 分词查询
-			- IntField("id", "{1,2,3}"), 同一属性, 多值范围内查询;
-			- Field01 And Field02..., 不同属性, 联合查询
+			- 精确查询, IntField/StringField;
+			- 分词查询, TextField
+			- 范围查询,
+			- IntField("id", "{1,2,3}"), 一个Field, 支持多值范围内查询; ()
+			- Field01 And Field02..., 多个Field, 支持联合查询
 			- 分页
 			- 排序
 	</pre>

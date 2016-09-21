@@ -79,6 +79,7 @@ public class ShopDTO {
 		public static final String SHOP_ID = "shopid";
 		public static final String SHOP_NAME = "shopname";
 		public static final String CITY_ID = "cityid";
+		public static final String TAG_ID = "taglist";
 		public static final String SCORE = "score";
 		public static final String HOT_SCORE = "hotscore";
 	}
