@@ -50,7 +50,7 @@ import java.util.List;
 			- IntField: int索引, 不分词。 可作为排序字段
 			- StringField: string索引, 部分次
 			- TextField: string索引, 可分词
-			- 一个Field支持索引绑定多个值, 实现一对多索引List功能;
+			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;
 		- 3、更新一条索引
 		- 4、删除一条索引
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)

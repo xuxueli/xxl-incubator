@@ -109,8 +109,17 @@
                                 <tr class="<#if shop_index%3==0>success<#elseif shop_index%3==1>error<#elseif shop_index%3==2>warning<#elseif shop_index%4==3>info</#if>" >
                                     <td>${shop.shopid}</td>
                                     <td>${shop.shopname}</td>
-                                    <td>${shop.cityid}</td>
-                                    <td> <#--<#if shop.taglist?exists><#list shop.taglist as tagid>${tagid},</#list></#if>--> </td>
+                                    <td>
+                                        <#list cityEnum as city>
+                                            <#if shop.cityid==city.cityid >${city.cityname}</#if>
+                                        </#list>
+                                    </td>
+                                    <td>
+                                        <#-- 多标签,返回多个同名Field,需要手动聚合,麻烦 -->
+                                        <#list tagEnum as tag>
+                                            <#if shop.tagid == tag.tagid >${tag.tagname}</#if>
+                                        </#list>
+                                    </td>
                                     <td>${shop.score}</td>
                                     <td>${shop.hotscore}</td>
                                 </tr>
