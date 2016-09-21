@@ -56,9 +56,8 @@ import java.util.List;
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
 			- 精确查询, IntField/StringField;
 			- 分词查询, TextField
-			- 范围查询,
-			- IntField("id", "{1,2,3}"), 一个Field, 支持多值范围内查询; ()
-			- Field01 And Field02..., 多个Field, 支持联合查询
+			- 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询
+			- 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询
 			- 分页
 			- 排序
 	</pre>
