@@ -90,7 +90,7 @@ public class ShopDTO {
 	public enum CityEnum{
 		BEIJING(1, "北京"),
 		SHNGHAI(2, "上海"),
-		GUANGZHOU(3, "深圳");
+		SHENZHEN(3, "深圳");
 
 		public final int cityid;
 		public final String cityname;

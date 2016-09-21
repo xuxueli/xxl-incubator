@@ -11,6 +11,7 @@
 </head>
 <body>
     <#-- 搜索条件 -->
+    <center><h1>搜索列表页</h1></center>
     <hr>
     <div class="container">
         <div class="row clearfix">
@@ -23,7 +24,7 @@
                         <div class="form-group col-md-12 column">
                             <label class="col-md-2">商户:</label>
                             <input type="text" class="form-control" name="shopname" value="${shopname}" />
-                            <input type="button" class="btn btn-default" value="查询" id="search">
+                            <input type="button" class="btn btn-default search" value="查询" >
                         </div>
 
                         <#-- 城市 -->
@@ -117,6 +118,15 @@
                         </#if>
                     </tbody>
                 </table>
+
+                <#if pageNum gt 0 >
+                    <ul class="pagination">
+                        <#list 1..pageNum as pageitem>
+                            <li <#if pageitem == page>class="active disabled"</#if>  ><a href="javascript:;" class="<#if pageitem != page>search</#if>"  page="${pageitem}" >${pageitem}</a></li>
+                        </#list>
+                    </ul>
+                </#if>
+
             </div>
         </div>
     </div>
@@ -184,7 +194,7 @@ var base_url = '${request.contextPath}';
 $(function(){
 
     // 搜索按钮
-    $("#search").click(function(){
+    $(".search").click(function(){
         // cityid
         var cityids =[];
         $('.search-from input[name="cityid"]:checked').each(function(){
@@ -202,10 +212,16 @@ $(function(){
         shopname = encodeURI(shopname);
         shopname = encodeURI(shopname);
 
+        // page
+        var page = $(this).attr("page");
+        if (!page) {
+            page = 1;
+        }
+
         // sort
         var sortType = $('.search-from input[name="sortType"]:checked').val();
 
-        window.location.href = base_url + "?cityidarr=" + cityids + "&tagidarr=" + tagids + "&shopname=" + shopname + "&sortType=" + sortType;
+        window.location.href = base_url + "?cityidarr=" + cityids + "&tagidarr=" + tagids + "&shopname=" + shopname + "&sortType=" + sortType + "&page=" + page;
     });
 
 

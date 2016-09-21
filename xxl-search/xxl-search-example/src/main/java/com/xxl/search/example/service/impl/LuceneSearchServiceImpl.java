@@ -83,7 +83,7 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
     }
 
     @Override
-    public LuceneSearchResult search(String shopname, List<Integer> cityids, List<Integer> tagids, int sortType) {
+    public LuceneSearchResult search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType) {
 
         // query
         List<Query> querys = new ArrayList<>();
@@ -127,7 +127,7 @@ public class LuceneSearchServiceImpl implements IXxlSearchService {
         }
 
         // result
-        LuceneSearchResult result = LuceneUtil.search(querys, scoreSort, 0, 20);
+        LuceneSearchResult result = LuceneUtil.search(querys, scoreSort, offset, pagesize);
         return result;
     }
 

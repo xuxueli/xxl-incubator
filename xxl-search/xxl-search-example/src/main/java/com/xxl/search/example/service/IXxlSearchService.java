@@ -18,6 +18,6 @@ public interface IXxlSearchService {
 
     public boolean deleteDocument(int shopid);
 
-    public LuceneSearchResult search(String shopname, List<Integer> cityids, List<Integer> tagids, int sortType);
+    public LuceneSearchResult search(int offset, int pagesize, String shopname, List<Integer> cityids, List<Integer> tagids, int sortType);
 
 }
