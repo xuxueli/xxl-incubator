@@ -29,12 +29,13 @@ public class LuceneUtil {
 	private static String INDEX_DIRECTORY = "/Users/xuxueli/Downloads/tmp/LuceneUtil";
 	public static void setDirectory(String directory){
 		INDEX_DIRECTORY = directory;
+		destory();
+		init();
 	}
 
 	private static Directory directory = null;
 	private static IndexWriter indexWriter = null;
 	private static SearcherManager searcherManager = null;
-	static {	init();	}
 	private static void init() {
 		if (indexWriter==null || searcherManager==null) {
 			try {
@@ -58,13 +59,19 @@ public class LuceneUtil {
 	private static void destory() {
 		try {
 			if (indexWriter!=null) {
-				indexWriter.commit();
-				indexWriter.close();
+				if (indexWriter.isOpen()) {
+					indexWriter.commit();
+					indexWriter.close();
+				}
+				indexWriter = null;
 			}
 			if (directory!=null) {
 				directory.close();
+				directory = null;
 			}
-		} catch (IOException e) {
+
+
+		} catch (Exception e) {
 			logger.error("", e);
 		}
 	}
@@ -80,7 +87,6 @@ public class LuceneUtil {
 			return true;
 		} catch (IOException e) {
 			logger.error("", e);
-			init();
 		}
 		return false;
 	}
@@ -96,7 +102,6 @@ public class LuceneUtil {
 			return true;
 		} catch (IOException e) {
 			logger.error("", e);
-			init();
 		}
 		return false;
 	}
@@ -228,6 +233,20 @@ public class LuceneUtil {
 	}
 
 	public static void main(String[] args) throws Exception {
+		// 索引目录
+		LuceneUtil.setDirectory("/Users/xuxueli/Downloads/tmp/search_fs");
+
+		// query
+		LuceneSearchResult result = queryIndex("分词", 0, 20);
+		for (Document item: result.getDocuments()) {
+			System.out.println(item);
+		}
+	}
+
+	/*public static void main(String[] args) throws Exception {
+		// 索引目录
+		LuceneUtil.setDirectory("/Users/xuxueli/Downloads/tmp/LuceneUtil");
+
 		// create
 		List<SearchDto> list = new ArrayList<>();
 		for (int i = 1; i <= 30; i++) {
@@ -241,6 +260,6 @@ public class LuceneUtil {
 		for (Document item: result.getDocuments()) {
 			System.out.println(item);
 		}
-	}
+	}*/
 
 }

@@ -1,5 +1,7 @@
-package com.xxl.search.embed.ui;
+package com.xxl.search.embed;
 
+
+import com.xxl.search.embed.ui.IndexUI;
 
 import javax.swing.*;
 
