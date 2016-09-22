@@ -11,6 +11,7 @@
     <modules>
         <module>xxl-search-client</module>
         <module>xxl-search-example</module>
+        <module>xxl-search-embed</module>
     </modules>
 
     <build>
