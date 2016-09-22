@@ -20,7 +20,7 @@ public class IndexUI extends JFrame{
 			instance.add(WebSitePanel.getInstance());
 
 			instance.setTitle("搜索小程序");
-			instance.setSize(500,150);
+			instance.setSize(430,150);
 			instance.setLocationRelativeTo(null);	// center
 			instance.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			instance.setResizable(false);

@@ -2,6 +2,9 @@ package com.xxl.search.embed.ui;
 
 
 import com.xxl.search.embed.excel.ExcelUtil;
+import com.xxl.search.embed.lucene.LuceneSearchResult;
+import com.xxl.search.embed.lucene.LuceneUtil;
+import org.apache.lucene.document.Document;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -12,6 +15,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
+
+import static com.xxl.search.embed.excel.ExcelUtil.SEARCH_FS;
 
 /**
  * Created by xuxueli on 16/8/18.
@@ -35,12 +41,12 @@ public class WebSitePanel extends Panel implements ActionListener {
 
 
             // templateGenerateBtn
-            templateGenerateBtn = new JButton("索引模板生成");
+            templateGenerateBtn = new JButton("初始化索引模板");
             templateGenerateBtn.setBackground(Color.BLACK);
             templateGenerateBtn.addActionListener(instance);
 
             // createIndex
-            createIndexBtn = new JButton("生成索引");
+            createIndexBtn = new JButton("生成索引文件");
             createIndexBtn.setBackground(Color.BLACK);
             createIndexBtn.addActionListener(instance);
 
@@ -58,6 +64,15 @@ public class WebSitePanel extends Panel implements ActionListener {
                 }
             });
 
+            // 索引目录
+            searchInput = new JTextField();
+            searchInput.setColumns(20);
+
+            searchBtn = new JButton("搜索");
+            searchBtn.setBackground(Color.BLACK);
+            searchBtn.addActionListener(instance);
+
+
             // 布局
             instance.setLayout(new FlowLayout());
 
@@ -68,6 +83,12 @@ public class WebSitePanel extends Panel implements ActionListener {
             instance.add(templateGenerateBtn);
             instance.add(createIndexBtn);
             instance.add(exitBtn);
+
+            instance.add(new JLabel("--------------------------------------------"));
+
+            instance.add(new JLabel("索引文件搜索:"));
+            instance.add(searchInput);
+            instance.add(searchBtn);
         }
         return instance;
     }
@@ -78,6 +99,9 @@ public class WebSitePanel extends Panel implements ActionListener {
     private static JButton templateGenerateBtn; // 索引模板下载
     private static JButton createIndexBtn;      // 生成索引库
     private static JButton exitBtn;
+
+    private static JTextField searchInput;
+    private static JButton searchBtn;           // 搜索按钮
 
     private static ExcelFileFilter excelFileFilter = new ExcelFileFilter();
 
@@ -149,6 +173,35 @@ public class WebSitePanel extends Panel implements ActionListener {
                 JOptionPane.showMessageDialog(instance, "生成索引库失败:"+e1.getMessage(), null,JOptionPane.PLAIN_MESSAGE);
             }
 
+        } else if (e.getSource() == searchBtn) {
+            // directory
+            String directoryPath = directoryInput.getText();
+            if (directoryPath==null || directoryPath.trim().length()==0) {
+                JOptionPane.showMessageDialog(instance, "请选择索引目录", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+            File directoryFile = new File(directoryPath);
+            if (!directoryFile.exists()) {
+                JOptionPane.showMessageDialog(instance, "输入的索引目录不存在", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
+            // keyword
+            String keyword = searchInput.getText();
+            if (keyword==null || keyword.trim().length()==0) {
+                JOptionPane.showMessageDialog(instance, "请输入关键字", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
+            LuceneUtil.setDirectory(directoryFile.getPath() + "/" + SEARCH_FS);
+            LuceneSearchResult result = LuceneUtil.queryIndex(keyword, 0, 20);
+            String val = MessageFormat.format("搜索命中({0}) : ", result.getTotalHits());
+            if (result.getDocuments()!=null) {
+                for (Document document: result.getDocuments()) {
+                    val += "\n title=" + document.get(LuceneUtil.SearchDto.TITLE);
+                }
+            }
+            JOptionPane.showMessageDialog(instance, val, null,JOptionPane.PLAIN_MESSAGE);
         } else if (e.getSource() == exitBtn) {
             //JOptionPane.showMessageDialog(instance, "请选择或数据关键字", null,JOptionPane.PLAIN_MESSAGE);
             System.exit(0);

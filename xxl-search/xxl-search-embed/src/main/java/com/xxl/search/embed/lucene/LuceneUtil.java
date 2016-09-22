@@ -69,8 +69,6 @@ public class LuceneUtil {
 				directory.close();
 				directory = null;
 			}
-
-
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -80,7 +78,7 @@ public class LuceneUtil {
 	 * 删除全部索引
 	 * @throws Exception
 	 */
-	private static boolean deleteAll() {
+	public static boolean deleteAll() {
 		try {
 			indexWriter.deleteAll();
 			indexWriter.commit();
