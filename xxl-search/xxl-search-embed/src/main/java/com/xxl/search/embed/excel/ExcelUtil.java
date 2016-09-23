@@ -111,9 +111,10 @@ public class ExcelUtil {
         is.close();
 
         if (list.size()>0) {
+            // LuceneUtil
             LuceneUtil.setDirectory(directoryFile.getPath() + "/" + SEARCH_FS);
-            LuceneUtil.deleteAll();
             LuceneUtil.createIndex(list);
+            LuceneUtil.destory();
         }
 
     }

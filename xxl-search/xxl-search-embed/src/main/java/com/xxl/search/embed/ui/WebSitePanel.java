@@ -193,8 +193,11 @@ public class WebSitePanel extends Panel implements ActionListener {
                 return;
             }
 
+            // LuceneUtil
             LuceneUtil.setDirectory(directoryFile.getPath() + "/" + SEARCH_FS);
             LuceneSearchResult result = LuceneUtil.queryIndex(keyword, 0, 20);
+            LuceneUtil.destory();
+
             String val = MessageFormat.format("搜索命中({0}) : ", result.getTotalHits());
             if (result.getDocuments()!=null) {
                 for (Document document: result.getDocuments()) {

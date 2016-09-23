@@ -4,9 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.TrackingIndexWriter;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
@@ -37,9 +35,8 @@ public class LuceneUtil {
 
 	private static Directory directory = null;
 	private static IndexWriter indexWriter = null;
-	private static SearcherManager searcherManager = null;
 	private static void init() {
-		if (indexWriter==null || searcherManager==null) {
+		if (indexWriter==null) {
 			try {
 				directory = new SimpleFSDirectory(Paths.get(INDEX_DIRECTORY));
 
@@ -47,19 +44,13 @@ public class LuceneUtil {
 				Analyzer analyzer = new IKAnalyzer();
 				IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
 				indexWriter = new IndexWriter(directory, indexWriterConfig);
-
-				searcherManager = new SearcherManager(indexWriter, false, new SearcherFactory());
-				TrackingIndexWriter trackingIndexWriter = new TrackingIndexWriter(indexWriter);
-				ControlledRealTimeReopenThread controlledRealTimeReopenThread = new ControlledRealTimeReopenThread<IndexSearcher>(trackingIndexWriter, searcherManager, 5.0, 0.025);
-				controlledRealTimeReopenThread.setDaemon(true);//设为后台进程
-				controlledRealTimeReopenThread.start();
 			} catch (IOException e) {
 				logger.error("", e);
 			}
 		}
 	}
 
-	private static void destory() {
+	public static void destory() {
 		try {
 			if (indexWriter!=null) {
 				if (indexWriter.isOpen()) {
@@ -114,7 +105,6 @@ public class LuceneUtil {
 	private static LuceneSearchResult search(List<Query> queries, int offset, int pagesize) {
 		LuceneSearchResult result = new LuceneSearchResult();
 
-		IndexSearcher indexSearcher = null;
 		try {
 			// init query
 			BooleanQuery.Builder booleanBuild = new BooleanQuery.Builder();	// Occur (MUST=与、SHOULD=或、MUST_OUT-非)
@@ -125,10 +115,9 @@ public class LuceneUtil {
 			}
 			BooleanQuery booleanQuery = booleanBuild.build();
 
-			// IndexSearcher
-			searcherManager.maybeRefresh();
-			indexSearcher =  searcherManager.acquire();
-
+            // IndexReader
+            IndexReader indexReader = DirectoryReader.open(directory);
+            IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
 			// search
 			TopDocs topDocs = indexSearcher.search(booleanQuery, offset+pagesize);
@@ -148,13 +137,6 @@ public class LuceneUtil {
 			return result;
 		} catch (Exception e) {
 			logger.error("", e);
-		} finally {
-			try {
-				// release
-				searcherManager.release(indexSearcher);
-			} catch (IOException e) {
-				logger.error("", e);
-			}
 		}
 
 		return result;
