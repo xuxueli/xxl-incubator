@@ -3,14 +3,16 @@ package com.xxl.search.embed.lucene;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
 import org.apache.lucene.document.*;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.TrackingIndexWriter;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -41,7 +43,8 @@ public class LuceneUtil {
 			try {
 				directory = new SimpleFSDirectory(Paths.get(INDEX_DIRECTORY));
 
-				Analyzer analyzer = new SmartChineseAnalyzer();
+				//Analyzer analyzer = new SmartChineseAnalyzer();
+				Analyzer analyzer = new IKAnalyzer();
 				IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
 				indexWriter = new IndexWriter(directory, indexWriterConfig);
 
@@ -218,7 +221,8 @@ public class LuceneUtil {
 		List<Query> querys = new ArrayList<>();
 		if (keyword!=null && keyword.trim().length()>0) {
 			try {
-				Analyzer analyzer = new SmartChineseAnalyzer();
+				//Analyzer analyzer = new SmartChineseAnalyzer();
+				Analyzer analyzer = new IKAnalyzer();
 				QueryParser parser = new QueryParser(SearchDto.KEYWORD, analyzer);
 				Query shopNameQuery = parser.parse(keyword);
 				querys.add(shopNameQuery);

@@ -32,7 +32,7 @@ public class WebSitePanel extends Panel implements ActionListener {
             instance.setBackground(Color.LIGHT_GRAY);
 
             // 索引目录
-            directoryInput = new JTextField();
+            directoryInput = new JTextField("/Users/xuxueli/Downloads/tmp");
             directoryInput.setColumns(20);
 
             directoryBtn = new JButton("...");
