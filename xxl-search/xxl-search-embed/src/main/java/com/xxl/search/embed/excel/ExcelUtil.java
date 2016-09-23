@@ -3,7 +3,6 @@ package com.xxl.search.embed.excel;
 import com.xxl.search.embed.lucene.LuceneUtil;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.Cell;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -60,10 +59,10 @@ public class ExcelUtil {
         HSSFSheet sheet = workbook.getSheet("search-template");
 
         HSSFCellStyle successStyle = workbook.createCellStyle();
-        successStyle.setFillBackgroundColor(new HSSFColor.GREEN().getIndex());
+        successStyle.setFillBackgroundColor(HSSFColor.GREEN.index);
 
         HSSFCellStyle failStyle = workbook.createCellStyle();
-        failStyle.setFillBackgroundColor(new HSSFColor.RED().getIndex());
+        failStyle.setFillBackgroundColor(HSSFColor.GREEN.index);
 
         List<LuceneUtil.SearchDto> list = new ArrayList<>();
 
@@ -71,17 +70,16 @@ public class ExcelUtil {
             HSSFRow row = sheet.getRow(i);
 
             HSSFCellStyle celltype = failStyle;
-            Cell cell0 =row.getCell(0);
-            Cell cell1 =row.getCell(1);
-            Cell cell2 =row.getCell(2);
-
-            cell0.setCellType(CELL_TYPE_STRING);
-            cell1.setCellType(CELL_TYPE_STRING);
-            cell2.setCellType(CELL_TYPE_STRING);
-
+            HSSFCell cell0 =row.getCell(0);
+            HSSFCell cell1 =row.getCell(1);
+            HSSFCell cell2 =row.getCell(2);
 
             try {
-                if (!LuceneUtil.SearchDto.ID.equals(cell0.getStringCellValue())) {
+                if ((cell0!=null && cell1!=null && cell2!=null)
+                        && (!LuceneUtil.SearchDto.ID.equals(cell0.getStringCellValue())) ) {
+                    cell0.setCellType(CELL_TYPE_STRING);
+                    cell1.setCellType(CELL_TYPE_STRING);
+                    cell2.setCellType(CELL_TYPE_STRING);
 
                     int id = (cell0!=null) ? Integer.valueOf(cell0.getStringCellValue()) : -1;
                     String title = (cell1!=null) ? cell1.getStringCellValue() : null;
@@ -94,13 +92,18 @@ public class ExcelUtil {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
 
-            cell0.setCellStyle(celltype);
-            cell1.setCellStyle(celltype);
-            cell2.setCellStyle(celltype);
 
+            if (cell0!=null) {
+                cell0.setCellStyle(celltype);
+            }
+            if (cell1!=null) {
+                cell1.setCellStyle(celltype);
+            }
+            if (cell2!=null) {
+                cell2.setCellStyle(celltype);
+            }
         }
 
         FileOutputStream os = new FileOutputStream(templateFile);

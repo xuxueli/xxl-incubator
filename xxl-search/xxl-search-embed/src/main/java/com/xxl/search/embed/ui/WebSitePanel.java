@@ -201,7 +201,7 @@ public class WebSitePanel extends Panel implements ActionListener {
             String val = MessageFormat.format("搜索命中({0}) : ", result.getTotalHits());
             if (result.getDocuments()!=null) {
                 for (Document document: result.getDocuments()) {
-                    val += "\n title=" + document.get(LuceneUtil.SearchDto.TITLE);
+                    val += "\n "+ document.get(LuceneUtil.SearchDto.ID) +"=" + document.get(LuceneUtil.SearchDto.TITLE);
                 }
             }
             JOptionPane.showMessageDialog(instance, val, null,JOptionPane.PLAIN_MESSAGE);
