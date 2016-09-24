@@ -58,14 +58,14 @@ import java.util.List;
 		- StringField 不分词索引
 		- TextField 分词索引
 	《功能》
-		- 1、清空索引
-		- 2、新增一条索引:
+		- 1、新增一条索引:
 			- IntField: int索引, 不分词。 可作为排序字段
 			- StringField: string索引, 部分次
 			- TextField: string索引, 可分词
 			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;
-		- 3、更新一条索引
-		- 4、删除一条索引
+		- 2、更新一条索引
+		- 3、删除一条索引
+		- 4、清空索引
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
 			- 精确查询, IntField/StringField;
 			- 分词查询, TextField
@@ -128,23 +128,7 @@ public class LuceneUtil {
 	}
 
 	/**
-	 * 删除全部索引
-	 * @throws Exception
-	 */
-	public static boolean deleteAll() {
-		try {
-			indexWriter.deleteAll();
-			indexWriter.commit();
-			return true;
-		} catch (IOException e) {
-			logger.error("", e);
-			init();
-		}
-		return false;
-	}
-
-	/**
-	 * 创建一条索引	(create or overwrite index)
+	 * 创建一条索引
 	 * @throws Exception
 	 */
 	public static boolean addDocument(Document document, boolean ifCommit) {
@@ -196,6 +180,22 @@ public class LuceneUtil {
 	public static boolean deleteDocument(Term... terms){
 		try {
 			indexWriter.deleteDocuments(terms);	// Query... queries
+			indexWriter.commit();
+			return true;
+		} catch (IOException e) {
+			logger.error("", e);
+			init();
+		}
+		return false;
+	}
+
+	/**
+	 * 删除全部索引
+	 * @throws Exception
+	 */
+	public static boolean deleteAll() {
+		try {
+			indexWriter.deleteAll();
 			indexWriter.commit();
 			return true;
 		} catch (IOException e) {
