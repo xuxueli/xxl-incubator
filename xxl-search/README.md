@@ -1,6 +1,14 @@
+# xxl-search
 
-# Lucene
----
+搜索小程序, 移植点评
+
+mq移植dianping
+
+search增强es实现
+
+
+
+----------------
 
 ### 简介
 apache lucene是apache下一个著名的开源搜索引擎内核，基于Java技术，处理索引，拼写检查，点击高亮和其他分析，分词等技术。
