@@ -193,8 +193,8 @@ public class ElasticsearchUtil {
 	 * @param type
 	 * @return
 	 */
-	public static BulkResponse bulkDelete(String index, String type){
-	    int pagesize = 100;
+	public static boolean bulkDelete(String index, String type){
+	    int pagesize = 2;
 
 	    // generate total num
         SearchResponse searchResponse = getInstance().prepareSearch(index)
@@ -204,14 +204,13 @@ public class ElasticsearchUtil {
                 .execute()
                 .actionGet();
         long total = searchResponse.getHits().getTotalHits();
-        if (total > 0) {
+        if (total > 0 && searchResponse.getHits().getHits().length>0) {
             BulkRequestBuilder bulkRequest = getInstance().prepareBulk();
             for(SearchHit hit : searchResponse.getHits()){
                 String id = hit.getId();
                 bulkRequest.add(getInstance().prepareDelete(index, type, id).request());
             }
             BulkResponse bulkResponse = bulkRequest.get();
-            return bulkResponse;
         }
 
         for (int offset = pagesize; offset <= total; offset=offset+pagesize) {
@@ -222,14 +221,13 @@ public class ElasticsearchUtil {
                     .execute()
                     .actionGet();
             long totalX = searchResponseX.getHits().getTotalHits();
-            if (totalX > 0) {
+            if (totalX > 0 && searchResponseX.getHits().getHits().length>0) {
                 BulkRequestBuilder bulkRequest = getInstance().prepareBulk();
                 for(SearchHit hit : searchResponseX.getHits()){
                     String id = hit.getId();
                     bulkRequest.add(getInstance().prepareDelete(index, type, id).request());
                 }
                 BulkResponse bulkResponse = bulkRequest.get();
-                return bulkResponse;
             }
         }
 
@@ -241,7 +239,7 @@ public class ElasticsearchUtil {
         }else {
             System.out.println("delete ok");
         }*/
-		return null;
+		return true;
 	}
 
     /**
@@ -316,7 +314,7 @@ public class ElasticsearchUtil {
      */
 	public static void main(String[] args) {
     	String index = "demo-index";
-    	String type = "user";
+    	String type = "shop";
 
 		// 创建索引
 		for (int id = 1; id <= 10; id++) {
@@ -344,6 +342,7 @@ public class ElasticsearchUtil {
         map.put("score", 5000+id);
         map.put("hotscore", 5000-id);
 		String source = JacksonUtil.writeValueAsString(map);
+        prepareIndex(index, type, id+"", source);
 		prepareUpdate(index, type, id+"", source);
 
 		System.out.println(prepareGet(index, type, id+"").getSource());
