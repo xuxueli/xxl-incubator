@@ -1,10 +1,17 @@
 package com.xxl.search.embed.lucene;
 
+import com.xxl.search.embed.excel.PropertiesUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.*;
-import org.apache.lucene.index.*;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
@@ -16,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 搜索小程序
@@ -144,56 +152,20 @@ public class LuceneUtil {
 
 
 	// -------------------- util --------------------
-	public static class SearchDto{
-		public static final String ID = "id";
-		public static final String TITLE = "title";
-		public static final String KEYWORD = "keywork";
-
-		private int id;
-		private String title;
-		private String keywork;
-
-		public SearchDto(int id, String title, String keywork) {
-			this.id = id;
-			this.title = title;
-			this.keywork = keywork;
-		}
-
-		public int getId() {
-			return id;
-		}
-
-		public void setId(int id) {
-			this.id = id;
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
-		public String getKeywork() {
-			return keywork;
-		}
-
-		public void setKeywork(String keywork) {
-			this.keywork = keywork;
-		}
-	}
-
-	public static void createIndex(List<SearchDto> list){
+	public static void createIndex(List<Map<String, String>> list){
 		// deleteAll
 		deleteAll();
 
 		// addDocument
-		for (SearchDto searchDto: list) {
+		for (Map<String, String> searchDto: list) {
 			Document doc = new Document();
-			doc.add(new IntField(SearchDto.ID, searchDto.getId(), Field.Store.YES));
-			doc.add(new StringField(SearchDto.TITLE, searchDto.getTitle(), Field.Store.YES));
-			doc.add(new TextField(SearchDto.KEYWORD, searchDto.getKeywork(), Field.Store.YES));
+			for (Map.Entry<String, String> item: searchDto.entrySet()) {
+				if (PropertiesUtil.KEYWORDS.equals(item.getKey())) {
+					doc.add(new TextField(item.getKey(), item.getValue(), Field.Store.YES));
+				} else {
+					doc.add(new StringField(item.getKey(), item.getValue(), Field.Store.YES));
+				}
+			}
 			addDocument(doc);
 		}
 	}
@@ -205,7 +177,7 @@ public class LuceneUtil {
 			try {
 				//Analyzer analyzer = new SmartChineseAnalyzer();
 				Analyzer analyzer = new IKAnalyzer();
-				QueryParser parser = new QueryParser(SearchDto.KEYWORD, analyzer);
+				QueryParser parser = new QueryParser(PropertiesUtil.KEYWORDS, analyzer);
 				Query shopNameQuery = parser.parse(keyword);
 				querys.add(shopNameQuery);
 			} catch (ParseException e) {
