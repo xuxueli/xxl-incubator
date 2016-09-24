@@ -14,14 +14,17 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.Nullable;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.elasticsearch.search.sort.SortOrder;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Elasticsearch 工具类
@@ -106,17 +109,17 @@ import java.util.Map;
 			- IntField: int索引, 不分词。 可作为排序字段
 			- StringField: string索引, 部分次
 			- TextField: string索引, 可分词
-			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;
+			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;    (map.put("group", Arrays.asList("group", "group2")); 值赋值为数组)
 		- 2、更新一条索引
 		- 3、删除一条索引
 		- 4、清空索引
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
-			- 精确查询, IntField/StringField;
-			- 分词查询, TextField
-			- 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询
-			- 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询
-			- 分页
-			- 排序
+			- 精确查询, IntField/StringField;   (QueryBuilders.termQuery("group", "group"))
+			- 分词查询, TextField       (QueryBuilders.fuzzyQuery("shopname", "10"))
+			- 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询   (QueryBuilders.termsQuery("cityid", Arrays.asList(1,2)))
+			- 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询   (BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();)
+			- 分页    (.setFrom(offset).setSize(pagesize))
+			- 排序    (SortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);)
 	</pre>
  */
 public class ElasticsearchUtil {
@@ -143,7 +146,7 @@ public class ElasticsearchUtil {
     }
 
 	/**
-	 * 新增一条索引
+	 * 新增一条索引   (overwrite exists)
 	 *
 	 * @param index
 	 * @param type
@@ -157,8 +160,8 @@ public class ElasticsearchUtil {
 	}
 
 	/**
-	 * 更新一条索引
-	 *
+	 * 更新一条索引   (overwrite exists)
+     *
 	 * @param index
 	 * @param type
 	 * @param id
@@ -233,29 +236,30 @@ public class ElasticsearchUtil {
 	 * 条件查询
 	 * @param index
 	 * @param type
-	 * @param queryBuilder		QueryBuilder queryBuilder = QueryBuilders.termQuery("name", "jack");
+	 * @param queryBuilders		QueryBuilder queryBuilder = QueryBuilders.termQuery("group", "group");
+     * @param sort              SortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);
 	 * @param offset
 	 * @param pagesize
      * @return
      */
-	public static SearchResponse prepareSearch(String index, String type, QueryBuilder queryBuilder, int offset, int pagesize){
+	public static SearchResponse prepareSearch(String index, String type,
+        List<QueryBuilder> queryBuilders, SortBuilder sort, int offset, int pagesize){
 
-		/**
-		 *   - 精确查询, IntField/StringField;
-			 - 分词查询, TextField
-			 - 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询
-			 - 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询
-			 - 分页
-			 - 排序
-         */
-    	SearchResponse response = getInstance().prepareSearch(index).setTypes(type)
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        if (queryBuilders!=null && queryBuilders.size()>0) {
+            for (QueryBuilder queryBuilder: queryBuilders) {
+                boolQueryBuilder.must(queryBuilder);
+            }
+        }
+
+    	SearchResponse searchResponse = getInstance().prepareSearch(index).setTypes(type)
     	        .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(queryBuilder)
-				//.setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18))
+				.setQuery(boolQueryBuilder)         //.setPostFilter(QueryBuilders.rangeQuery("age").from(12).to(18))
+                .addSort(sort)
     	        .setFrom(offset).setSize(pagesize).setExplain(true)
     	        .execute()
     	        .actionGet();
-    	return response;
+    	return searchResponse;
     }
 
 	/**
@@ -283,10 +287,12 @@ public class ElasticsearchUtil {
 		// 创建索引
 		for (int id = 1; id <= 10; id++) {
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("id", id+"");
-			map.put("name", "jack"+id);
-			map.put("age", 10+id);
-			map.put("type", "user");
+			map.put("id", id);
+			map.put("cityid", 1);
+			map.put("shopname", "北京"+id);
+			map.put("group", "group");
+            map.put("score", 5000+id);
+            map.put("hotscore", 5000-id);
 
 			String source = JacksonUtil.writeValueAsString(map);
 			prepareIndex(index, type, id+"", source);
@@ -297,10 +303,12 @@ public class ElasticsearchUtil {
 		// 更新
 		int id = 1;
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("id", id+"");
-		map.put("name", "lucy"+id);
-		map.put("age", 10+id);
-		map.put("type", "user");
+        map.put("id", id);
+        map.put("cityid", 2);
+        map.put("shopname", "上海"+id);
+        map.put("group", Arrays.asList("group", "group2"));
+        map.put("score", 5000+id);
+        map.put("hotscore", 5000-id);
 		String source = JacksonUtil.writeValueAsString(map);
 		prepareUpdate(index, type, id+"", source);
 
@@ -313,12 +321,18 @@ public class ElasticsearchUtil {
 		System.out.println(prepareGet(index, type, id+"").getSource());
 
 		// 搜索
-		QueryBuilder queryBuilder = QueryBuilders.termQuery("type", "user");
+        List<QueryBuilder> queryBuilders = new ArrayList<>();
+        //queryBuilders.add(QueryBuilders.termQuery("group", "group"));
+        //queryBuilders.add(QueryBuilders.termsQuery("cityid", Arrays.asList(1,2)));
+        //queryBuilders.add(QueryBuilders.fuzzyQuery("group", "g11roup"));
+        queryBuilders.add(QueryBuilders.termsQuery("group", "group"));
 
-		SearchResponse searchResponse = prepareSearch(index, type, queryBuilder, 0, 100);
+        SortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);
 
+		SearchResponse searchResponse = prepareSearch(index, type, queryBuilders, sort, 0, 100);
+
+        System.out.println("---");
 		for (SearchHit item: searchResponse.getHits()) {
-			System.out.println("---");
 			System.out.println(item.getSource());
 		}
 	}

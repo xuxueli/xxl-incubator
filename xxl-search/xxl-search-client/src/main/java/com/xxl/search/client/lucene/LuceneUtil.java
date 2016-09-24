@@ -62,17 +62,17 @@ import java.util.List;
 			- IntField: int索引, 不分词。 可作为排序字段
 			- StringField: string索引, 部分次
 			- TextField: string索引, 可分词
-			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;
+			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;    (document.add(new IntField(ShopDTO.ShopParam.TAG_ID, tagid, Field.Store.YES)); 执行多次)
 		- 2、更新一条索引
 		- 3、删除一条索引
 		- 4、清空索引
 		- 5、查询: (至少一个查询条件,如根据城市等, 至少一个排序条件,如时间戳等)
-			- 精确查询, IntField/StringField;
-			- 分词查询, TextField
-			- 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询
-			- 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询
-			- 分页
-			- 排序
+			- 精确查询, IntField/StringField;   (new TermQuery(new Term("group", "group")))
+			- 分词查询, TextField       (Query shopNameQuery = SmartChineseAnalyzer.parse(shopname);)
+			- 范围查询, 针对同一个Field支持重复设置query, SHOULD模式, 实现范围查询 (cityBooleanBuild.add(...), BooleanClause.Occur.SHOULD);)
+			- 关联查询, 支持针对多个Filed, 设置query list, MUST模式, 实现关联查询  (BooleanQuery.Builder booleanBuild = new BooleanQuery.Builder();)
+			- 分页    (topFieldCollector.topDocs(offset, pagesize))
+			- 排序    (Sort scoreSort = new Sort(new SortField("score", SortField.Type.INT, true));)
 	</pre>
  */
 public class LuceneUtil {
@@ -215,7 +215,7 @@ public class LuceneUtil {
 		IndexSearcher indexSearcher = null;
 		try {
 			// init query
-			BooleanQuery.Builder booleanBuild = booleanBuild = new BooleanQuery.Builder();	// Occur (MUST=与、SHOULD=或、MUST_OUT-非)
+			BooleanQuery.Builder booleanBuild = new BooleanQuery.Builder();	// Occur (MUST=与、SHOULD=或、MUST_OUT-非)
 			if (queries!=null && queries.size()>0) {
 				for (Query query: queries) {
 					booleanBuild.add(query, BooleanClause.Occur.MUST);
