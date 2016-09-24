@@ -24,6 +24,19 @@ import java.util.List;
  *
  *
  	<pre>
+	《lucene 简介》
+		apache lucene是apache下一个著名的开源搜索引擎内核，基于Java技术，处理索引，拼写检查，点击高亮和其他分析，分词等技术。
+	《lucene 作用》
+		- 1、性能上：大数据量的情况下，用数据库来做文本的搜索是很可怕的事情，但是Lucene轻松毫秒杀;
+		- 2、功能上：Lucene 可以做全文匹配搜索, 假设设置索引 "开源中国",搜索关键字"开源社区",如果这个内容是存在数据库的就搜不到，如果使用Lucene就可以搜到;
+	《lucene 文档》
+		[官网](http://lucene.apache.org/core/)
+		[文档5.5.2](http://lucene.apache.org/core/5_5_2/index.html)
+		[客户端--索引文件查询工具luck](https://github.com/DmitryKey/luke/releases)
+
+		[文档--lucene使用与优化](http://my.oschina.net/lushuifa/blog/198690)
+		[文档--lucene学习笔记](http://my.oschina.net/kkrgwbj/blog/513362)
+
 	《索引文件分析》
 		- Index: 类似数据库实例
 			- 一个目录一个索引，在Lucene中一个索引是放在一个文件夹中的。
