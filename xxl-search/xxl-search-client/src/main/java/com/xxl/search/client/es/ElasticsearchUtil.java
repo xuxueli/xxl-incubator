@@ -194,7 +194,7 @@ public class ElasticsearchUtil {
 	 * @return
 	 */
 	public static boolean bulkDelete(String index, String type){
-	    int pagesize = 2;
+	    int pagesize = 100;
 
 	    // generate total num
         SearchResponse searchResponse = getInstance().prepareSearch(index)
