@@ -1,6 +1,6 @@
 package com.xxl.search.embed.lucene;
 
-import com.xxl.search.embed.excel.PropertiesUtil;
+import com.xxl.search.embed.excel.ExcelUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -160,7 +160,7 @@ public class LuceneUtil {
 		for (Map<String, String> searchDto: list) {
 			Document doc = new Document();
 			for (Map.Entry<String, String> item: searchDto.entrySet()) {
-				if (PropertiesUtil.KEYWORDS.equals(item.getKey())) {
+				if (ExcelUtil.KEYWORDS.equals(item.getKey())) {
 					doc.add(new TextField(item.getKey(), item.getValue(), Field.Store.YES));
 				} else {
 					doc.add(new StringField(item.getKey(), item.getValue(), Field.Store.YES));
@@ -177,7 +177,7 @@ public class LuceneUtil {
 			try {
 				//Analyzer analyzer = new SmartChineseAnalyzer();
 				Analyzer analyzer = new IKAnalyzer();
-				QueryParser parser = new QueryParser(PropertiesUtil.KEYWORDS, analyzer);
+				QueryParser parser = new QueryParser(ExcelUtil.KEYWORDS, analyzer);
 				Query shopNameQuery = parser.parse(keyword);
 				querys.add(shopNameQuery);
 			} catch (ParseException e) {

@@ -1,12 +1,11 @@
 # xxl-search
 
 ```
+// package jar witch lib
 mvn dependency:copy-dependencies -DoutputDirectory=lib   -DincludeScope=compile
 ```
 
-搜索小程序, 移植点评
-
-mq移植dianping
+移植点评
 
 search增强es实现
 
