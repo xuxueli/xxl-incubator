@@ -1,12 +1,14 @@
 # xxl-search
 
+```
+mvn dependency:copy-dependencies -DoutputDirectory=lib   -DincludeScope=compile
+```
+
 搜索小程序, 移植点评
 
 mq移植dianping
 
 search增强es实现
-
-
 
 ----------------
 

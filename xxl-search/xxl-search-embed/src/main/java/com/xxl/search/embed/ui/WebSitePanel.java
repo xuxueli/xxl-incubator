@@ -5,6 +5,7 @@ import com.xxl.search.embed.excel.ExcelUtil;
 import com.xxl.search.embed.lucene.LuceneSearchResult;
 import com.xxl.search.embed.lucene.LuceneUtil;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexableField;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -16,7 +17,10 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
+import static com.xxl.search.embed.excel.ExcelUtil.KEYWORDS;
 import static com.xxl.search.embed.excel.ExcelUtil.SEARCH_FS;
 
 /**
@@ -31,19 +35,21 @@ public class WebSitePanel extends Panel implements ActionListener {
             instance = new WebSitePanel();
             instance.setBackground(Color.LIGHT_GRAY);
 
+            // 索引Field
+            fieldInput = new JTextField(ExcelUtil.KEYWORDS + ",id,title");
+            fieldInput.setColumns(20);
+
+            fieldBtn = new JButton("生成模板");
+            fieldBtn.setBackground(Color.BLACK);
+            fieldBtn.addActionListener(instance);
+
             // 索引目录
             directoryInput = new JTextField("/Users/xuxueli/Downloads/tmp");
             directoryInput.setColumns(20);
 
-            directoryBtn = new JButton("...");
+            directoryBtn = new JButton("选择目录");
             directoryBtn.setBackground(Color.BLACK);
             directoryBtn.addActionListener(instance);
-
-
-            // templateGenerateBtn
-            templateGenerateBtn = new JButton("初始化索引模板");
-            templateGenerateBtn.setBackground(Color.BLACK);
-            templateGenerateBtn.addActionListener(instance);
 
             // createIndex
             createIndexBtn = new JButton("生成索引文件");
@@ -76,11 +82,14 @@ public class WebSitePanel extends Panel implements ActionListener {
             // 布局
             instance.setLayout(new FlowLayout());
 
+            instance.add(new JLabel("索引模板参数:"));
+            instance.add(fieldInput);
+            instance.add(fieldBtn);
+
             instance.add(new JLabel("索引生成目录:"));
             instance.add(directoryInput);
             instance.add(directoryBtn);
 
-            instance.add(templateGenerateBtn);
             instance.add(createIndexBtn);
             instance.add(exitBtn);
 
@@ -93,10 +102,12 @@ public class WebSitePanel extends Panel implements ActionListener {
         return instance;
     }
 
+    private static JTextField fieldInput;
+    private static JButton fieldBtn;            // 索引参数
+
     private static JTextField directoryInput;
     private static JButton directoryBtn;        // 选择索引目录
 
-    private static JButton templateGenerateBtn; // 索引模板下载
     private static JButton createIndexBtn;      // 生成索引库
     private static JButton exitBtn;
 
@@ -118,7 +129,20 @@ public class WebSitePanel extends Panel implements ActionListener {
                 directoryInput.setText(path);
             }
             return;
-        } else if (e.getSource() == templateGenerateBtn) {
+        } else if (e.getSource() == fieldBtn) {
+            // field
+            String fieldStr = fieldInput.getText();
+            if (fieldStr==null || fieldStr.trim().length()==0) {
+                JOptionPane.showMessageDialog(instance, "请输入索引Field", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+            LinkedHashSet<String> fields = new LinkedHashSet<>(Arrays.asList(fieldStr.split(",")));
+            if (fields.size()==0 || !fields.contains(KEYWORDS)) {
+                JOptionPane.showMessageDialog(instance, "索引Field必须包含keywords", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
+            // directory
             String directoryPath = directoryInput.getText();
             if (directoryPath==null || directoryPath.trim().length()==0) {
                 JOptionPane.showMessageDialog(instance, "请选择索引生成目录, 索引模板将会在改目录生成", null,JOptionPane.PLAIN_MESSAGE);
@@ -139,13 +163,25 @@ public class WebSitePanel extends Panel implements ActionListener {
                     return;
                 }
 
-                ExcelUtil.generateTemplate(directoryFile);
+                ExcelUtil.generateTemplate(directoryFile, fields);
                 JOptionPane.showMessageDialog(instance, "索引模板生成成功, 存放在索引生成目录下", null,JOptionPane.PLAIN_MESSAGE);
             } catch (IOException e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(instance, "索引模板生成失败:"+e1.getMessage(), null,JOptionPane.PLAIN_MESSAGE);
             }
         } else if (e.getSource() == createIndexBtn) {
+            // field
+            String fieldStr = fieldInput.getText();
+            if (fieldStr==null || fieldStr.trim().length()==0) {
+                JOptionPane.showMessageDialog(instance, "请输入索引Field", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+            LinkedHashSet<String> fields = new LinkedHashSet<>(Arrays.asList(fieldStr.split(",")));
+            if (fields.size()==0 || !fields.contains(KEYWORDS)) {
+                JOptionPane.showMessageDialog(instance, "索引Field必须包含keywords", null,JOptionPane.PLAIN_MESSAGE);
+                return;
+            }
+
             // directory
             String directoryPath = directoryInput.getText();
             if (directoryPath==null || directoryPath.trim().length()==0) {
@@ -166,7 +202,7 @@ public class WebSitePanel extends Panel implements ActionListener {
             }
 
             try {
-                ExcelUtil.createIndexByTemplate(templateFile, directoryFile);
+                ExcelUtil.createIndexByTemplate(templateFile, directoryFile, fields);
                 JOptionPane.showMessageDialog(instance, "恭喜您, 生成索引库成功!", null,JOptionPane.PLAIN_MESSAGE);
             } catch (Exception e1) {
                 e1.printStackTrace();
@@ -201,7 +237,12 @@ public class WebSitePanel extends Panel implements ActionListener {
             String val = MessageFormat.format("搜索命中({0}) : ", result.getTotalHits());
             if (result.getDocuments()!=null) {
                 for (Document document: result.getDocuments()) {
-                    val += "\n "+ document.toString();
+
+                    String line = "\n ";
+                    for (IndexableField item: document.getFields()) {
+                        line += item.name() + "=" + item.stringValue() + ",";
+                    }
+                    val += line;
                 }
             }
             JOptionPane.showMessageDialog(instance, val, null,JOptionPane.PLAIN_MESSAGE);

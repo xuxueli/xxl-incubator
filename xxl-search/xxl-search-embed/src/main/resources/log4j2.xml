@@ -11,7 +11,7 @@
     <loggers>
         <root level="info">
             <appender-ref ref="Console"/>
-            <appender-ref ref="file"/>
+            <!--<appender-ref ref="file"/>-->
         </root>
     </loggers>
 

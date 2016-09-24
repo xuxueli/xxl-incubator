@@ -15,15 +15,11 @@ import static org.apache.poi.ss.usermodel.Cell.CELL_TYPE_STRING;
  */
 public class ExcelUtil {
 
+    public static final String KEYWORDS = "keywords";
     public static final String TEMPLATE_NAME = "search-template.xls";
     public static final String SEARCH_FS = "search_fs";
 
-    public static void generateTemplate(File directoryFile) throws IOException {
-
-        // field fill
-        Properties prop = PropertiesUtil.loadProperties(PropertiesUtil.DEFAULT_CONFIG);
-        LinkedHashSet<String> fields = PropertiesUtil.getLinkedSet(prop, "search-field");
-
+    public static void generateTemplate(File directoryFile, LinkedHashSet<String> fields) throws IOException {
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet("search-template");
 
@@ -41,7 +37,7 @@ public class ExcelUtil {
         os.close();
     }
 
-    public static void createIndexByTemplate(File templateFile, File directoryFile) throws IOException {
+    public static void createIndexByTemplate(File templateFile, File directoryFile, LinkedHashSet<String> fields) throws IOException {
         InputStream is = new FileInputStream(templateFile);
         HSSFWorkbook workbook = new HSSFWorkbook(is);
         HSSFSheet sheet = workbook.getSheet("search-template");
@@ -56,10 +52,6 @@ public class ExcelUtil {
         Font failFont = workbook.createFont();
         failFont.setColor(HSSFColor.RED.index);
         failStyle.setFont(failFont);
-
-        // field fill
-        Properties prop = PropertiesUtil.loadProperties(PropertiesUtil.DEFAULT_CONFIG);
-        LinkedHashSet<String> fields = PropertiesUtil.getLinkedSet(prop, "search-field");
 
         // result
         List<Map<String, String>> list = new ArrayList<>();
@@ -83,7 +75,7 @@ public class ExcelUtil {
 
             // status
             HSSFCellStyle cellStyle = failStyle;
-            if (itemMap.get(PropertiesUtil.KEYWORDS)==null || itemMap.get(PropertiesUtil.KEYWORDS).equals(PropertiesUtil.KEYWORDS)){
+            if (itemMap.get(KEYWORDS)==null || itemMap.get(KEYWORDS).equals(KEYWORDS)){
                 cellStyle = failStyle;
             } else {
                 cellStyle = successStyle;
@@ -111,6 +103,8 @@ public class ExcelUtil {
             LuceneUtil.setDirectory(directoryFile.getPath() + "/" + SEARCH_FS);
             LuceneUtil.createIndex(list);
             LuceneUtil.destory();
+        } else {
+            throw new RuntimeException("生成索引文件失败, 索引数据为空");
         }
 
     }
