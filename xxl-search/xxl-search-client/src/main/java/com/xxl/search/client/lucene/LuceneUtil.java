@@ -59,9 +59,9 @@ import java.util.List;
 		- TextField 分词索引
 	《功能》
 		- 1、新增一条索引:
-			- IntField: int索引, 不分词。 可作为排序字段
+			- IntField: int索引, 不分词。 可作为排序字段     (排序需要定制, 如: LuceneUtil.INT_FIELD_TYPE_STORED_SORTED)
 			- StringField: string索引, 部分次
-			- TextField: string索引, 可分词
+			- TextField: string索引, 可分词      (分析, 必须使用: TextField)
 			- 一个Field支持索引绑定多个值, 实现一对多索引List功能; 注意, 次数查询结果会出现多个重复的Field, 值不同;    (document.add(new IntField(ShopDTO.ShopParam.TAG_ID, tagid, Field.Store.YES)); 执行多次)
 		- 2、更新一条索引
 		- 3、删除一条索引

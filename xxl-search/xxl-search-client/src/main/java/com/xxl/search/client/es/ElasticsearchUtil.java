@@ -194,30 +194,53 @@ public class ElasticsearchUtil {
 	 * @return
 	 */
 	public static BulkResponse bulkDelete(String index, String type){
+	    int pagesize = 100;
 
-		SearchResponse searchResponse = getInstance().prepareSearch(index)
-				.setTypes(type)
-				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setFrom(0).setSize(500).setExplain(true)
-				.execute()
-				.actionGet();
+	    // generate total num
+        SearchResponse searchResponse = getInstance().prepareSearch(index)
+                .setTypes(type)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setFrom(0).setSize(pagesize).setExplain(true)
+                .execute()
+                .actionGet();
+        long total = searchResponse.getHits().getTotalHits();
+        if (total > 0) {
+            BulkRequestBuilder bulkRequest = getInstance().prepareBulk();
+            for(SearchHit hit : searchResponse.getHits()){
+                String id = hit.getId();
+                bulkRequest.add(getInstance().prepareDelete(index, type, id).request());
+            }
+            BulkResponse bulkResponse = bulkRequest.get();
+            return bulkResponse;
+        }
 
-		if (searchResponse.getHits().getTotalHits() > 0) {
-			BulkRequestBuilder bulkRequest = getInstance().prepareBulk();
-			for(SearchHit hit : searchResponse.getHits()){
-				String id = hit.getId();
-				bulkRequest.add(getInstance().prepareDelete(index, type, id).request());
-			}
-			BulkResponse bulkResponse = bulkRequest.get();
-			return bulkResponse;
-			/*if (bulkResponse.hasFailures()) {
-				for(BulkItemResponse item : bulkResponse.getItems()){
-					System.out.println(item.getFailureMessage());
-				}
-			}else {
-				System.out.println("delete ok");
-			}*/
-		}
+        for (int offset = pagesize; offset <= total; offset=offset+pagesize) {
+            SearchResponse searchResponseX = getInstance().prepareSearch(index)
+                    .setTypes(type)
+                    .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                    .setFrom(offset).setSize(pagesize).setExplain(true)
+                    .execute()
+                    .actionGet();
+            long totalX = searchResponseX.getHits().getTotalHits();
+            if (totalX > 0) {
+                BulkRequestBuilder bulkRequest = getInstance().prepareBulk();
+                for(SearchHit hit : searchResponseX.getHits()){
+                    String id = hit.getId();
+                    bulkRequest.add(getInstance().prepareDelete(index, type, id).request());
+                }
+                BulkResponse bulkResponse = bulkRequest.get();
+                return bulkResponse;
+            }
+        }
+
+
+		/*if (bulkResponse.hasFailures()) {
+            for(BulkItemResponse item : bulkResponse.getItems()){
+                System.out.println(item.getFailureMessage());
+            }
+        }else {
+            System.out.println("delete ok");
+        }*/
 		return null;
 	}
 
@@ -242,7 +265,7 @@ public class ElasticsearchUtil {
 	 * @param pagesize
      * @return
      */
-	public static SearchResponse prepareSearch(String index, String type,
+	public static ElasticsearchResult prepareSearch(String index, String type,
         List<QueryBuilder> queryBuilders, SortBuilder sort, int offset, int pagesize){
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -259,7 +282,18 @@ public class ElasticsearchUtil {
     	        .setFrom(offset).setSize(pagesize).setExplain(true)
     	        .execute()
     	        .actionGet();
-    	return searchResponse;
+
+        // package result
+        ElasticsearchResult elasticsearchResult = new ElasticsearchResult();
+        elasticsearchResult.setTotalHits(searchResponse.getHits().getTotalHits());
+        if (searchResponse.getHits().getHits()!=null && searchResponse.getHits().getHits().length>0) {
+            List<Map<String, Object>> sources = new ArrayList<>();
+            for (SearchHit item: searchResponse.getHits()) {
+                sources.add(item.getSource());
+            }
+            elasticsearchResult.setSources(sources);
+        }
+    	return elasticsearchResult;
     }
 
 	/**
@@ -329,11 +363,11 @@ public class ElasticsearchUtil {
 
         SortBuilder sort = SortBuilders.fieldSort("score").order(SortOrder.DESC);
 
-		SearchResponse searchResponse = prepareSearch(index, type, queryBuilders, sort, 0, 100);
+        ElasticsearchResult searchResponse = prepareSearch(index, type, queryBuilders, sort, 0, 100);
 
         System.out.println("---");
-		for (SearchHit item: searchResponse.getHits()) {
-			System.out.println(item.getSource());
+		for (Map<String, Object> item: searchResponse.getSources()) {
+			System.out.println(item);
 		}
 	}
     
