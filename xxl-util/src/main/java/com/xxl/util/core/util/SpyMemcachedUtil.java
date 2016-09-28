@@ -48,6 +48,8 @@ public class SpyMemcachedUtil {
                         memcachedClient = new MemcachedClient(new BinaryConnectionFactory(), AddrUtil.getAddresses(servers));
                     } catch (IOException e) {
                         logger.error("", e);
+                    } finally {
+                        INSTANCE_INIT_LOCL.unlock();
                     }
                 }
             } catch (InterruptedException e) {

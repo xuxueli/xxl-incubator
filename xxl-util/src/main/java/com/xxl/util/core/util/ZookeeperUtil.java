@@ -59,30 +59,32 @@ public class ZookeeperUtil {
 		if (zooKeeper==null) {
 			try {
 				if (INSTANCE_INIT_LOCK.tryLock(2, TimeUnit.SECONDS)) {
-					zooKeeper = new ZooKeeper(Environment.ZK_ADDRESS, 30000, new Watcher() {
-						@Override
-						public void process(WatchedEvent watchedEvent) {
-							try {
-								logger.info(">>>>>>>>>> watcher:{}", watchedEvent);
-								// add One-time trigger, ZooKeeper的Watcher是一次性的，用过了需要再注册
-								try {
-									String znodePath = watchedEvent.getPath();
-									if (znodePath != null) {
-										zooKeeper.exists(znodePath, true);
-									}
-								} catch (KeeperException e) {
-									logger.error("", e);
-								} catch (InterruptedException e) {
-									logger.error("", e);
-								}
-								// session expire, close old and create new
-								if (watchedEvent.getState() == Event.KeeperState.Expired) {
-									zooKeeper.close();
-									zooKeeper = null;
-									getInstance();
-								}
 
-								if (watchedEvent.getType() == EventType.NodeCreated) {
+					try {
+						zooKeeper = new ZooKeeper(Environment.ZK_ADDRESS, 30000, new Watcher() {
+							@Override
+							public void process(WatchedEvent watchedEvent) {
+								try {
+									logger.info(">>>>>>>>>> watcher:{}", watchedEvent);
+									// add One-time trigger, ZooKeeper的Watcher是一次性的，用过了需要再注册
+									try {
+										String znodePath = watchedEvent.getPath();
+										if (znodePath != null) {
+											zooKeeper.exists(znodePath, true);
+										}
+									} catch (KeeperException e) {
+										logger.error("", e);
+									} catch (InterruptedException e) {
+										logger.error("", e);
+									}
+									// session expire, close old and create new
+									if (watchedEvent.getState() == Event.KeeperState.Expired) {
+										zooKeeper.close();
+										zooKeeper = null;
+										getInstance();
+									}
+
+									if (watchedEvent.getType() == EventType.NodeCreated) {
 									/*String path = watchedEvent.getPath();
 									zooKeeper.exists(path, true);	// add One-time trigger, ZooKeeper的Watcher是一次性的，用过了需要再注册
 
@@ -94,26 +96,29 @@ public class ZookeeperUtil {
 
 									XxlConfClient.set(key, data);
 									logger.info(">>>>>>>>>> xxl-conf: 新增配置：[{}={}]", new Object[]{key, data});*/
-								} else if (watchedEvent.getType() == EventType.NodeDeleted) {
-									String path = watchedEvent.getPath();
-									// XxlConfClient.remove(key);
-								} else if (watchedEvent.getType() == EventType.NodeDataChanged) {
-									String path = watchedEvent.getPath();
+									} else if (watchedEvent.getType() == EventType.NodeDeleted) {
+										String path = watchedEvent.getPath();
+										// XxlConfClient.remove(key);
+									} else if (watchedEvent.getType() == EventType.NodeDataChanged) {
+										String path = watchedEvent.getPath();
 
-									String data = getPathData(path);
-									// XxlConfClient.update(key, data);
-								} else if (watchedEvent.getType() == EventType.NodeChildrenChanged) {
-									// TODO
-								} else if (watchedEvent.getType() == EventType.None) {
-									// TODO
+										String data = getPathData(path);
+										// XxlConfClient.update(key, data);
+									} else if (watchedEvent.getType() == EventType.NodeChildrenChanged) {
+										// TODO
+									} else if (watchedEvent.getType() == EventType.None) {
+										// TODO
+									}
+
+								} catch (InterruptedException e) {
+									logger.error("", e);
 								}
-
-							} catch (InterruptedException e) {
-								logger.error("", e);
 							}
-						}
-					});
-					ZookeeperUtil.createWithParent(Environment.CONF_DATA_PATH);	// init cfg root path
+						});
+						ZookeeperUtil.createWithParent(Environment.CONF_DATA_PATH);	// init cfg root path
+					} finally {
+						INSTANCE_INIT_LOCK.unlock();
+					}
                 }
 			} catch (InterruptedException e) {
 				logger.error("", e);
