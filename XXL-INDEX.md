@@ -33,5 +33,6 @@
 - 8、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
 - 9、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)       分布式服务通讯框架 (V1.1)
 - 10、[xxl-search](https://github.com/xuxueli/xxl-search)搜索应用参考示例 (V1.0)
+- 11、[xxl-push](https://github.com/xuxueli/xxl-push)    push,im (...)
 
 
