@@ -59,7 +59,7 @@ public class PropertiesUtil {
 		InputStream in = null;
 		try {
 			ClassLoader loder = Thread.currentThread().getContextClassLoader();
-			URL url = url = new File(propertyFileName).toURI().toURL();
+			URL url = new File(propertyFileName).toURI().toURL();
 			in = new FileInputStream(url.getPath());
 			if (in != null) {
 				prop.load(in);
