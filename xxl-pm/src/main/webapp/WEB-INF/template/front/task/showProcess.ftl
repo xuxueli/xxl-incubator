@@ -109,9 +109,11 @@ $(document).ready(function(){
     }
   };
   
-  var baseUrl = window.document.location.protocol + "//" + window.document.location.host + "/";
+  /*var baseUrl = window.document.location.protocol + "//" + window.document.location.host + "/";
   var shortenedUrl = window.document.location.href.replace(baseUrl, "");
-  baseUrl = baseUrl + shortenedUrl.substring(0, shortenedUrl.indexOf("/"));
+  baseUrl = baseUrl + shortenedUrl.substring(0, shortenedUrl.indexOf("/"));*/
+
+  var  baseUrl = "${request.contextPath}";
   
   ActivitiRest.options = {
     processInstanceHighLightsUrl: baseUrl + "/service/process-instance/{processInstanceId}/highlights?callback=?",
