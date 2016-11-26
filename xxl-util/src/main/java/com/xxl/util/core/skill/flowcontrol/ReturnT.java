@@ -6,8 +6,10 @@ package com.xxl.util.core.skill.flowcontrol;
  * @param <T>
  */
 public class ReturnT<T> {
+	public static final int SUCCESS_CODE = 200;
+	public static final int FAIL_CODE = 500;
 	public static final ReturnT<String> SUCCESS = new ReturnT<String>(null);
-	public static final ReturnT<String> FAIL = new ReturnT<String>(500, null);
+	public static final ReturnT<String> FAIL = new ReturnT<String>(FAIL_CODE, null);
 	
 	private int code;
 	private String msg;
@@ -18,7 +20,7 @@ public class ReturnT<T> {
 		this.msg = msg;
 	}
 	public ReturnT(T content) {
-		this.code = 200;
+		this.code = SUCCESS_CODE;
 		this.content = content;
 	}
 	

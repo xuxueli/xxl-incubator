@@ -16,6 +16,9 @@
 ### 开源产品汇总 (文档见各项目的RM文件;按照字母顺序拍戏)
 ***
 - 1、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  个人站项目, MD编辑, 图床, 静态化 (...)
+    - net》spring-boot + vue-js + semantic-ui;
+    - admin》spring + jquery + 
+    - 轻博客，xxl-blog：组成=spring-boot + sqlite + vuejs + ，markdown，静态化，
 - 2、[xxl-cache](https://github.com/xuxueli/xxl-cache)   分布式缓存管理平台（V1.0）
 - 3、[xxl-conf](https://github.com/xuxueli/xxl-conf)     分布式配置管理平台 (V1.1)
 - 4、[xxl-glue](https://github.com/xuxueli/xxl-glue)     分布式逻辑管理平台（V1.1）
