@@ -112,11 +112,11 @@ public class IpUtil {
      * @return
      */
     public static String getIpPort(int port){
-        InetAddress address = getAddress();
-        if (address==null) {
+        String ip = getIp();
+        if (ip==null) {
             return null;
         }
-        return address.getHostAddress().concat(":").concat(String.valueOf(port));
+        return ip.concat(":").concat(String.valueOf(port));
     }
 
     public static void main(String[] args) throws UnknownHostException {
