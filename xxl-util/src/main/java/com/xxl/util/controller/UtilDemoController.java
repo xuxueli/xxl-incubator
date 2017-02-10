@@ -715,4 +715,14 @@ public class UtilDemoController {
 		return IpUtil.getIp();
 	}
 
+	/**
+	 * 30、com.xxl.util.core.util.ThreadLocalParamMapUtil.java  (IP工具类)
+	 * @return
+	 */
+	@RequestMapping(value = "/ThreadLocalParamMapUtil" )
+	@ResponseBody
+	public Object ThreadLocalParamMapUtil(String key) {
+		return ThreadLocalParamMapUtil.getChainThreadParamValue(key);
+	}
+
 }
