@@ -30,7 +30,7 @@ public class ScriptUtil {
         String command = pyCmd;
         String filename = pyFile;
         String logFile = pyLogFile;
-        if (true) {
+        if (false) {
             command = shllCmd;
             filename = shellFile;
             logFile = shLogFile;
@@ -279,12 +279,15 @@ public class ScriptUtil {
             String[] cmdarray = new String[]{command, scriptFile, locCommand};
             Process pr = Runtime.getRuntime().exec(cmdarray);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            SequenceInputStream sequenceInputStream = new SequenceInputStream(pr.getInputStream(), pr.getErrorStream());
+
+            //BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(sequenceInputStream));
             String line;
-            while ((line = in.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 System.out.println(line);
             }
-            in.close();
+            bufferedReader.close();
             pr.waitFor();
         } catch (Exception e) {
             e.printStackTrace();
