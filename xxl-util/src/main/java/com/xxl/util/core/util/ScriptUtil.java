@@ -3,10 +3,7 @@ package com.xxl.util.core.util;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import org.apache.commons.exec.*;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  *  1、内嵌编译器如"PythonInterpreter"无法引用扩展包，因此推荐使用java调用控制台进程方式"Runtime.getRuntime().exec()"来运行脚本(shell或python)；
@@ -39,6 +36,10 @@ public class ScriptUtil {
             logFile = shLogFile;
         }
 
+        if (true) {
+            execToFile(command, filename, logFile);
+        }
+
         if (false) {
             System.out.println("---------execByShRunner----------");
             execByShRunner(command, filename, logFile);
@@ -60,6 +61,43 @@ public class ScriptUtil {
     }
 
     /**
+     * 日志文件输出方式
+     *
+     * 优点：支持将目标数据实时输出到指定日志文件中去
+     * 缺点：
+     *      标准输出和错误输出优先级固定，可能和脚本中顺序不一致
+     *      Java无法实时获取
+     *
+     * @param command
+     * @param scriptFile
+     * @param logFile
+     */
+    public static void execToFile(String command, String scriptFile, String logFile){
+        try {
+            // 标准输出：print （null if watchdog timeout）
+            // 错误输出：logging + 异常 （still exists if watchdog timeout）
+            // 标准输出
+            FileOutputStream fileOutputStream = new FileOutputStream(logFile);
+            PumpStreamHandler streamHandler = new PumpStreamHandler(fileOutputStream, fileOutputStream, null);
+
+            // command
+            CommandLine commandline = new CommandLine(command);
+            commandline.addArgument(scriptFile);
+
+            // exec
+            DefaultExecutor exec = new DefaultExecutor();
+            exec.setExitValues(null);
+            exec.setStreamHandler(streamHandler);
+            int exitValue = exec.execute(commandline);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        /*Process process = Runtime.getRuntime().exec(cmdarray);
+        IOUtils.copy(process.getInputStream(), out);
+        IOUtils.copy(process.getErrorStream(), out);*/
+    }
+
+    /**
      * 中间shell方式
      *
      *  优点：中间shell调用目标脚本，支持将目标脚本日志输出到指定日志文件中
@@ -77,7 +115,7 @@ public class ScriptUtil {
             // input + output
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();   // 标准输出：print （null if watchdog timeout）
             ByteArrayOutputStream errorStream = new ByteArrayOutputStream();    // 错误输出：logging + 异常 （still exists if watchdog timeout）
-            ByteArrayInputStream inputStream = null;                            // 标准输出
+            ByteArrayInputStream inputStream = null;                            // 标准出入
             PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream, errorStream, inputStream);
 
             ExecuteWatchdog watchdog = new ExecuteWatchdog(1000);
@@ -106,7 +144,6 @@ public class ScriptUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**

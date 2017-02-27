@@ -8,5 +8,6 @@ do
     sleep 1s
 done
 
+echo1 111
 printf 666
 echo2 222
