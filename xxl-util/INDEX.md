@@ -119,3 +119,6 @@ Standby skill points
 
 - 7、ddos.html  (JS实现简易版本DDOS)
 > 详细：见：/xxl-util/src/main/webapp/skill/ddos.html
+
+- 8、截屏Java实现
+> 详细：见：com.xxl.util.core.skill.screencapture.ScreenCaptureUtil
