@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * ehcache 进程缓存, 虽然目前ehcache提供集群方案，但是分布式缓存还是使用memcached/redis比较好;
@@ -32,17 +31,14 @@ public class IndexController {
 
 	// ----------- redirect 方式（URL）
 	@RequestMapping("/redirect")
-	private String redirect(String word, RedirectAttributes redirectAttributes) {
-		// URL拼参数（动态传参）
-		redirectAttributes.addAttribute("word", "redirect:" + word);
-		// URL不品参数（结合@ModelAttribute）
-		//redirectAttributes.addFlashAttribute("word2", "redirect:" + word);
+	private String redirect(RedirectAttributes redirectAttributes) {
+		redirectAttributes.addAttribute("word", "word");
 		return "redirect:/newUrl";
 	}
 
 	@RequestMapping(value = "/newUrl")
 	@ResponseBody
-	private String newUrl(String word) {
+	private String newUrl(String word, HttpServletRequest request) {
 		return word;
 	}
 
@@ -63,15 +59,14 @@ public class IndexController {
 	// ----------- forward 方式
 	@RequestMapping("/forward")
 	private String forward(String word, Model model) {
-		model.addAttribute("tim", new Date());
+		model.addAttribute("word2", "word2");
 		return "forward:/forwardUrl";
 	}
 
 	@RequestMapping("/forwardUrl")
 	@ResponseBody
-	private String forwardUrl(String word, HttpServletRequest request, Date tim) {
-		Date tim2 = (Date) request.getAttribute("tim");
-		return ">>>" + word + ":" + tim2.getTime();
+	private String forwardUrl(String word, String word2, HttpServletRequest request) {
+		return word2;
 	}
 
 }
