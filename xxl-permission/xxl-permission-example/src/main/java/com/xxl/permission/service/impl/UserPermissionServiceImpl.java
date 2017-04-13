@@ -121,8 +121,13 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 	// ---------------------- user-role ----------------------
 
 	public String userRoleQueryJson(int userId) {
+
+		// all
 		List<XxlPermissionRole> allRoles = xxlPermissionRoleDao.getAllRoles();
+
+		// my
 		List<XxlPermissionRole> myRoles = xxlPermissionRoleDao.findRoleByUserId(userId);
+
 		// 设置选中
 		for (XxlPermissionRole all : allRoles) {
 			for (XxlPermissionRole my : myRoles) {
@@ -195,6 +200,10 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 			if (CollectionUtils.isNotEmpty(roleMenuList)) {
 				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "删除失败,角色["+roleId+"]已分配菜单，不允许删除");
 			}
+
+			if (roleId == CommonDic.SUPER_ROLE_ID) {
+				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "删除失败,超级管理员不允许删除");
+			}
 		}
 		
 		// 角色-菜单关联,删除批量
@@ -207,6 +216,10 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 	public ReturnT<Integer> roleUpdate(int roleId, String name, int order) {
 		if (StringUtils.isBlank(name)) {
 			return new ReturnT<Integer>(ReturnT.FAIL_CODE, "操作失败,角色名称为空");
+		}
+
+		if (roleId == CommonDic.SUPER_ROLE_ID) {
+			return new ReturnT<Integer>(ReturnT.FAIL_CODE, "操作失败,超级管理员不允许操作");
 		}
 
 		XxlPermissionRole role = xxlPermissionRoleDao.loadRole(roleId);
@@ -283,14 +296,22 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 	@Override
 	public ReturnT<Integer> menuAdd(XxlPermissionMenu menu) {
 		// 校验父菜单
-		if (menu.getParentId() != CommonDic.BIZ_MENU_ID) {	// 非Biz菜单
+		boolean ifBiz = menu.getParentId() == CommonDic.BIZ_MENU_ID;	// 0-biz
+		if (!ifBiz) {
 			XxlPermissionMenu parent = xxlPermissionMenuDao.load(menu.getParentId());
 			if (parent == null) {
 				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "新增失败,父菜单ID为空");
 			}
-			if (parent.getParentId() != 0) {	// 非菜单
-				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "新增失败,父菜单只能为菜单组");
+
+			boolean ifGroup = parent.getParentId() == 0;	// 0-biz-group
+			if (!ifGroup) {
+				XxlPermissionMenu parent2 = xxlPermissionMenuDao.load(parent.getParentId());
+				boolean ifMenu = parent2.getParentId()==0;		// 0-biz-group-menu
+				if (!ifMenu) {
+					return new ReturnT<Integer>(ReturnT.FAIL_CODE, "新增失败,父菜单只能为菜单组");
+				}
 			}
+
 		}
 
 		// 校验菜单名称
@@ -335,14 +356,22 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 			}
 
 			// 校验父菜单
-			if (menu.getParentId() != CommonDic.BIZ_MENU_ID) {	// 非Biz菜单
+			boolean ifBiz = menu.getParentId() == CommonDic.BIZ_MENU_ID;	// 0-biz
+			if (!ifBiz) {
 				XxlPermissionMenu parent = xxlPermissionMenuDao.load(menu.getParentId());
 				if (parent == null) {
-					return new ReturnT<Integer>(ReturnT.FAIL_CODE, "更新失败,父菜单ID为空");
+					return new ReturnT<Integer>(ReturnT.FAIL_CODE, "新增失败,父菜单ID为空");
 				}
-				if (parent.getParentId() != 0) {	// 非菜单
-					return new ReturnT<Integer>(ReturnT.FAIL_CODE, "更新失败,父菜单只能为菜单组");
+
+				boolean ifGroup = parent.getParentId() == 0;	// 0-biz-group
+				if (!ifGroup) {
+					XxlPermissionMenu parent2 = xxlPermissionMenuDao.load(parent.getParentId());
+					boolean ifMenu = parent2.getParentId()==0;		// 0-biz-group-menu
+					if (!ifMenu) {
+						return new ReturnT<Integer>(ReturnT.FAIL_CODE, "新增失败,父菜单只能为菜单组");
+					}
 				}
+
 			}
 		}
 
