@@ -25,7 +25,6 @@
 		    			<td>角色:</td>
 		    			<td>
 							<select class="easyui-combobox" data-options="editable:false" panelheight="100%" name="role_id" >
-                                <option value="${SUPER_ROLE_ID}" >超级管理员</option>
 								<#if roleList?exists && roleList?size gt 0>
 								    <#list roleList as role>
 								        <option value="${role.id}" >${role.name}</option>

@@ -56,17 +56,18 @@ public class LoginServiceImpl implements ILoginService {
 		if (!password.equals(user.getPassword())) {
 			return new ReturnT<String>(ReturnT.FAIL_CODE, "密码错误");
 		}
-		
-		// 角色-菜单校验
+
+		// 角色校验
+		int  userRoleCount = xxlPermissionRoleDao.findUserRoleCount(user.getId(), roleId);
+		if (userRoleCount < 1) {
+			return new ReturnT<String>(ReturnT.FAIL_CODE, "对不起,角色权限不足");
+		}
+
+		// 菜单校验
 		List<XxlPermissionMenu> menus = null;
 		if (CommonDic.SUPER_ROLE_ID == roleId) {
 			menus = xxlPermissionMenuDao.getAllMenus();
 		} else {
-			int  userRoleCount = xxlPermissionRoleDao.findUserRoleCount(user.getId(), roleId);
-			if (userRoleCount < 1) {
-				return new ReturnT<String>(ReturnT.FAIL_CODE, "对不起,角色权限不足");
-			}
-
 			menus = xxlPermissionMenuDao.getMenusByRoleId(roleId);
 		}
 
