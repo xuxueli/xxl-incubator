@@ -2,17 +2,17 @@ $(function(){
 	$('#tg').treegrid({
 	    url:'menuQuery',
 		method: 'get',
-	    idField:'menuId',    
+	    idField:'id',
 	    treeField:'name', 
 	    rownumbers: true,
 	    singleSelect:true,
 	    columns:[[
-            {title:'节点ID',field:'menuId'},    
+            {title:'节点ID',field:'id'},
             {title:'父节点ID',field:'parentId'},
 	        {title:'顺序',field:'order'}, 
 	        {title:'名称',field:'name'},    
-	        {title:'URL',field:'url'},
-	        {title:'权限ID',field:'permessionNum'}
+	        {title:'URL',field:'permessionUrl'},
+	        {title:'权限ID',field:'permessionId'}
 	    ]],
 	    onLoadSuccess:function(){	initLinkButton();	},
 	    onClickRow:function(){	initLinkButton();	}

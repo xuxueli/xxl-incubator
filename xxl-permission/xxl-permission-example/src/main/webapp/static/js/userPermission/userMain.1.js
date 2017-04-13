@@ -2,7 +2,7 @@ $(function() {
 	
 	// datagrid 属性
 	$('#dg').datagrid({ 
-		//url:url,
+		url: 'userQuery' ,
 	    //method:'get', 
 		pagination:true, 
 		pageSize: 10, 				//读取分页条数，即向后台读取数据时传过去的值
@@ -208,7 +208,7 @@ $(function() {
 		
 		// 用户ID
 		var item = $('#dg').datagrid('getSelected');
-		var userId = item.userId;
+		var userId = item.id;
 		
 		$("#editRoleWindow").window("open");
 		$("#roles").combobox({    
