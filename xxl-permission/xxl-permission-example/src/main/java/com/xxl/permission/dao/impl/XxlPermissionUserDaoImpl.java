@@ -44,23 +44,21 @@ public class XxlPermissionUserDaoImpl implements IXxlPermissionUserDao {
 
 
 	@Override
-	public List<XxlPermissionUser> queryUser(int offset, int pagesize, String userName, int roleId) {
+	public List<XxlPermissionUser> queryUser(int offset, int pagesize, String userName) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
 		params.put("userName", userName);
-		params.put("roleId", roleId);
 		
 		return sqlSessionTemplate.selectList("XxlPermissionUserMapper.queryUser", params);
 	}
 
 	@Override
-	public int queryUserCount(int offset, int pagesize, String userName, int roleId) {
+	public int queryUserCount(int offset, int pagesize, String userName) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("offset", offset);
 		params.put("pagesize", pagesize);
 		params.put("userName", userName);
-		params.put("roleId", roleId);
 		
 		return sqlSessionTemplate.selectOne("XxlPermissionUserMapper.queryUserCount", params);
 	}

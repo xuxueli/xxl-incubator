@@ -1,9 +1,7 @@
 package com.xxl.permission.controller;
 
 import com.xxl.permission.controller.annotation.PermessionType;
-import com.xxl.permission.core.model.XxlPermissionRole;
 import com.xxl.permission.core.result.ReturnT;
-import com.xxl.permission.core.util.JacksonUtil;
 import com.xxl.permission.dao.IXxlPermissionRoleDao;
 import com.xxl.permission.service.IUserPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,23 +31,14 @@ public class UserPermissionController {
 	@RequestMapping("/userMain")
 	@PermessionType(permessionId = 1000100)
 	public String userMain(ModelMap model) {
-		
-		// 构建角色搜索下拉框
-		List<XxlPermissionRole> allRole = adminRoleDao.getAllRoles();
-		XxlPermissionRole role = new XxlPermissionRole();
-		role.setId(0);
-		role.setName("全部");
-		allRole.add(0, role);
-		
-		model.put("allRole", JacksonUtil.writeValueAsString(allRole));
 		return "userPermission/userMain";
 	}
 	
 	@RequestMapping("/userQuery")
 	@ResponseBody
 	@PermessionType(permessionId = 1000100)
-	public Map<String, Object> userQuery(@RequestParam(required=false, defaultValue="0")int page,@RequestParam(required=false, defaultValue="0")int rows, String userName, int roleId) {
-		Map<String, Object> resultMap = userPermissionService.userQuery(page, rows, userName, roleId);
+	public Map<String, Object> userQuery(@RequestParam(required=false, defaultValue="0")int page,@RequestParam(required=false, defaultValue="0")int rows, String userName) {
+		Map<String, Object> resultMap = userPermissionService.userQuery(page, rows, userName);
 		return resultMap;
 	}
 	
@@ -71,8 +59,8 @@ public class UserPermissionController {
 	@RequestMapping("/userUpdate")
 	@ResponseBody
 	@PermessionType(permessionId = 1000100)
-	public ReturnT<Integer> userUpdate(int userId, String userName, String password) {
-		return userPermissionService.userUpdate(userId, userName, password);
+	public ReturnT<Integer> userUpdate(int id, String userName, String password) {
+		return userPermissionService.userUpdate(id, userName, password);
 	}
 	
 	@RequestMapping("/userRoleQuery")

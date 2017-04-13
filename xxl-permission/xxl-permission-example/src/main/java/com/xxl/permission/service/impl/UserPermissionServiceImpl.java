@@ -41,12 +41,12 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 	// ---------------------- user ----------------------
 
 	@Override
-	public Map<String, Object> userQuery(int page,int rows, String userName, int roleId) {
+	public Map<String, Object> userQuery(int page,int rows, String userName) {
 		int offset = page<1? 0 : (page-1)*rows;
 		int pagesize = rows;
 		
-		List<XxlPermissionUser> rowsData = xxlPermissionUserDao.queryUser(offset, pagesize, userName, roleId);
-		int totalNumber = xxlPermissionUserDao.queryUserCount(offset, pagesize, userName, roleId);
+		List<XxlPermissionUser> rowsData = xxlPermissionUserDao.queryUser(offset, pagesize, userName);
+		int totalNumber = xxlPermissionUserDao.queryUserCount(offset, pagesize, userName);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("rows", rowsData);  

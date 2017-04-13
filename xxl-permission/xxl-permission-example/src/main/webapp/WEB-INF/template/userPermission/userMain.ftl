@@ -13,23 +13,6 @@
 		<div style="padding:2px;border:1px solid #ddd;">
 			<form id="queryForm">
 				用户名:<input type="text" class="easyui-validatebox" data-options="validType:'length[0,20]'" style="width:100px" name="userName">
-				权限角色:
-				<select class="easyui-combobox" panelHeight="auto" style="width:100px" name="roleId" id="roleId" ></select>
-				<script type="text/javascript" >
-    				var json = eval( '${allRole}' );
-    				//console.log(json);
-					$("#roleId").combobox({   
-						data : json,
-					    valueField : 'roleId',    
-					    textField : 'name',
-					    panelHeight : 'auto',
-					    value : json[0].roleId
-					});
-					$("#roleId").append('<option value="0" selected="selected" >请选择</option>');
-				</script>
-				
-				登陆时间 From: <input class="easyui-datebox" style="width:100px" name="loginDateFrom">
-				To: <input class="easyui-datebox" style="width:100px" name="loginDateTo">
 			</form>
 		</div>
 		<!-- operate -->
@@ -71,7 +54,7 @@
 	<!-- update -->
 	<div id="editWindow" class="easyui-window" title="添加用户" data-options="modal:true,closed:true,iconCls:'icon-save', resizable:false" style="width:250px;height:180px; text-align:center;">
 		<form id="editForm" method="post" style="align:center">
-		<td><input type="hidden" name="userId" /></td>
+		<td><input type="hidden" name="id" /></td>
     	<table >
     		<tr>
     			<td>账号:</td>

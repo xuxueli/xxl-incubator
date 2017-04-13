@@ -13,7 +13,7 @@ import java.util.Map;
 public interface IUserPermissionService {
 	
 	// ---------------------- user ----------------------
-	public Map<String, Object> userQuery(int page,int rows, String userName, int roleId);
+	public Map<String, Object> userQuery(int page,int rows, String userName);
 
 	public ReturnT<Integer> userAdd(String userName, String password);
 	public ReturnT<Integer> userDel(HttpSession session, int[] userIds);

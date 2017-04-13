@@ -14,8 +14,8 @@ public interface IXxlPermissionUserDao {
 	public XxlPermissionUser loadUser(int userId);
 	public XxlPermissionUser findUserByUserName (String username);
 
-	public List<XxlPermissionUser> queryUser(int offset, int pagesize, String userName, int roleId);
-	public int queryUserCount(int offset, int pagesize, String userName, int roleId);
+	public List<XxlPermissionUser> queryUser(int offset, int pagesize, String userName);
+	public int queryUserCount(int offset, int pagesize, String userName);
 
 	public int bindUserRoles(int userId, Set<Integer> addRoldIds);
 	public int unBindUserRoles(int userId, Set<Integer> delRoldIds);

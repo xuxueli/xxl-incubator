@@ -56,7 +56,7 @@ function initMenuModule(moduleContent){
 	$.each(moduleContent, function(index, group) {
 		var menulist = '<ul>';
 		$.each(group.subMenus, function(index, item) {
-			menulist += '<li menuId="' + item.menuId + '" href="#" url="'	+ item.url + '" >' 
+			menulist += '<li menuId="' + item.menuId + '" href="#" url="'	+ item.permessionUrl + '" >'
 				+ '<span class="icon icon-nav'	+ '" >&nbsp;</span>' 
 				+ '<span class="name">' + item.name	+ '</span></li> ';
 		});

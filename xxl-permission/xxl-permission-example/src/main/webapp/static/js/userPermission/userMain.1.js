@@ -16,7 +16,7 @@ $(function() {
 		//sortOrder: "asc", 			// 正序
 	    columns:[[    
 	        {field:'ck',checkbox:true},
-			{field:'userId', title:'用户ID', width:80,sortable:true},
+			{field:'id', title:'用户ID', width:80,sortable:true},
 			{field:'userName', title:'用户名', width:80},
 			{field:'password', title:'密码', width:80,align:'right'},
 			{field:'userToken', title:'TOKEN', width:80,align:'right'},
@@ -88,7 +88,7 @@ $(function() {
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '用户添加成功', 'info');
 					$('#addWindow').window('close')
 					$('#dg').datagrid('reload');
@@ -112,7 +112,7 @@ $(function() {
 		var rows = $('#dg').datagrid('getSelections');
 		for(var i=0; i<rows.length; i++){
 			var row = rows[i];
-			userIds.push(row.userId);
+			userIds.push(row.id);
 		}
 		
 		if (userIds.length < 1) {
@@ -137,7 +137,7 @@ $(function() {
 						$.messager.progress('close');
 					},
 				    success: function(data){
-				    	if (data.code == "S") {
+				    	if (data.code == 200) {
 							$.messager.alert('系统提示', '用户删除成功', 'info');
 							$('#dg').datagrid('reload');	// 重新载入当前页面数据  
 						} else {
@@ -186,7 +186,7 @@ $(function() {
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '用户更新成功', 'info');
 					$('#editWindow').window('close')
 					$('#dg').datagrid('reload');
@@ -234,7 +234,7 @@ $(function() {
 		
 		$.post("userRoleUpdate", "userId=" + userId + "&roleIds[]=" + roleIds
 		,function(data) {
-			if (data.code == "S") {
+			if (data.code == 200) {
 				$.messager.alert('系统提示', '用户角色更新成功', 'info');
 				$("#editRoleWindow").window("close");
 			} else {

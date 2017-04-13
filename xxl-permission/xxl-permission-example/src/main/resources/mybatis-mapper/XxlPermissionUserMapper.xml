@@ -30,10 +30,10 @@
 		)
 	</insert>
 
-	<delete id="delete" parameterType="java.util.HashMap" >
+	<delete id="delete" parameterType="java.util.List" >
 		DELETE FROM xxl_permission_user
 		WHERE id in
-		<foreach collection="userIds" index="index" item="id" open="(" separator="," close=")">
+		<foreach collection="list" index="index" item="id" open="(" separator="," close=")">
 			#{id}
 		</foreach>
 	</delete>
@@ -64,14 +64,6 @@
 		<trim prefix="WHERE" prefixOverrides="and|or" >
 			<if test="userName != null and userName != '' ">
 				and t.user_name = #{userName, jdbcType=VARCHAR}
-			</if>
-			<if test="roleId > 0 ">
-				and EXISTS (
-					select t2.user_id
-					from xxl_permission_user_role t2 
-					where  t2.user_id = t.id
-						and t2.role_id = #{roleId}
-				)
 			</if>
 		</trim>
 		LIMIT #{offset, jdbcType=INTEGER}, #{pagesize, jdbcType=INTEGER}
