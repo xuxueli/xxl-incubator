@@ -38,11 +38,11 @@
     		</tr>
     		<tr>
     			<td>URL:</td>
-    			<td><input class="easyui-validatebox" type="text" name="url" data-options="" /></td>
+    			<td><input class="easyui-validatebox" type="text" name="permessionUrl" data-options="" /></td>
     		</tr>
     		<tr>
     			<td>权限ID:</td>
-    			<td><input class="easyui-numberbox" type="text" name="permessionNum" data-options="required:true, min:0,precision:0" /></td>
+    			<td><input class="easyui-numberbox" type="text" name="permessionId" data-options="required:true, min:0,precision:0" /></td>
     		</tr>
     		<tr>
     			<td colspan="2" >
@@ -73,11 +73,11 @@
     		</tr>
     		<tr>
     			<td>URL:</td>
-    			<td><input class="easyui-validatebox" type="text" name="url" data-options="" /></td>
+    			<td><input class="easyui-validatebox" type="text" name="permessionUrl" data-options="" /></td>
     		</tr>
     		<tr>
     			<td>权限ID:</td>
-    			<td><input class="easyui-numberbox" type="text" name="permessionNum" data-options="required:true, min:0,precision:0" /></td>
+    			<td><input class="easyui-numberbox" type="text" name="permessionId" data-options="required:true, min:0,precision:0" /></td>
     		</tr>
     		<tr>
     			<td colspan="2" >

@@ -1,6 +1,7 @@
 package com.xxl.permission.controller;
 
 import com.xxl.permission.controller.annotation.PermessionType;
+import com.xxl.permission.core.model.XxlPermissionMenu;
 import com.xxl.permission.core.result.ReturnT;
 import com.xxl.permission.dao.IXxlPermissionRoleDao;
 import com.xxl.permission.service.IUserPermissionService;
@@ -145,8 +146,8 @@ public class UserPermissionController {
 	@RequestMapping("/menuAdd")
 	@ResponseBody
 	@PermessionType(permessionId = 1000300)
-	public ReturnT<Integer> menuAdd(int parentId, int order, String name, String url, int permessionNum) {
-		return userPermissionService.menuAdd(parentId, order, name, url, permessionNum);
+	public ReturnT<Integer> menuAdd(XxlPermissionMenu menu) {
+		return userPermissionService.menuAdd(menu);
 	}
 	
 	@RequestMapping("/menuDel")
@@ -159,8 +160,8 @@ public class UserPermissionController {
 	@RequestMapping("/menuUpdate")
 	@ResponseBody
 	@PermessionType(permessionId = 1000300)
-	public ReturnT<Integer> menuUpdate(int id, int parentId, int order, String name, String url, int permessionNum) {
-		return userPermissionService.menuUpdate(id, parentId, order, name, url, permessionNum);
+	public ReturnT<Integer> menuUpdate(XxlPermissionMenu menu) {
+		return userPermissionService.menuUpdate(menu);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.xxl.permission.service;
 
+import com.xxl.permission.core.model.XxlPermissionMenu;
 import com.xxl.permission.core.result.ReturnT;
 
 import javax.servlet.http.HttpSession;
@@ -35,7 +36,7 @@ public interface IUserPermissionService {
 
 	// ---------------------- menu ----------------------
 	public Map<String, Object> menuQuery();
-	public ReturnT<Integer> menuAdd(int parentId, int order, String name, String url, int permessionNum);
+	public ReturnT<Integer> menuAdd(XxlPermissionMenu menu);
 	public ReturnT<Integer> menuDel(int menuId);
-	public ReturnT<Integer> menuUpdate(int menuId, int parentId, int order, String name, String url, int permessionNum);
+	public ReturnT<Integer> menuUpdate(XxlPermissionMenu menu);
 }

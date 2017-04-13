@@ -187,7 +187,7 @@ $(function() {
 		$("#editMenuCancel").click();
 		
 		var item = $('#dg').datagrid('getSelected');
-		var roleId = item.roleId;
+		var roleId = item.id;
 		
 		$('#tt').tree({    
 			url: 'roleMenuQuery?roleId=' + roleId,
@@ -207,7 +207,7 @@ $(function() {
 		}
 		// 获取选中项roleId
 		var item = $('#dg').datagrid('getSelected');
-		var roleId = item.roleId;
+		var roleId = item.id;
 		
 		// 获取选中菜单节点
 		var nodes = $('#tt').tree('getChecked');
