@@ -57,7 +57,7 @@
 	<!-- edit -->
 	<div id="editWindow" class="easyui-window" title="编辑菜单" data-options="modal:true,closed:true,iconCls:'icon-save', resizable:false" style="width:270px;height:270px; text-align:center;">
 		<form id="editForm" method="post" >
-		<input type="hidden" name="menuId" />
+		<input type="hidden" name="id" />
     	<table cellpadding="5">
     		<tr>
     			<td>父菜单:</td>

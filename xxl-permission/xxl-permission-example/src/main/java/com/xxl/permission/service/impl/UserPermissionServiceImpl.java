@@ -189,7 +189,7 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 			// 用户-角色关联,不允许删除
 			int count = xxlPermissionRoleDao.findUserCountByRole(roleId);
 			if (count > 0) {
-				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "删除失败,该角色被使用中");
+				return new ReturnT<Integer>(ReturnT.FAIL_CODE, "删除失败,角色["+roleId+"]被使用中");
 			}
 		}
 		

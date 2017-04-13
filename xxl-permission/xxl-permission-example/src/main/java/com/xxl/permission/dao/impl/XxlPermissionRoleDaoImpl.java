@@ -36,8 +36,8 @@ public class XxlPermissionRoleDaoImpl implements IXxlPermissionRoleDao {
 	}
 
 	@Override
-	public XxlPermissionRole loadRole(int roleId) {
-		return sqlSessionTemplate.selectOne("XxlPermissionRoleMapper.getRoleById", roleId);
+	public XxlPermissionRole loadRole(int id) {
+		return sqlSessionTemplate.selectOne("XxlPermissionRoleMapper.loadRole", id);
 	}
 
 	@Override

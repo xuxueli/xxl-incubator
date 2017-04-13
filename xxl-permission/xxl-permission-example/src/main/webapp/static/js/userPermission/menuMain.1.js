@@ -71,7 +71,7 @@ $(function(){
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '菜单添加成功', 'info');
 					$('#addWindow').window('close')
 					$('#tg').treegrid('reload');
@@ -103,7 +103,7 @@ $(function(){
 				    type : 'post',
 				    async : true,
 				    data : {
-				    	"menuId" : item.menuId
+				    	"menuId" : item.id
 				    },
 				    dataType:'json',
 				    beforeSend : function() {
@@ -113,7 +113,7 @@ $(function(){
 						$.messager.progress('close');
 					},
 				    success: function(data){
-				    	if (data.code == "S") {
+				    	if (data.code == 200) {
 							$.messager.alert('系统提示', '菜单删除成功', 'info');
 							$('#tg').treegrid('reload');
 						} else {
@@ -162,7 +162,7 @@ $(function(){
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '菜单更新成功', 'info');
 					$('#editWindow').window('close')
 					$('#tg').treegrid('reload');

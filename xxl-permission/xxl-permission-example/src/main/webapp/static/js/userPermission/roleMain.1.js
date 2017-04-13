@@ -13,7 +13,7 @@ $(function() {
 		fitColumns: true, 			// 设置为true将自动使列适应表格宽度以防止出现水平滚动,false则自动匹配大小
 	    columns:[[    
 	        {field:'ck',checkbox:true},
-			{field:'roleId', title:'角色ID'},
+			{field:'id', title:'角色ID'},
 			{field:'name', title:'角色名'},
 			{field:'order', title:'顺序'}
 	    ]],
@@ -70,7 +70,7 @@ $(function() {
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '角色添加成功', 'info');
 					$('#addWindow').window('close')
 					$('#dg').datagrid('reload');
@@ -94,7 +94,7 @@ $(function() {
 		var rows = $('#dg').datagrid('getSelections');
 		for(var i=0; i<rows.length; i++){
 			var row = rows[i];
-			roleIds.push(row.roleId);
+			roleIds.push(row.id);
 		}
 		
 		if (roleIds.length < 1) {
@@ -116,7 +116,7 @@ $(function() {
 						$.messager.progress('close');
 					},
 				    success: function(data){
-				    	if (data.code == "S") {
+				    	if (data.code == 200) {
 							$.messager.alert('系统提示', '角色删除成功', 'info');
 							$('#dg').datagrid('reload');	// 重新载入当前页面数据  
 						} else {
@@ -165,7 +165,7 @@ $(function() {
 				$.messager.progress('close');
 			},
 		    success: function(data){
-		    	if (data.code == "S") {
+		    	if (data.code == 200) {
 					$.messager.alert('系统提示', '用户更新成功', 'info');
 					$('#editWindow').window('close')
 					$('#dg').datagrid('reload');
@@ -218,7 +218,7 @@ $(function() {
 
 		$.post("roleMenuUpdate", "roleId=" + roleId + "&menuIds[]=" + menuIds
 		,function(data) {
-			if (data.code == "S") {
+			if (data.code == 200) {
 				$.messager.alert('系统提示', '角色菜单更新成功', 'info');
 				$('#editMenuWindow').window('close');
 			} else {

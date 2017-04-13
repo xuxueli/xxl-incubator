@@ -5,7 +5,6 @@
 	<meta charset="UTF-8">
 	<title>后台角色管理</title>
 	<@common.common_style />
-	<script type="text/javascript" src="${request.contextPath}/static/js/userPermission/roleMain.1.js"></script>
 		
 </head>
 <body class="easyui-layout" fit="true">  
@@ -47,9 +46,9 @@
 	</div>
 	
 	<!-- update -->
-	<div id="editWindow" class="easyui-window" title="添加用户" data-options="modal:true,closed:true,iconCls:'icon-save', resizable:false" style="width:250px;height:180px; text-align:center;">
+	<div id="editWindow" class="easyui-window" title="编辑用户" data-options="modal:true,closed:true,iconCls:'icon-save', resizable:false" style="width:250px;height:180px; text-align:center;">
 		<form id="editForm" method="post" style="align:center">
-		<input type="hidden" name="roleId" />
+		<input type="hidden" name="id" />
     	<table cellpadding="5" >
     		<tr>
     			<td>名称:</td>
@@ -89,4 +88,6 @@
 	</div>
 
 </body>
+
+<script type="text/javascript" src="${request.contextPath}/static/js/userPermission/roleMain.1.js"></script>
 </html>

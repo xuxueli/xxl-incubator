@@ -109,8 +109,8 @@ public class UserPermissionController {
 	@RequestMapping("/roleUpdate")
 	@ResponseBody
 	@PermessionType(permessionId = 1000200)
-	public ReturnT<Integer> roleUpdate(HttpSession session, int roleId, String name, int	order) {
-		return userPermissionService.roleUpdate(roleId, name, order);
+	public ReturnT<Integer> roleUpdate(HttpSession session, int id, String name, int	order) {
+		return userPermissionService.roleUpdate(id, name, order);
 	}
 	
 	@RequestMapping("/roleMenuQuery")
@@ -159,8 +159,8 @@ public class UserPermissionController {
 	@RequestMapping("/menuUpdate")
 	@ResponseBody
 	@PermessionType(permessionId = 1000300)
-	public ReturnT<Integer> menuUpdate(int menuId, int parentId, int order, String name, String url, int permessionNum) {
-		return userPermissionService.menuUpdate(menuId, parentId, order, name, url, permessionNum);
+	public ReturnT<Integer> menuUpdate(int id, int parentId, int order, String name, String url, int permessionNum) {
+		return userPermissionService.menuUpdate(id, parentId, order, name, url, permessionNum);
 	}
 	
 }
