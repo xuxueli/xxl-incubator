@@ -100,6 +100,8 @@ Standby skill points
 
 - 32、com.xxl.util.core.util.PinyinUtil.java  (汉语转拼音工具类)
 
+- 33、com.xxl.util.core.util.MvcUtil （springmvc工具类，静态类支持等）
+
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()

@@ -23,18 +23,16 @@
 		    		</tr>
 		    		<tr>
 		    			<td>角色:</td>
-		    			<td><input class="easyui-combobox" id="role_list" name="role_id" ></td>
-		    			<script type="text/javascript" >
-		    				var json = eval( '${Application.login_role_list?if_exists}' );
-							$("#role_list").combobox({   
-								data : json,
-							    valueField : 'roleId',    
-							    textField : 'name',
-							    panelHeight : 'auto',
-							    editable:false,
-							    value : json.length > 0?json[0].roleId : ''
-							}); 
-						</script>
+		    			<td>
+							<select class="easyui-combobox" data-options="editable:false" panelheight="100%" name="role_id" >
+                                <option value="${SUPER_ROLE_ID}" >超级管理员</option>
+								<#if roleList?exists && roleList?size gt 0>
+								    <#list roleList as role>
+								        <option value="${role.id}" >${role.name}</option>
+								    </#list>
+								</#if>
+							</select>
+						</td>
 		    		</tr>
 		    		<tr>
 		    			<td>验证码:</td>

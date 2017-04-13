@@ -34,7 +34,7 @@ function submitForm(){
 			$.messager.progress('close');
 		},
 	    success: function(data){
-	    	if(data.code == "S"){
+	    	if(data.code == 200){
 				window.location.href = base_url + "./home";
 	    	} else{
 	    		$.messager.alert('系统提示', data.msg, 'warning');
