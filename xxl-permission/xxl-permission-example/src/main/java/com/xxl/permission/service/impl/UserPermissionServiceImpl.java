@@ -127,7 +127,7 @@ public class UserPermissionServiceImpl implements IUserPermissionService {
 		for (XxlPermissionRole all : allRoles) {
 			for (XxlPermissionRole my : myRoles) {
 				if (all.getId() == my.getId()) {
-					all.setSelected(true);
+					all.setChecked(true);
 				}
 			}
 		}

@@ -9,15 +9,25 @@ public class XxlPermissionRole {
 	private int id;
 	private String name;
 	private int order;
-	
+
 	// 角色是否拥有
-	private boolean selected;
-	public boolean isSelected() {
-		return selected;
+	private boolean checked;
+	public boolean isChecked() {
+		return checked;
 	}
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
+
+	// tree test
+	private String text;
+	public String getText() {
+		return name;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+
 
 	public int getId() {
 		return id;

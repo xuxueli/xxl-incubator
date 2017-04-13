@@ -211,16 +211,15 @@ $(function() {
 		var userId = item.id;
 		
 		$("#editRoleWindow").window("open");
-		$("#roles").combobox({    
+		$("#roles").tree({
 			url:'userRoleQuery?userId=' + userId,
 			method:'get',
-		    valueField:'roleId',    
-		    textField:'name',
-		    panelHeight:'auto',
-		    multiple:true,
-		    multiline:true
-		});  
-		
+			idField:'id',
+			checkbox:true,
+			cascadeCheck:false,
+			lines :true
+		});
+
 	});
 	$("#editRoleCancel").click(function(){
 		$('#roles').combobox('clear');
@@ -228,10 +227,15 @@ $(function() {
 	$("#editRoleOk").click(function(){
 		// 用户ID
 		var item = $('#dg').datagrid('getSelected');
-		var userId = item.userId;
+		var userId = item.id;
+
 		// 选中角色ID
-		var roleIds = $('#roles').combobox('getValues');
-		
+		var nodes = $('#roles').tree('getChecked');
+		var roleIds = new Array();
+		for(var i=0; i<nodes.length; i++){
+			roleIds.push(nodes[i].id);
+		}
+
 		$.post("userRoleUpdate", "userId=" + userId + "&roleIds[]=" + roleIds
 		,function(data) {
 			if (data.code == 200) {

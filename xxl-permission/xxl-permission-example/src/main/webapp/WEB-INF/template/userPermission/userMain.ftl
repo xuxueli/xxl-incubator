@@ -75,13 +75,15 @@
 	</div>
 	
 	<!-- edit role form -->
-	<div id="editRoleWindow" class="easyui-window" title="分配角色" data-options="modal:true,closed:true,collapsible:false,minimizable:false,maximizable:false" style="text-align:center;">
+	<div id="editRoleWindow" class="easyui-window" title="分配角色" data-options="modal:true,closed:true,collapsible:false,minimizable:false,maximizable:false" style="width:300px;margin-top:50px,text-align:left;">
 		<form class="editRoleForm" method="post" style="align:center">
 		<td><input type="hidden" name="userId" /></td>
     	<table >
     		<tr>
     			<td>角色:</td>
-    			<td><input class="easyui-combobox" id="roles" style="width:150px;height:50px;" ></td>
+    			<td>
+                    <ul id="roles" class="easyui-tree" ></ul>
+				</td>
     		</tr>
     		<tr>
     			<td colspan="2" >
