@@ -102,6 +102,10 @@ Standby skill points
 
 - 33、com.xxl.util.core.util.MvcUtil （springmvc工具类，静态类支持等）
 
+- 34、webapp/static/js/navigator.check.1.js （操作平台校验：PC、Android、IOS等）
+
+- 35、webapp/static/js/requestParam.js （从URL中获取get参数）
+
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
 > 详细：见：com.xxl.util.controller.SkillDemoController.producerConsumer()
