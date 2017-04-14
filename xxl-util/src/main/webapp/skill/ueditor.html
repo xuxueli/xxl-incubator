@@ -8,8 +8,34 @@
 
 <body>
 
+<!--
+---------------------- 方式01：ueditor + 本地文件上传 ----------------------
+1、引入 "ueditor.config.js" 和 "ueditor.all.min.js" ；
+2、页面定义编辑器 ：<script id="container" type="text/plain"></script>"；
+3、JS初始化编辑器 ：var ue = UE.getEditor('container');ue.ready(function() {    ue.setContent('初始化内容');    });
+4、配置上传配置：位置见 "jsp/config.json"，主要是前后缀，如 "imageUrlPrefix：为空则根路径" 和 "imagePathFormat：文件相对路径和格式"；
+5、maven引入 "jsp/lib" 目录下的依赖：ueditor、json、commmons-upload。。。等；
+```
+<!-- ueditor (上传部分源码已被我修改) -->
+<dependency>
+    <groupId>com.baidu.ueditor</groupId>
+    <artifactId>ueditor</artifactId>
+    <version>1.1.1</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
+</dependency>
+<!-- org.json (ueditor依赖) -->
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20140107</version>
+</dependency>
+```
+
+-->
+
 <!-- 加载编辑器的容器 -->
-<script id="container" name="content" type="text/plain">
+<script id="container" type="text/plain">
 </script>
 
 <!-- 配置文件 -->
@@ -24,7 +50,6 @@
     ue.ready(function() {
         ue.setContent('初始化内容');
     });
-
 
 </script>
 

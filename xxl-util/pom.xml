@@ -265,7 +265,7 @@
 			<version>2.5.1</version>
 		</dependency>
 
-		<!--&lt;!&ndash; ueditor (上传部分源码已被我修改) &ndash;&gt;
+		<!-- ueditor (上传部分源码已被我修改) -->
 		<dependency>
 			<groupId>com.baidu.ueditor</groupId>
 			<artifactId>ueditor</artifactId>
@@ -273,18 +273,18 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
 		</dependency>
-		&lt;!&ndash; org.json (ueditor依赖) &ndash;&gt;
+		<!-- org.json (ueditor依赖) -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
-		&lt;!&ndash; qiniu &ndash;&gt;
+		<!-- qiniu -->
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
 			<version>6.1.9</version>
-		</dependency>-->
+		</dependency>
 
 	</dependencies>
 
