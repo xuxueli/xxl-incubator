@@ -34,8 +34,30 @@
 ---------------------- 方式01：ueditor + 七牛云 ----------------------
 1、2、3步骤同上；
 4、上传文件配置：位置见 "jsp/config.json（参考：config.qiniu.json）"，主要是前后缀，如 "imageUrlPrefix：填写七牛图片空间地址" 和 "imagePathFormat：文件相对路径和格式"；
-5、maven引入 "jsp/lib" 目录下的依赖：其他如上，只有 "ueditor-1.1.2.jar" 依赖 需要更换为 "ueditor-1.1.1-qiniu-xxl.jar"；因为内部做了定制，图片直接上传至七牛云；
+5、maven引入 "jsp/lib" 目录下的依赖：其他如上，只有 "ueditor-1.1.2.jar" 依赖 需要更换为 "ueditor-1.1.1-qiniu-xxl.jar"；因为内部做了定制，图片直接上传至七牛云；同时需要引入七牛云的依赖：
 
+```
+<dependency>
+    <groupId>com.baidu.ueditor</groupId>
+    <artifactId>ueditor</artifactId>
+    <version>1.1.1</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.1-qiniu-xxl.jar</systemPath>
+</dependency>
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20140107</version>
+</dependency>
+<dependency>
+    <groupId>com.qiniu</groupId>
+    <artifactId>qiniu-java-sdk</artifactId>
+    <version>6.1.9</version>
+</dependency>
+```
+
+备注：ueditor-定制Jar中修改的逻辑为：优先判断 "ueditor.properties" ，如启用七牛云配置，则优先上传文件至七牛云
+修改文件：com.baidu.ueditor.upload.StorageManager.java、com.baidu.ueditor.util.QiniuUtil.java、PropertiesUtil.java；
 
 -->
 
