@@ -36,13 +36,13 @@ public class PropertiesUtil {
 				}
 			}
 		} catch (IOException e) {
-			logger.error("load {} error!", propertyFileName);
+			logger.error(e.getMessage(), e);
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					logger.error("close {} error!", propertyFileName);
+					logger.error(e.getMessage(), e);
 				}
 			}
 		}
