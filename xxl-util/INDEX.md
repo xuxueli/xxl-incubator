@@ -131,5 +131,8 @@ Standby skill points
 - 8、截屏Java实现
 > 详细：见：com.xxl.util.core.skill.screencapture.ScreenCaptureUtil
 
-- 9、UEditor 富文本编辑器,支持文件上传
+- 9、UEditor 富文本编辑器,支持图片或文件上传
 > 详细：见：/xxl-util/src/main/webapp/skill/ueditor.html
+
+- 10、Log4j日志AppenderSkeleton实现
+> 详细：见：com.xxl.util.core.skill.logappeng.XxlJobFileAppender
