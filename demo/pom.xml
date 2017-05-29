@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>spring-boot</module>
         <module>test-demo</module>
         <module>jfinal-demo</module>
         <module>ssh-demo</module>
