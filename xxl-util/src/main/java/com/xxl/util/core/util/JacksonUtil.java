@@ -1,10 +1,6 @@
 package com.xxl.util.core.util;
 
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -12,6 +8,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Jackson util
@@ -70,9 +70,9 @@ public class JacksonUtil {
 		}
     	return null;
     }
-    public static <T> T readValueRefer(String jsonStr, Class<T> clazz) {
+    public static <T> T readValueRefer(String jsonStr, TypeReference typeReference) {
     	try {
-			return getInstance().readValue(jsonStr, new TypeReference<T>() { });
+			return getInstance().readValue(jsonStr, typeReference);	// new TypeReference<T>() { }	// new TypeReference<List<DemoDTO>>() { }
 		} catch (JsonParseException e) {
 			logger.error("", e);
 		} catch (JsonMappingException e) {
