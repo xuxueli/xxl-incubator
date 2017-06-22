@@ -38,6 +38,34 @@ public class PinyinUtil {
         return buffer.toString();
     }
 
+    /**
+     * 获取大写首字母
+     *
+     * @param str
+     * @return
+     */
+    public static String getFirstLetter(String str) {
+        // trim
+        if (str == null) {
+            return "";
+        }
+        str = str.trim();
+
+        String convert = "";
+
+        char word = str.charAt(0);
+        String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(word);
+
+        if (pinyinArray != null) {
+            convert += pinyinArray[0].charAt(0);
+        }
+        else {
+            convert += word;
+        }
+
+        return convert.toUpperCase();
+    }
+
     public static void main(String[] args) {
         String chstrs = "天儿不错6，Good homesick!";
         System.out.println("输入:" + chstrs);
