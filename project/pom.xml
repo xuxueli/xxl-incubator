@@ -13,6 +13,7 @@
         <module>xxl-app</module>
         <module>xxl-pm</module>
         <module>xxl-permission</module>
+        <module>xxl-admin</module>
     </modules>
 
 </project>

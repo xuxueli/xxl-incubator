@@ -5,11 +5,9 @@
 	<artifactId>xxl-incubator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<modules>
 
+	<modules>
 		<module>project</module>
 		<module>tmp</module>
-
-        <module>xxl-admin</module>
     </modules>
 </project>
