@@ -11,6 +11,8 @@
         <module>xxl-seckill</module>
         <module>xxl-util</module>
         <module>xxl-app</module>
+        <module>xxl-pm</module>
+        <module>xxl-permission</module>
     </modules>
 
 </project>
