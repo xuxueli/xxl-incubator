@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="dev_task" name="开发任务流程图" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <userTask id="dev" name="开发提测" activiti:assignee="${assignee_to}"></userTask>
+    <userTask id="test" name="测试" activiti:async="true">
+      <extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${assignTaskListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <userTask id="audit" name="审核" activiti:async="true">
+      <extensionElements>
+        <activiti:taskListener event="create" delegateExpression="${assignTaskListener}"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="flow5" name="测试通过" sourceRef="test" targetRef="audit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='true'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow9" name="审核拒绝" sourceRef="audit" targetRef="dev">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" sourceRef="dev" targetRef="test"></sequenceFlow>
+    <sequenceFlow id="flow11" name="测试未通过" sourceRef="test" targetRef="dev">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='false'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow13" name="审核通过" sourceRef="audit" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status=='true'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask1" name="任务处理" activiti:delegateExpression="${postDevTaskDelegate}"></serviceTask>
+    <sequenceFlow id="flow14" sourceRef="startevent1" targetRef="dev"></sequenceFlow>
+    <sequenceFlow id="flow15" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_dev_task">
+    <bpmndi:BPMNPlane bpmnElement="dev_task" id="BPMNPlane_dev_task">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="70.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="920.0" y="60.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="dev" id="BPMNShape_dev">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="test" id="BPMNShape_test">
+        <omgdc:Bounds height="55.0" width="105.0" x="374.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="audit" id="BPMNShape_audit">
+        <omgdc:Bounds height="55.0" width="105.0" x="566.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="750.0" y="50.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="479.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="566.0" y="77.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="489.0" y="77.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="618.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="232.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="232.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="105.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="403.0" y="219.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="285.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="374.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
+        <omgdi:waypoint x="426.0" y="105.0"></omgdi:waypoint>
+        <omgdi:waypoint x="426.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="162.0"></omgdi:waypoint>
+        <omgdi:waypoint x="232.0" y="105.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="60.0" x="296.0" y="149.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="671.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="77.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="695.0" y="77.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="105.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="855.0" y="77.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="77.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
