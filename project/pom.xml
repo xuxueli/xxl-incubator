@@ -7,6 +7,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>xxl-db</module>
+        <module>xxl-seckill</module>
+        <module>xxl-util</module>
+        <module>xxl-app</module>
     </modules>
 
 </project>
