@@ -13,7 +13,7 @@
 * http://blog.csdn.net/xuxueli0323 （仅同步）
 
 
-### 开源产品汇总 (文档见各项目的RM文件;按照字母顺序拍戏)
+### 开源产品汇总
 ***
 - 1、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  个人站项目, MD编辑, 静态化
     - net》spring-boot + vue-js + semantic-ui;
@@ -37,6 +37,7 @@
 - 10、[xxl-push](https://github.com/xuxueli/xxl-push)     分布式消息推送平台 (V1.0)
 - 11、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)      分布式服务通讯框架 (V1.1)
 - 12、[xxl-search](https://github.com/xuxueli/xxl-search)搜索应用参考示例 (V1.0)
+- 13、[xxl-web](https://github.com/xuxueli/xxl-web)Java Web Framework (V1.0)
 
 
 
