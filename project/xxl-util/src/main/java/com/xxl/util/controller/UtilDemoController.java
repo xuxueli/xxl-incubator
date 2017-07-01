@@ -306,7 +306,7 @@ public class UtilDemoController {
 	@RequestMapping("/URLEncoderUtil")
 	@ResponseBody
 	public String URLEncoderUtil(){
-		return URLEncoderUtil.encode("https://www.baidu.com/点评");
+		return URLEncoderUtil.encode("https://www.baidu.com/正能量");
 	}
 	
 	/**

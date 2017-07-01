@@ -360,7 +360,7 @@ scp xueli.xue@10.3.18.142:/data/applogs/wed-job-service/logs/WedHotelPicUpload-1
 ```
 ##### SecureFX + SecureCRT
 
-[下载地址](http://xclient.info/search/s/secure/)
+[下载地址](http://xclient.info/search/s/secure/)    （推荐使用正版哈）
 
 按照下载页面教程安装即可
 

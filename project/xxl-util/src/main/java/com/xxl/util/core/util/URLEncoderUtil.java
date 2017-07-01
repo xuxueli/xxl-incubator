@@ -1,10 +1,10 @@
 package com.xxl.util.core.util;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 /**
  * URL编码解码
@@ -41,7 +41,7 @@ public final class URLEncoderUtil {
 	}
 	
 	public static void main(String[] args) {
-		String url = "https://www.baidu.com/点评";
+		String url = "https://www.baidu.com/正能量";
 		System.out.println(url);
 		
 		// encode

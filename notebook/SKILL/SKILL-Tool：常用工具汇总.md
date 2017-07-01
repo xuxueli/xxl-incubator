@@ -337,9 +337,9 @@ tips：
 ### GIT
 Git是一款免费、开源的分布式版本控制系统，用于敏捷高效地处理任何或小或大的项目。
 
-    在波克城市工作期间，内部使用CVS；
-    在驴妈妈工作期间，内部使用SVN；
-    在大众点评工作期间，内部使用GIT；
+    波克-CVS；
+    驴妈妈-SVN；
+    dp-GIT；
     
 版本管理svn,git,cvs比较
 - RCS(Revision Control System) 修订控制系统：
