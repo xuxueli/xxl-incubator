@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <% if(!user) { %>
+            <a href="/login">Login</a>
+            <% } else { %>
+            <a href="/post/new">Writing Articles</a>
+            <a href="/logout">Logout</a>
+            <% } %>
+        </nav>
+    </header>
+    <% if(success) { %>
+        <p><%= success %></p>
+    <% } %>
+    <% if(error) { %>
+        <p><%= error %></p>
+    <% } %>
