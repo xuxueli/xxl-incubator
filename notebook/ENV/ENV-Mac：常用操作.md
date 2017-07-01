@@ -4,9 +4,7 @@
 * 《Java并发编程实践》
 
 ### 开发环境
-
 ---
-
 -- | windows | mac
 -- | -- | --
 jdk | jdk7 | jdk7
