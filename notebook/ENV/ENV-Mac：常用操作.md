@@ -29,7 +29,7 @@ sudo chown xuxueli data     （目录权限分配给xuxueli）
 
 
 ##### sudo vi /etc/hosts
-xue.51ping.com localhost
+xue.**ping.com localhost
 
 ##### u代表所有者，x代表执行权限
 chmod u+x *.sh
