@@ -1,13 +1,14 @@
 package com.xxl.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Properties;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Properties工具类
@@ -53,9 +54,26 @@ public class PropertiesUtil {
 	}
 
 	/**
+	 * 加载Prop
+	 *
+	 * @param propertyFileName
+	 * @return
+	 */
+	public static Properties loadProperties2(String propertyFileName) {
+		Properties prop = null;
+		try {
+			prop = PropertiesLoaderUtils.loadAllProperties(propertyFileName);
+		} catch (IOException e) {
+			logger.error(e.getMessage(), e);
+		}
+		return prop;
+	}
+
+	/**
 	 * 获取配置String
+	 *
+	 * @param prop
 	 * @param key
-	 * @param defaultValue
 	 * @return
 	 */
 	public static String getString(Properties prop, String key) {
@@ -64,8 +82,9 @@ public class PropertiesUtil {
 
 	/**
 	 * 获取配置int
+	 *
+	 * @param prop
 	 * @param key
-	 * @param defaultValue
 	 * @return
 	 */
 	protected static int getInt(Properties prop, String key) {
