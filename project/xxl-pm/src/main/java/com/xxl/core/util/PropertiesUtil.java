@@ -2,6 +2,9 @@ package com.xxl.core.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.io.FileInputStream;
@@ -62,7 +65,9 @@ public class PropertiesUtil {
 	public static Properties loadProperties2(String propertyFileName) {
 		Properties prop = null;
 		try {
-			prop = PropertiesLoaderUtils.loadAllProperties(propertyFileName);
+			Resource resource = new ClassPathResource(propertyFileName);
+			EncodedResource encodedResource = new EncodedResource(resource,"UTF-8");
+			prop = PropertiesLoaderUtils.loadProperties(encodedResource);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 		}
