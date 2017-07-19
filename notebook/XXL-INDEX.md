@@ -27,6 +27,7 @@
     - /project
         - xxl-admin：后台模板
         - xxl-app : 个人APP
+        - xxl-blog : 个人博客
         - xxl-db : 分库分表中间件
         - xxl-permission : RBAC权限系统
         - xxl-pm : 工作流驱动的项目管理平台
@@ -34,6 +35,7 @@
         - xxl-util : 实用工具类汇总
         - (xxl-ai, 智能机器人, 自助学习的机器人)
     - /tmp : demo项目
+        - ws ：微信小程序
 - 8、[xxl-job](https://github.com/xuxueli/xxl-job)       分布式任务调度平台（V1.4）
 - 9、[xxl-mq](https://github.com/xuxueli/xxl-mq)         分布式消息队列 (V1.1)
 - 10、[xxl-push](https://github.com/xuxueli/xxl-push)     分布式消息推送平台 (V1.0)
