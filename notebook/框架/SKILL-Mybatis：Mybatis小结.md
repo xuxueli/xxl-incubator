@@ -112,7 +112,7 @@ select * from t_blog where id in
 ```
 
 ##### mybatis ${}与#{}的区别：
-- #{} 》${}，前者可以防止SQL注入，解析出的参数带单引号包裹，推荐；后者简单拼接字符串；
+- "#{} 》${}"，前者可以防止SQL注入，解析出的参数带单引号包裹，推荐；后者简单拼接字符串；
 - 能用#不适用$, $方式一般用于传入数据库对象，如表名；
 
 ##### 表字段和系统关键字冲突，如使用order、desc等
@@ -140,7 +140,7 @@ select * from t_blog where id in
     &apos; | ’ | 单引号
     &quot; | " | 双引号
 
-##### Mybatis配置DAO的两种方式：Template方式、Mapper映射器
+##### Mybatis配置DAO的两种方式（多数据源）：Template方式、Mapper映射器
 ```
 方式一：Template方式
 applicationcontext-database.xml
