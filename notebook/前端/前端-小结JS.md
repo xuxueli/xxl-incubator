@@ -1,3 +1,21 @@
+### 当前页面post方式下载文件
+```
+// HTML标准规定如果form表单没有被添加到document里，那么form表单提交将会被终止。Chrome56之后执行了此标准；
+var $form = $("<form>");
+        $form.attr({
+                target: '_self',
+                method: 'post',
+                action: '/user/download' })
+            .append( $('<input>').attr({ name: "userName", value: $('#userName').val() }) )
+            .append( $('<input>').attr({ name: "userPhone", value: $('#userPhone').val() }) )
+            .append( $('<input>').attr({ name: "page", value: 1 }) )
+            .append( $('<input>').attr({ name: "pagesize", value: 1000 }) );
+
+        $('#downloadFrom').html($form);
+
+        $form.submit();
+```
+
 ### selected选中
 
 ```

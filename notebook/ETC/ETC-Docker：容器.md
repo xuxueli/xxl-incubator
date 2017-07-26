@@ -3,14 +3,6 @@
 - docker官网：http://www.docker.com/    
 - 中文文档：http://www.widuu.com/docker/  
 
-## centos安装docker，运行hello world：
-
-    1、准备一台centos，联网，更换阿里云yum源
-    2、安装docker
-        # yum update
-        # yum -y install docker-io
-    3、************* 虚拟机找不到docker.io的yum源，安装卡住了******
-    
 ---
 >Docker是什么？
 
@@ -112,3 +104,21 @@ API 是应用之间的粘合剂，一个合格开发者肯定使用过别人提�
 如果你不太确定的话，可以去 Docker Hub 上搜有一下有没有自己用得到的镜像。大部分情况下你所需要的镜像在 Docker Hub 上都已经有人构建了。
 - 二：多参考 IaaS 供应商的新闻，虽然我们不能像在他们会议室里那样完全了解他们的公司动态，但是仍然可以从新闻中可以了解到 Docker 最新的发展方向和技术趋势。可以肯定的是，容器化技术是未来的热点，我们不仅可以在本机运行 Docker，不仅仅在一家云服务提供商的主机上运行 Docker，未来所有的云服务提供商都会支持 Docker。
 Docker 前景很明确，采用 Docker 只会让开发变得更方便。果你不太确定的话，可以去 Docker Hub 上搜有一下有没有自己用得到的镜像。大部分情况下你所需要的镜像在 Docker Hub 上都已经有人构建了。
+
+## centos安装docker，运行hello world：
+
+    1、准备一台centos，联网，更换阿里云yum源
+    2、安装docker
+        # yum update
+        # yum -y install docker-io
+    3、************* 虚拟机找不到docker.io的yum源，安装卡住了******
+    
+## mac安装docker
+
+    1、准备一台Mac，环境要求；https://docs.docker.com/docker-for-mac/install/#what-to-know-before-you-install
+    2、命令：
+        brew install docker
+        或者：
+        brew update
+        brew upgrade docker
+    
