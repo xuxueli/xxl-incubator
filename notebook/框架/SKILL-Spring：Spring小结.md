@@ -11,6 +11,35 @@ IOC：
 - [Spring事务配置的五种方式](http://www.blogjava.net/robbie/archive/2009/04/05/264003.html)
 ---
 
+##### Spring事务两种方式
+```
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource" />
+</bean>
+
+// 方式一：注解方式，在Service上加注解 "@Transactional" 即可；
+<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+// 方式二：AOP方式
+<tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+        <tx:method name="detail*" propagation="SUPPORTS" />
+        <tx:method name="visit*" propagation="SUPPORTS" />
+        <tx:method name="get*" propagation="SUPPORTS" />
+        <tx:method name="find*" propagation="SUPPORTS" />
+        <tx:method name="check*" propagation="SUPPORTS" />
+        <tx:method name="list*" propagation="SUPPORTS" />
+        <tx:method name="*" propagation="REQUIRED" rollback-for="exception" />
+    </tx:attributes>
+</tx:advice>
+
+<aop:config>
+    <aop:pointcut id="txoperation" expression="execution(* com.xxl.job.admin.service.impl.*.*(..))" />
+    <aop:advisor pointcut-ref="txoperation" advice-ref="txAdvice" />
+</aop:config>
+
+```
+
 ##### Spring加载Properties方式
 - 1、PropertyPlaceholderConfigurer：Spring属性占位符方式
 应用场景：Properties配置文件不止一个，需要在系统启动时同时加载多个Properties文件
