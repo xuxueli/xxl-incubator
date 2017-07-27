@@ -1,3 +1,83 @@
+##### parameterType 和 resultMap
+parameterType：单个参数时有效，Mapper方式@Param多参数时，可不设置；
+resultMap：字段和Model映射；
+
+##### mapper 传递多个参数：
+    @Param 的作用是设置参数别名。设置后的参数只能通过`#{param[1..n]`或者`#{注解别名}`来访问
+    多个参数情况下，均可使用  `#{参数位置[0..n-1]}` |   `#{param[1..n]}`来访问参数
+    
+    1、一个参数：
+        1.1、无注解方式：
+            1.1.1、参数为基本类型或为基本包装类型(int,Integer,String...)
+                参数注释为: #{任意字符}
+                例如：User getUserById(int id);  
+                ... where id = #{id}（或 #{任意字符} 不可为空） ...
+            1.1.2、参数为自定义对象
+                参数注释为: #{对象属性}
+                例如：User getUser(User user);  
+                ... where name = #{name} and age = #{age} ...
+                
+        1.2、"@Param" 注解方式
+            1.2.1、参数为基本类型或为基本包装类型(int,Integer,String...)
+                参数注释为: #{注解名称} | #{param1}
+                例如：User getUserById(@Param(value="keyId") int id); 
+                ... where id = #{keyId} 或 #{param1} ...
+            1.2.2、参数为自定义对象
+                参数注释为: #{注解名称.对象属性} | #{param1.对象属性}
+                例如：User getUser(@Param(value="usr") User user); 
+                ... where name = #{user.name} 或者 #{param1.name} ...
+        
+    2、多个参数：
+        2.1、无注解方式
+            2.1.1、参数为基本类型或为基本包装类型(int,Integer,String...)
+                参数注释为: #{参数位置[0..n-1]} | #{param[1..n]}
+                例如：User getUser(String name, int age); 
+                ... where name = #{0} and age = #{1} ...
+                ... where name = #{param1} and age = #{param2} ...
+            2.1.2、参数为自定义对象
+                参数注释为: #{参数位置[0..n-1].对象属性} | #{param[1..n].对象属性}
+                例如：User getUser(User usr, int flag);  
+                ... where name = #{0.name} and age = {0.age} and flag = #{1} ...
+                ... where name = #{param1.name} and age = {param1.age} and flag = #{param2} ...
+                
+        2.2、使用`@Param`注解
+            2.2.1、参数为基本类型或为基本包装类型(int,Integer,String...)
+                参数注释为: #{注解名称} | #{param[1..n]}
+                例如：User getUser(@Param(value="xm") String name, @Param(value="nl") int age); 
+                ... where name = #{xm} and age = #{nl}  ... 
+                ... where name = #{param1} and age = #{param2}  ...
+                ... where name = #{xm} and age = #{param2}  ...
+            2.2.2、参数为自定义对象
+                参数注释为: #{注解名称.对象属性} | #{param[1..n].对象属性}
+                例如：User getUser(@Param(value="usr") User user, @Param(value="tag") int flag);
+                ... where name = #{usr.name} and age = #{usr.age} and flag = #{tag} ...
+                ... where name = #{param1.name} and age = #{param1.age} and flag = #{param2} ...
+                ... where name = #{usr.name} and age = #{param1.age} and flag = #{param2} ...
+            2.2.3、部分参数使用`@Param`注解
+                当采用部分参数使用`@Param`注解时，参数注释为将以上两种情况结合起来即可
+                例如：User getUser(String name, @Param(value="nl") age, int gendar);
+                ... where name = #{0} and age = #{nl} and gendar = #{param3} ...
+
+```
+多个参数，三种典型传参方式：
+
+// 方式一：#{0}、#{1}...
+DAO层的函数方法 : Public User selectUser(String name,String area);
+SQL : ... user_name = #{0} and user_area=#{1} ...
+说明：#{0}代表接收的是dao层中的第一个参数，#{1}代表dao层中第二参数。不够直观；
+
+// 方式二：
+DAO层的函数方法 : Public User selectUser(Map paramMap);
+SQL : ... user_name = #{userName，jdbcType=VARCHAR} and user_area=#{userArea,jdbcType=VARCHAR} ...
+说明：采用Map传多参数, Map 中存放参数名 "userName" 等。不够直观；
+
+// 方式三：
+DAO层的函数方法 : Public User selectUser(@param(“userName”)Stringname,@param(“userArea”)String area);
+SQL : ... user_name = #{userName，jdbcType=VARCHAR} and user_area=#{userArea,jdbcType=VARCHAR} ...
+说明：采用注解参数方式，比较直观，推荐。
+
+```
+
 ##### Mybatis动态SQL
 [地址](http://blog.csdn.net/flanet/article/details/7759761)
 ```
