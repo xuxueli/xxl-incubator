@@ -11,6 +11,29 @@ IOC：
 - [Spring事务配置的五种方式](http://www.blogjava.net/robbie/archive/2009/04/05/264003.html)
 ---
 
+##### @RequestBody 请求体中传递JSON数据
+```
+// 客户端：发送请求
+httpPost.setConfig(requestConfig);
+
+// data
+if (requestObj != null) {
+    String json = JacksonUtil.writeValueAsString(requestObj);
+
+    StringEntity entity = new StringEntity(json, "utf-8");
+    entity.setContentEncoding("UTF-8");
+    entity.setContentType("application/json");
+
+    httpPost.setEntity(entity);
+}
+
+// 服务端：接收请求
+public ReturnT<String> registry(@RequestBody RegistryParam registryParam){ ... }
+
+
+
+```
+
 ##### Spring事务两种方式
 ```
 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
