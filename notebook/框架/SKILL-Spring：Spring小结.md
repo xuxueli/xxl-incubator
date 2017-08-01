@@ -11,6 +11,11 @@ IOC：
 - [Spring事务配置的五种方式](http://www.blogjava.net/robbie/archive/2009/04/05/264003.html)
 ---
 
+##### spring常用类
+- ApplicationContextAware：实现接口，获取 "ApplicationContext"；
+- ApplicationListener：实现接口，监听Sping事件，比如销毁事件 "ContextClosedEvent"；
+- InitializingBean：接口方法 "afterPropertiesSet"，在 "init-method" 之前调用；
+
 ##### @RequestBody 请求体中传递JSON数据
 ```
 // 客户端：发送请求

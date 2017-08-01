@@ -15,6 +15,7 @@
         <module>xxl-permission</module>
         <module>xxl-admin</module>
         <module>xxl-blog</module>
+        <module>xxl-note</module>
     </modules>
 
 </project>
