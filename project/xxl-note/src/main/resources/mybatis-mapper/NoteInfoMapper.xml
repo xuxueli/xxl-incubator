@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuxueli.note.dao.NoteInfoMapper">
+
+	<resultMap id="NoteInfo" type="com.xuxueli.note.model.NoteInfo" >
+		<result column="id" property="id" />
+		<result column="group_id" property="groupId" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`id`, `group_id`, `title`, `content`
+	</sql>
+
+
+	<insert id="insert" parameterType="com.xuxueli.note.model.NoteInfo" useGeneratedKeys="true" keyProperty="noteInfo.id" >
+		INSERT INTO xxl_note_info ( `group_id`, `title`, `content`)
+		values ( #{noteInfo.groupId}, #{noteInfo.title}, #{noteInfo.content} );
+	</insert>
+
+	<delete id="delete" >
+		DELETE FROM xxl_note_info WHERE id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.xuxueli.note.model.NoteInfo" >
+		UPDATE xxl_note_info
+		SET group_id = #{noteInfo.groupId},
+			title = #{noteInfo.title},
+			content = #{noteInfo.content}
+		WHERE id = #{noteInfo.id}
+	</update>
+
+	<select id="findByGroupId" resultMap="NoteInfo" >
+		select <include refid="Base_Column_List" />
+		from xxl_note_info
+		<if test="groupId gt 0" >
+			WHERE group_id = #{groupId}
+		</if>
+		order by title ASC
+	</select>
+
+</mapper>

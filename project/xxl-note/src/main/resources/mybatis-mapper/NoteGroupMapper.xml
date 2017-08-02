@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xuxueli.note.dao.NoteGroupMapper">
+
+	<insert id="insert" parameterType="com.xuxueli.note.model.NoteGroup" useGeneratedKeys="true" keyProperty="noteGroup.id" >
+		INSERT INTO xxl_note_group ( `name`, `order`)
+		values ( #{noteGroup.name}, #{noteGroup.order});
+	</insert>
+
+	<delete id="delete" >
+		DELETE FROM xxl_note_group
+		WHERE id = #{id}
+	</delete>
+
+	<update id="update" parameterType="com.xuxueli.note.model.NoteGroup" >
+		UPDATE xxl_note_group
+		SET `name` = #{noteGroup.name},
+			`order` = #{noteGroup.order}
+		WHERE `id` = #{noteGroup.id}
+	</update>
+
+	<select id="findAll" resultType="com.xuxueli.note.model.NoteGroup">
+		select `id`, `name`, `order`
+		from xxl_note_group
+		order by `order` ASC
+	</select>
+
+</mapper>
