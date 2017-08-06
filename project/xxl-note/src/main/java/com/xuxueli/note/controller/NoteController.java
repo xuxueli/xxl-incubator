@@ -1,6 +1,7 @@
 package com.xuxueli.note.controller;
 
 import com.xuxueli.note.model.NoteGroup;
+import com.xuxueli.note.model.NoteInfo;
 import com.xuxueli.note.model.ReturnT;
 import com.xuxueli.note.service.NoteService;
 import org.springframework.stereotype.Controller;
@@ -28,30 +29,50 @@ public class NoteController {
         return "note/note.list";
     }
 
-    @RequestMapping("/addpage")
-    public String addpage() {
-        return "note/note.add";
-    }
+    // ---------------------- note group ----------------------
 
-    @RequestMapping("/add")
+    @RequestMapping("/addGroup")
     @ResponseBody
-    public ReturnT<String> add() {
-        return ReturnT.SUCCESS;
+    public ReturnT<Integer> addGroup(NoteGroup noteGroup) {
+        return nodeService.addGroup(noteGroup);
     }
 
-    @RequestMapping("/updatepage")
-    public String updatepage() {
-        return "note/note.update";
-    }
-
-    @RequestMapping("/update")
+    @RequestMapping("/updateGroup")
     @ResponseBody
-    public ReturnT<String> update() {
-        return ReturnT.SUCCESS;
+    public ReturnT<String> updateGroup(NoteGroup noteGroup) {
+        return nodeService.updateGroup(noteGroup);
     }
 
-    @RequestMapping("/detailpage")
-    public String detailpage() {
+    @RequestMapping("/deleteGroup")
+    @ResponseBody
+    public ReturnT<String> deleteGroup(int id) {
+        return nodeService.deleteGroup(id);
+    }
+
+    // ---------------------- note info ----------------------
+
+    @RequestMapping("/addNote")
+    @ResponseBody
+    public ReturnT<Integer> addNote(NoteInfo noteInfo) {
+        return nodeService.addNote(noteInfo);
+    }
+
+    @RequestMapping("/updateNote")
+    @ResponseBody
+    public ReturnT<String> updateNote(NoteInfo noteInfo) {
+        return nodeService.updateNote(noteInfo);
+    }
+
+    @RequestMapping("/deleteNote")
+    @ResponseBody
+    public ReturnT<String> deleteNote(int id) {
+        return nodeService.deleteNote(id);
+    }
+
+    // ---------------------- show ----------------------
+
+    @RequestMapping("/detail")
+    public String detail(int id) {
         return "note/note.detail";
     }
 

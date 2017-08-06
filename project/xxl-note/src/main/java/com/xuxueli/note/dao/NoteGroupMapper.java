@@ -20,4 +20,6 @@ public interface NoteGroupMapper {
 
 	List<NoteGroup> findAll();
 
+    NoteGroup loadById(int id);
+
 }

@@ -25,4 +25,9 @@
 		order by `order` ASC
 	</select>
 
+	<select id="loadById" resultType="com.xuxueli.note.model.NoteGroup">
+		select `id`, `name`, `order`
+		WHERE `id` = #{id}
+	</select>
+
 </mapper>
