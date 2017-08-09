@@ -6,7 +6,7 @@
 ### 开发环境
 ---
 -- | windows | mac
--- | -- | --
+--- | --- | ---
 jdk | jdk7 | jdk7
 web server | tomcat7 | tomcat7
 maven | maven3 | maven3
