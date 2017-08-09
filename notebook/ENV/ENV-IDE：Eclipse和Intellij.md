@@ -211,9 +211,13 @@ Windows》Preferences》Validation，只保留Manual一列，Build一列取消�
 > Project等同于eclipse的workspace，Module等同于eclipse的Project。失去焦点自动保存；
 
 * 1、JDK：
-    >File》Other Setting》Default Project Structure》Platform Settings》SDKs》+JDK》选择全局jdk目录;
 
-    >File》Project Structure》Platform Settings》SDKs》+JDK》选择项目jdk目录
+        开发版本：
+        File》Other Setting》Default Project Structure》Platform Settings》SDKs》+JDK》选择全局jdk目录;
+        File》Project Structure》Platform Settings》SDKs》+JDK》选择项目jdk目录
+        编译版本：
+        Preferences》Default Settings》Build、Execution、Deployment》Java Compiler》Project bytecode version》置空，编译版本自动和开发版本一致；
+        File》Other Settint》Default Settings》Build、Execution、Deployment》Java Compiler》Project bytecode version》置空，编译版本自动和开发版本一致；
 
 * 2、maven设置：
     >File》Other Setting》Default Setting》Build、Execution、Deployment》Build Tools》Maven》配置maven安装目录和settin文件
