@@ -110,6 +110,8 @@ Standby skill points
 
 - 37、com.xxl.util.core.util.DBUtil （DB操作工具类）
 
+- 38、com.xxl.util.core.util.AccessLimitUtil （令牌桶示例Util）
+
 
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
