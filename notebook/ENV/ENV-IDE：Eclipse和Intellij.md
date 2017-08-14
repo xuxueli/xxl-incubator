@@ -212,12 +212,14 @@ Windows》Preferences》Validation，只保留Manual一列，Build一列取消�
 
 * 1、JDK：
 
-        开发版本：
+        开发版本/JDK：
         File》Other Setting》Default Project Structure》Platform Settings》SDKs》+JDK》选择全局jdk目录;
         File》Project Structure》Platform Settings》SDKs》+JDK》选择项目jdk目录
-        编译版本：
+        编译版本/Compiler：
         Preferences》Default Settings》Build、Execution、Deployment》Java Compiler》Project bytecode version》置空，编译版本自动和开发版本一致；
         File》Other Settint》Default Settings》Build、Execution、Deployment》Java Compiler》Project bytecode version》置空，编译版本自动和开发版本一致；
+        运行版本/JRE：
+        Tomcat》Edit...》JRE》选择对应的JDK版本即可；（低版本spring2.x不兼容1.8）
 
 * 2、maven设置：
     >File》Other Setting》Default Setting》Build、Execution、Deployment》Build Tools》Maven》配置maven安装目录和settin文件
