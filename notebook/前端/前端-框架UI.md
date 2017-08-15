@@ -106,3 +106,7 @@
 - docsify
     - 无需构建、轻量级的文档生成工具（比GitBook更轻量）
     - https://github.com/QingWei-Li/docsify
+    
+- docute
+    - 无需构建、轻量级的文档生成工具
+    - https://github.com/egoist/docute/
