@@ -1,3 +1,41 @@
+### freemarker 首字母大写，实现代码生成
+```
+// 首字母大写
+?cap_first
+
+// 代码生成
+/**
+ *  ${document.name}
+ *
+ *  Created by ApiHome on '${.now?string('yyyy/MM/dd')}'.
+ */
+public class ${preficClassName}Request extends ApiRequest {
+
+    <#if queryParamList?exists && queryParamList?size gt 0>
+    <#list queryParamList as queryParam>
+   /**
+    * ${queryParam.desc}
+    */
+    private ${queryParam.type?lower_case} ${queryParam.name};
+
+    </#list>
+    </#if>
+
+    <#if queryParamList?exists && queryParamList?size gt 0>
+    <#list queryParamList as queryParam>
+    public ${queryParam.type?lower_case} get${queryParam.name?cap_first}() {
+        return ${queryParam.name};
+    }
+
+    public void set${queryParam.name?cap_first}(${queryParam.type?lower_case} a) {
+        this.${queryParam.name} = ${queryParam.name};
+    }
+
+    </#list>
+    </#if>
+}
+```
+
 ### freemarker, 
 ```
 // 方式一：货币 + 千分位 + 小数两位
