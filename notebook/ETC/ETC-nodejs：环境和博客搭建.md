@@ -17,6 +17,11 @@ mongodb：非关系数据库（nosql）,缺点就是不适合数据一致性要�
 - hexo博客：https://hexo.io/
 - ghost博客：https://ghost.org/ 
 
+### mac + node, 环境安装
+```
+brew install node
+```
+
 ### windows + node，环境搭建
 
 ```

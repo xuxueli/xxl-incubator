@@ -1,3 +1,14 @@
+### freemarker截取字符串subString
+```
+${content?substring(0,100)}.
+${root.keyWord[0..100]} // 结果一样,但却简单
+```
+
+### select2 设置选中
+```
+$('#soff_gar').val(<?php echo $garante; ?>).trigger("change");
+
+```
 ### freemarker 首字母大写，实现代码生成
 ```
 // 首字母大写
