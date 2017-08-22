@@ -1,3 +1,28 @@
+### 解决跨域问题, JSONP与CROS
+```
+// 方式1：jsonp
+<bean id="jsonpAdvice" class="com.dianping.lunar.mvc.advice.JsonpAdvice" />
+
+@ControllerAdvice
+public class JsonpAdvice extends AbstractJsonpResponseBodyAdvice {
+
+    public JsonpAdvice() {
+        super("jsonp");
+    }
+
+}
+
+// 方式2：CROS
+String origin = request.getHeader("Origin");
+response.addHeader("Access-Control-Allow-Origin", origin);
+/*response.addHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+response.addHeader("Access-Control-Allow-Headers", "content-type");
+response.addHeader("Access-Control-Max-Age", "1800");
+response.addHeader("Access-Control-Expose-Headers", "Set-Cookie");*/
+response.addHeader("Access-Control-Allow-Credentials", "true");
+return super.preHandle(request, response, handler);
+```
+
 ### freemarker截取字符串subString
 ```
 ${content?substring(0,100)}.
