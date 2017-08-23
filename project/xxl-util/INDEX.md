@@ -112,6 +112,8 @@ Standby skill points
 
 - 38、com.xxl.util.core.util.AccessLimitUtil （令牌桶示例Util）
 
+- 39、com.xxl.util.core.util.CuratorUtil （zookeeper客户端，Curator版本）
+
 
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
