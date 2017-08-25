@@ -119,15 +119,14 @@ public class CuratorClient {
             Stat stat = getClient().checkExists().forPath(nodeName);
             if (stat == null) {
                 // 创建 node
-                String opResult = null;
+                String optResult = null;
                 if (Strings.isNullOrEmpty(value)) {
-                    opResult = getClient().create().creatingParentsIfNeeded().forPath(nodeName);
-                    // getClient().create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL_SEQUENTIAL).forPath(nodeName);     // 临时节点、永久节点
+                    optResult = getClient().create().creatingParentsIfNeeded().forPath(nodeName);    // PERSISTENT ： 默认永久节点 (.withMode(CreateMode.EPHEMERAL_SEQUENTIAL)，可设置临时节点、永久节点)
                 }
                 else {
-                    opResult = getClient().create().creatingParentsIfNeeded().forPath(nodeName, value.getBytes(Charsets.UTF_8));
+                    optResult = getClient().create().creatingParentsIfNeeded().forPath(nodeName, value.getBytes(Charsets.UTF_8));
                 }
-                suc = Objects.equal(nodeName, opResult);
+                suc = Objects.equal(nodeName, optResult);
             } else {
                 // 更新 node
                 Stat opResult = getClient().setData().forPath(nodeName, value.getBytes(Charsets.UTF_8));
@@ -160,10 +159,14 @@ public class CuratorClient {
      */
     public String getNoteData(String nodeName){
         try {
-            //byte[] bytes = getClient().getData().watched().inBackground().forPath(nodeName);
-            byte[] bytes = getClient().getData().watched().forPath(nodeName);
-            if (bytes != null) {
-                return new String(bytes, Charsets.UTF_8);
+
+            Stat stat = getClient().checkExists().forPath(nodeName);
+            if (stat != null) {
+                //byte[] bytes = getClient().getData().watched().inBackground().forPath(nodeName);
+                byte[] bytes = getClient().getData().watched().forPath(nodeName);
+                if (bytes != null) {
+                    return new String(bytes, Charsets.UTF_8);
+                }
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -452,6 +455,11 @@ public class CuratorClient {
                 }
             };
             PathChildrenCache pathChildrenCache = curator.addPathChildrenCacheListener("/", true, childrenCacheListener);
+
+            //curator.creatUpdateNode(testPath, "aaa");
+            curator.deleteNode(testPath);
+            curator.creatUpdateNode(testPath, "bbb");
+            TimeUnit.MILLISECONDS.sleep(100);
 
             for (int i = 0; i < 10; i++) {
                 curator.creatUpdateNode(testPath, "val-"+i);
