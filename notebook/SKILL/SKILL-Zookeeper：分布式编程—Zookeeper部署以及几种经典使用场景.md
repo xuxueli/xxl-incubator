@@ -1,3 +1,7 @@
+- Zookeeper官方：https://zookeeper.apache.org/   
+- ZK查看工具：[ZooInspector](https://github.com/apache/zookeeper/tree/master/src/contrib/zooinspector)
+- ZK-CI常用命令：如 " echo wchs | nc 127.0.0.1 2181 " 查看watch信息 [博客](http://www.blogjava.net/ideame/archive/2016/10/10/431878.html )
+
 ## Zookeeper介绍
 Zookeeper是一个树形数据结构的高性能的分布式应用程序的协调服务。
 

@@ -301,6 +301,7 @@ public class CuratorClient {
      *          删除节点后会再次创建(空节点)；
      *          删除节点后，重新创建，依然监听
      *          频繁操作，可会会发生时间丢失；
+     *          一个watch
      *
      * @param node
      * @param compressed
@@ -328,6 +329,7 @@ public class CuratorClient {
      *          不会监听子节点的子节点
      *          频繁操作，频繁操作会事件丢失；
      *          cacheDate：true时，event.getData().getData()为空；false时，频繁操作会事件丢失，导致数据不准确；
+     *          一个watch
      *
      * @param node
      * @param cacheData
@@ -354,6 +356,7 @@ public class CuratorClient {
      *          可以进行本节点的删除(不在创建))
      *          子孙节点删除后创建，依然会监听
      *          频繁操作，监听不会丢失
+     *          操作一个子节点，新增一个watch
      *
      * @param node
      * @param treeCacheListener
@@ -459,7 +462,9 @@ public class CuratorClient {
                     String quertData = null;
                     if (childDataObj != null) {
                         childPath = childDataObj.getPath();
-                        childData = new String(childDataObj.getData(), Charsets.UTF_8);
+                        if (childDataObj.getData() != null) {
+                            childData = new String(childDataObj.getData(), Charsets.UTF_8);
+                        }
                         quertData = curator.getNoteData(childPath);
                     }
 
