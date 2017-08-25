@@ -299,6 +299,7 @@ public class CuratorClient {
      *          start() + close()，务必对应；
      *          不监听删除；
      *          删除节点后会再次创建(空节点)；
+     *          删除节点后，重新创建，依然监听
      *          频繁操作，可会会发生时间丢失；
      *
      * @param node
@@ -325,7 +326,8 @@ public class CuratorClient {
      *      注意：
      *          start() + close()，务必对应
      *          不会监听子节点的子节点
-     *          频繁操作，可会会发生时间丢失；
+     *          频繁操作，频繁操作会事件丢失；
+     *          cacheDate：true时，event.getData().getData()为空；false时，频繁操作会事件丢失，导致数据不准确；
      *
      * @param node
      * @param cacheData
@@ -380,7 +382,7 @@ public class CuratorClient {
 
         final CuratorClient curator = new CuratorClient(zkAddress, namespace);
 
-        int testFalg = 4;
+        int testFalg = 3;
         if (testFalg == 1) {
             // node opt
             curator.deleteNode("/");
@@ -414,9 +416,14 @@ public class CuratorClient {
                 @Override
                 public void nodeChanged() throws Exception {
 
-                    String path = nodeCache.getCurrentData().getPath();
-                    String data = new String(nodeCache.getCurrentData().getData(), Charsets.UTF_8);
-                    Stat stat = nodeCache.getCurrentData().getStat();
+                    String path = null;
+                    String data = null;
+                    Stat stat = null;
+                    if (nodeCache.getCurrentData() != null) {
+                        path = nodeCache.getCurrentData().getPath();
+                        data = new String(nodeCache.getCurrentData().getData(), Charsets.UTF_8);
+                        stat = nodeCache.getCurrentData().getStat();
+                    }
 
                     logger.info(">>>>>>>>>>> node cache, path={}, data={}, stat={}", path, data, stat);
                 }
@@ -425,9 +432,15 @@ public class CuratorClient {
             nodeCache.getListenable().addListener(nodeCacheListener);
             nodeCache.start();
 
-            for (int i = 0; i < 10; i++) {
+            curator.creatUpdateNode(testPath, "aaa");
+            //TimeUnit.MILLISECONDS.sleep(100);
+            curator.deleteNode(testPath);
+            curator.creatUpdateNode(testPath, "bbb");
+            //TimeUnit.MILLISECONDS.sleep(100);
+
+            for (int i = 0; i < 20; i++) {
                 curator.creatUpdateNode(testPath, "val-"+i);
-                TimeUnit.MILLISECONDS.sleep(100);
+                //TimeUnit.MILLISECONDS.sleep(100);
             }
 
             TimeUnit.MINUTES.sleep(5);
@@ -454,9 +467,10 @@ public class CuratorClient {
                             event, childType, childPath, childData, quertData);
                 }
             };
-            PathChildrenCache pathChildrenCache = curator.addPathChildrenCacheListener("/", true, childrenCacheListener);
+            PathChildrenCache pathChildrenCache = curator.addPathChildrenCacheListener("/", false, childrenCacheListener);
 
-            //curator.creatUpdateNode(testPath, "aaa");
+            curator.creatUpdateNode(testPath, "aaa");
+            TimeUnit.MILLISECONDS.sleep(100);
             curator.deleteNode(testPath);
             curator.creatUpdateNode(testPath, "bbb");
             TimeUnit.MILLISECONDS.sleep(100);
