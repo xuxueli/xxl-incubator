@@ -343,10 +343,12 @@ public class CuratorClient {
     /**
      * 增加监听
      *
-     *      范围：当前节点 + 子节点（孙子等节点）
+     *      范围：当前节点 + 子节点 + 孙子节点等
      *      注意：
      *          start() + close()，务必对应
      *          可以进行本节点的删除(不在创建))
+     *          子孙节点删除后创建，依然会监听
+     *          频繁操作，监听不会丢失
      *
      * @param node
      * @param treeCacheListener
@@ -375,7 +377,7 @@ public class CuratorClient {
 
         final CuratorClient curator = new CuratorClient(zkAddress, namespace);
 
-        int testFalg = 5;
+        int testFalg = 4;
         if (testFalg == 1) {
             // node opt
             curator.deleteNode("/");
@@ -459,31 +461,38 @@ public class CuratorClient {
             TimeUnit.MINUTES.sleep(5);
 
         } else if (testFalg == 5) {
-            // tree cache 当前节点 + 子节点（孙子等节点）
+
+            // tree cache 当前节点 + 子节点 + 孙子节点等
             TreeCacheListener treeCacheListener = new TreeCacheListener() {
                 @Override
                 public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
-                    ChildData data = event.getData();
-                    if(data !=null){
-                        switch (event.getType()) {
-                            case NODE_ADDED:
-                                System.out.println("NODE_ADDED : "+ data.getPath() +"  数据:"+ new String(data.getData()));
-                                break;
-                            case NODE_REMOVED:
-                                System.out.println("NODE_REMOVED : "+ data.getPath() +"  数据:"+ new String(data.getData()));
-                                break;
-                            case NODE_UPDATED:
-                                System.out.println("NODE_UPDATED : "+ data.getPath() +"  数据:"+ new String(data.getData()));
-                                break;
-                            default:
-                                break;
-                        }
-                    }else{
-                        System.out.println( "data is null : "+ event.getType());
+                    TreeCacheEvent.Type treeType = event.getType();     // NODE_ADDED、NODE_REMOVED、NODE_UPDATED、、
+                    ChildData childData = event.getData();
+                    String path = null;
+                    String data =  null;
+                    if (childData != null) {
+                        path = childData.getPath();
+                        data = new String(childData.getData(), Charsets.UTF_8);
                     }
+
+                    logger.info(">>>>>>>>>>> tree cache, event={}, treeType={}, childData={}, path={}, data={}",
+                            event, treeType, childData, path, data);
+
                 }
             };
             TreeCache treeCache = curator.addTreeCache("/", treeCacheListener);
+
+            curator.creatUpdateNode(testPath, "111");
+            //TimeUnit.MILLISECONDS.sleep(100);
+
+            curator.creatUpdateNode(testPath+"/222", "222");
+            //TimeUnit.MILLISECONDS.sleep(100);
+
+            curator.deleteNode("/");
+
+            curator.creatUpdateNode(testPath+"/222/333", "333");
+            //TimeUnit.MILLISECONDS.sleep(100);
+
         }
 
         TimeUnit.MINUTES.sleep(5);
