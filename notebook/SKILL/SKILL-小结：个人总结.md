@@ -1,3 +1,6 @@
+### Arrays.asList 返回的 Arrays.ArrayList 固定长度；
+Arrays.asList 返回 Arrays.ArrayList 并不是常规 new ArrayList()；并没有新增和删除方法；
+
 ### 解决跨域问题, JSONP与CROS
 ```
 // 方式1：jsonp
