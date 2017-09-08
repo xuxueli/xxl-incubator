@@ -1,6 +1,7 @@
 package com.xuxueli.poi.excel.test;
 
 import com.xuxueli.poi.excel.ExcelExportUtil;
+import com.xuxueli.poi.excel.ExcelImportUtil;
 import com.xuxueli.poi.excel.annotation.ExcelField;
 import com.xuxueli.poi.excel.annotation.ExcelSheet;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -8,6 +9,9 @@ import org.apache.poi.hssf.util.HSSFColor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author xuxueli 2017-09-08 22:41:19
+ */
 public class Test {
 
     public static void main(String[] args) {
@@ -20,7 +24,12 @@ public class Test {
         // file path
         String filePath = "/Users/xuxueli/Downloads/demo-sheet.xls";
 
+        // Excel导出
         ExcelExportUtil.exportToFile(shopDTOList, filePath);
+
+        // Excel导入
+        List<Object> list = ExcelImportUtil.importFromFilePath(ShopDTO.class, filePath);
+        System.out.println(list);
     }
 
 
@@ -32,6 +41,9 @@ public class Test {
 
         @ExcelField(name = "商户名称")
         private String shopName;
+
+        public ShopDTO() {
+        }
 
         public ShopDTO(int shopId, String shopName) {
             this.shopId = shopId;
@@ -53,6 +65,15 @@ public class Test {
         public void setShopName(String shopName) {
             this.shopName = shopName;
         }
+
+        @Override
+        public String toString() {
+            return "ShopDTO{" +
+                    "shopId=" + shopId +
+                    ", shopName='" + shopName + '\'' +
+                    '}';
+        }
+
     }
 
 }
