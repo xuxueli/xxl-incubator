@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -27,15 +28,13 @@ public class ExcelImportUtil {
     private static Logger logger = LoggerFactory.getLogger(ExcelImportUtil.class);
 
     /**
-     * 导入Excel文件，并封装成对象
+     * 从Workbook导入Excel文件，并封装成对象
      *
      * @param sheetClass
-     * @param excelFile
+     * @param workbook
      * @return
      */
-    public static List<Object> importFromFile(Class<?> sheetClass, File excelFile) {
-
-
+    public static List<Object> importExcel(Class<?> sheetClass, Workbook workbook) {
         try {
             // sheet
             ExcelSheet excelSheet = sheetClass.getAnnotation(ExcelSheet.class);
@@ -57,8 +56,7 @@ public class ExcelImportUtil {
             }
 
             // sheet data
-            Workbook book = WorkbookFactory.create(excelFile);
-            Sheet sheet = book.getSheet(sheetName);
+            Sheet sheet = workbook.getSheet(sheetName);
 
             Iterator<Row> sheetIterator = sheet.rowIterator();
             int rowIndex = 0;
@@ -81,16 +79,31 @@ public class ExcelImportUtil {
                 rowIndex++;
             }
             return dataList;
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-            throw new RuntimeException(e);
-        } catch (InvalidFormatException e) {
-            logger.error(e.getMessage(), e);
-            throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
         } catch (InstantiationException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 导入Excel文件，并封装成对象
+     *
+     * @param sheetClass
+     * @param excelFile
+     * @return
+     */
+    public static List<Object> importExcel(Class<?> sheetClass, File excelFile) {
+        try {
+            Workbook workbook = WorkbookFactory.create(excelFile);
+            List<Object> dataList = importExcel(sheetClass, workbook);
+            return dataList;
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } catch (InvalidFormatException e) {
             logger.error(e.getMessage(), e);
             throw new RuntimeException(e);
         }
@@ -103,10 +116,31 @@ public class ExcelImportUtil {
      * @param filePath
      * @return
      */
-    public static List<Object> importFromFilePath(Class<?> sheetClass, String filePath) {
+    public static List<Object> importExcel(Class<?> sheetClass, String filePath) {
         File excelFile = new File(filePath);
-        List<Object> dataList = importFromFile(sheetClass, excelFile);
+        List<Object> dataList = importExcel(sheetClass, excelFile);
         return dataList;
+    }
+
+    /**
+     * 导入Excel数据流，并封装成对象
+     *
+     * @param sheetClass
+     * @param inputStream
+     * @return
+     */
+    public static List<Object> importExcel(Class<?> sheetClass, InputStream inputStream) {
+        try {
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            List<Object> dataList = importExcel(sheetClass, workbook);
+            return dataList;
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } catch (InvalidFormatException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
     }
 
 }

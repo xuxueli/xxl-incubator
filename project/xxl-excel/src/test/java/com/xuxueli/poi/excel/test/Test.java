@@ -28,8 +28,10 @@ public class Test {
         ExcelExportUtil.exportToFile(shopDTOList, filePath);
 
         // Excel导入
-        List<Object> list = ExcelImportUtil.importFromFilePath(ShopDTO.class, filePath);
+        List<Object> list = ExcelImportUtil.importExcel(ShopDTO.class, filePath);
         System.out.println(list);
+
+
     }
 
 
