@@ -8,7 +8,7 @@
 <config xmlns="urn:org:jgroups"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/JGroups-3.1.xsd">
-    <TCP bind_port="7801" bind_addr="172.24.56.41"
+    <TCP bind_port="7800" bind_addr="172.24.120.208"
          loopback="false"
          recv_buf_size="${tcp.recv_buf_size:5M}"
          send_buf_size="${tcp.send_buf_size:640K}"

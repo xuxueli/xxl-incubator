@@ -145,3 +145,6 @@ Standby skill points
 
 - 10、Log4j日志AppenderSkeleton实现
 > 详细：见：com.xxl.util.core.skill.logappeng.XxlJobFileAppender
+
+- 11、Jgroups之TCP广播
+> 详细：见：com.xxl.util.core.skill.jgroups.JgroupsNode

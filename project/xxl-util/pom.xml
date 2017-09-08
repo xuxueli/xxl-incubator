@@ -297,6 +297,13 @@
 			<version>4.0.0</version>
 		</dependency>
 
+		<!-- jgroups -->
+		<dependency>
+			<groupId>org.jgroups</groupId>
+			<artifactId>jgroups</artifactId>
+			<version>3.6.9.Final</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

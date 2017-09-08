@@ -1,22 +1,18 @@
-package com.jgroups.demo;
+package com.xxl.util.core.skill.jgroups;
+
+import org.jgroups.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import org.jgroups.Address;
-import org.jgroups.JChannel;
-import org.jgroups.Message;
-import org.jgroups.ReceiverAdapter;
-import org.jgroups.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class JgroupsNode2 extends ReceiverAdapter  {
 	private static Logger logger = LoggerFactory.getLogger(JgroupsNode2.class);
 	private static final String GROUP_NAME = "default_group";	// //群组名，一个JGroups群的唯一标示符。
-	private static final String GROUP_CONF = "tcp-7801.xml";
+	private static final String GROUP_CONF = "jgroups/tcp-7801.xml";
 	
 	// -------------------------- channel init --------------------------
 	private JChannel jChannel;

@@ -1,6 +1,6 @@
-package com.tmp.demo.ssh;
+package com.xuxueli.demo;
 
-public class Test {
+public class Demo {
 
     public static void main(String[] args) {
 

@@ -1,4 +1,4 @@
-package com.jgroups.demo;
+package com.xxl.util.core.skill.jgroups;
 
 import org.jgroups.*;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class JgroupsNode extends ReceiverAdapter  {
 	private static Logger logger = LoggerFactory.getLogger(JgroupsNode.class);
 	private static final String GROUP_NAME = "default_group";	// //群组名，一个JGroups群的唯一标示符。
-	private static final String GROUP_CONF = "tcp-7800.xml";
+	private static final String GROUP_CONF = "jgroups/tcp-7800.xml";
 	
 	// -------------------------- channel init --------------------------
 	private JChannel jChannel;
