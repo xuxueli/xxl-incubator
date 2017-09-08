@@ -1,5 +1,6 @@
-package com.xuxueli.poi.excel;
+package com.xuxueli.poi.excel.test;
 
+import com.xuxueli.poi.excel.ExcelExportUtil;
 import com.xuxueli.poi.excel.annotation.ExcelField;
 import com.xuxueli.poi.excel.annotation.ExcelSheet;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -10,13 +11,16 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
+        // data
         List<ShopDTO> shopDTOList = new ArrayList<ShopDTO>();
         for (int i = 0; i < 100; i++) {
             ShopDTO shop = new ShopDTO(i, "商户"+i);
             shopDTOList.add(shop);
         }
+        // file path
+        String filePath = "/Users/xuxueli/Downloads/demo-sheet.xls";
 
-        ExcelExportUtil.export(shopDTOList);
+        ExcelExportUtil.exportToFile(shopDTOList, filePath);
     }
 
 

@@ -1,5 +1,7 @@
 package com.xuxueli.poi.excel.annotation;
 
+import org.apache.poi.hssf.util.HSSFColor;
+
 import java.lang.annotation.*;
 
 /**
@@ -22,11 +24,11 @@ public @interface ExcelSheet {
     /**
      * 表头/首行的颜色
      *
-     * org.apache.poi.ss.usermodel.Font#setColor(short)
+     * @see org.apache.poi.ss.usermodel.Font#setColor(short)
      *
      * @return
      */
-    short headColor() default -1;;
+    short headColor() default HSSFColor.LIGHT_GREEN.index;
 
 }
 

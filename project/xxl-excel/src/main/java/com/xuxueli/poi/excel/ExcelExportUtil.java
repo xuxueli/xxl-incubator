@@ -2,6 +2,7 @@ package com.xuxueli.poi.excel;
 
 import com.xuxueli.poi.excel.annotation.ExcelField;
 import com.xuxueli.poi.excel.annotation.ExcelSheet;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
@@ -14,10 +15,22 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Excel导出工具
+ *
+ * @author xuxueli 2017-09-08 22:27:20
+ */
 public class ExcelExportUtil {
     private static Logger logger = LoggerFactory.getLogger(ExcelExportUtil.class);
 
-    public static byte[] export(List<?> dataList){
+
+    /**
+     * 导出Excel对象
+     *
+     * @param dataList  Excel数据
+     * @return
+     */
+    public static Workbook exportWorkbook(List<?> dataList){
 
         // data
         if (dataList==null || dataList.size()==0) {
@@ -46,16 +59,20 @@ public class ExcelExportUtil {
         }
 
         // book
-        Workbook book = new HSSFWorkbook();     // HSSFWorkbook=2003/xls、XSSFWorkbook=2007/xlsx
-        Sheet sheet = book.createSheet(sheetName);
+        Workbook workbook = new HSSFWorkbook();     // HSSFWorkbook=2003/xls、XSSFWorkbook=2007/xlsx
+        Sheet sheet = workbook.createSheet(sheetName);
 
         // sheet header row
         CellStyle headStyle = null;
         if (headColor > 0) {
-            headStyle = book.createCellStyle();
-            Font failFont = book.createFont();
-            failFont.setColor(headColor);
-            headStyle.setFont(failFont);
+            headStyle = workbook.createCellStyle();
+            /*Font headFont = book.createFont();
+            headFont.setColor(headColor);
+            headStyle.setFont(headFont);*/
+
+            headStyle.setFillForegroundColor(headColor);
+            headStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+            headStyle.setFillBackgroundColor(headColor);
         }
 
         Row headRow = sheet.createRow(0);
@@ -71,7 +88,7 @@ public class ExcelExportUtil {
             cellX.setCellValue(String.valueOf(fieldName));
         }
 
-        // sheet data
+        // sheet data rows
         for (int dataIndex = 0; dataIndex < dataList.size(); dataIndex++) {
             int rowIndex = dataIndex+1;
             Object rowData = dataList.get(dataIndex);
@@ -93,41 +110,77 @@ public class ExcelExportUtil {
             }
         }
 
+        return workbook;
+    }
 
-        // 数据导出
+    /**
+     * 导出Excel文件到磁盘
+     *
+     * @param dataList
+     * @param filePath
+     */
+    public static void exportToFile(List<?> dataList, String filePath){
+        // workbook
+        Workbook workbook = exportWorkbook(dataList);
+
         FileOutputStream fileOutputStream = null;
-        ByteArrayOutputStream byteArrayOutputStream = null;
-        byte[] result = null;
         try {
-            // 生成本地Excel文件
-            fileOutputStream = new FileOutputStream("/Users/xuxueli/Downloads/demo-sheet.xls");
-            book.write(fileOutputStream);
+            // workbook 2 FileOutputStream
+            fileOutputStream = new FileOutputStream(filePath);
+            workbook.write(fileOutputStream);
+
+            // flush
             fileOutputStream.flush();
-
-            // 生成ByteArrayInputStream
-            byteArrayOutputStream = new ByteArrayOutputStream();
-            book.write(byteArrayOutputStream);
-            byteArrayOutputStream.flush();
-
-            result = byteArrayOutputStream.toByteArray();
-            //ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         } catch (Exception e) {
-            logger.error("export excel error", e);
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
         } finally {
             try {
                 if (fileOutputStream!=null) {
                     fileOutputStream.close();
                 }
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    /**
+     * 导出Excel字节数据
+     *
+     * @param dataList
+     * @return
+     */
+    public static byte[] exportToBytes(List<?> dataList){
+        // workbook
+        Workbook workbook = exportWorkbook(dataList);
+
+        ByteArrayOutputStream byteArrayOutputStream = null;
+        byte[] result = null;
+        try {
+            // workbook 2 ByteArrayOutputStream
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            workbook.write(byteArrayOutputStream);
+
+            // flush
+            byteArrayOutputStream.flush();
+
+            result = byteArrayOutputStream.toByteArray();
+            return result;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } finally {
+            try {
                 if (byteArrayOutputStream != null) {
                     byteArrayOutputStream.close();
                 }
             } catch (Exception e) {
-                logger.error("close outputStream err", e);
+                logger.error(e.getMessage(), e);
+                throw new RuntimeException(e);
             }
         }
-
-        return result;
     }
-
 
 }
