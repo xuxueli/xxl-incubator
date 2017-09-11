@@ -4,7 +4,7 @@ Arrays.asList 返回 Arrays.ArrayList 并不是常规 new ArrayList()；并没�
 ### 解决跨域问题, JSONP与CROS
 ```
 // 方式1：jsonp
-<bean id="jsonpAdvice" class="com.dianping.lunar.mvc.advice.JsonpAdvice" />
+<bean id="jsonpAdvice" class="com.xxx.mvc.advice.JsonpAdvice" />
 
 @ControllerAdvice
 public class JsonpAdvice extends AbstractJsonpResponseBodyAdvice {

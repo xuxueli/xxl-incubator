@@ -18,7 +18,7 @@ import java.util.List;
  *
  <code>
  	<!-- 异常解析 -->
-	 <bean id="exceptionResolver" class="com.dianping.wed.common.mvc.resolver.WebExceptionResolver" >
+	 <bean id="exceptionResolver" class="com.xxx.wed.common.mvc.resolver.WebExceptionResolver" >
 		 <!-- 异常jsonp兼容 -->
 		 <property name="jsonpParam">
 			 <list>
