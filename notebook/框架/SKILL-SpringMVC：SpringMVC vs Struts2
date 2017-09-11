@@ -11,7 +11,7 @@ MVC框架性能比较几篇文章：
 ![输入图片说明](https://static.oschina.net/uploads/img/201703/27180921_q4mQ.png "在这里输入图片标题")
 
 >提高springmvc可读性的一个建议：规定Controller的 package 路径和 URL 路径一致；
-如 “/shop/wed/shopList”页面对应Controller的包名为：com.dianping.web.mvc.shop.wed.ShopController
+如 “/aaa/bbb”页面对应Controller的包名为："***.mvc.aaa.Controller#bbb"
 
 #### 漏洞大事件
 ![输入图片说明](https://static.oschina.net/uploads/img/201703/27181556_funw.png "在这里输入图片标题")
@@ -66,9 +66,9 @@ MVC框架性能比较几篇文章：
 #### 趋势、社区
     1、spring boot：开箱即用，库的集合；
     2、spring cloud：基于Spring Boot的一整套实现微服务的框架。他提供了微服务开发所需的配置管理、服务发现、断路器、智能路由、微代理、控制总线、全局锁、决策竞选、分布式会话和集群状态管理等组件。 
-        a、 spring-cloud-config：对标Lion
-        b、 Spring Cloud Netflix：对标Pigeon (注册中心/网关/负载均衡/监控/熔断器)
-        c、 Spring Cloud Bus：对标Swollow
+        a、 spring-cloud-config：配置中心；
+        b、 Spring Cloud Netflix：服务通讯 (注册中心/网关/负载均衡/监控/熔断器)
+        c、 Spring Cloud Bus：消息队列；
         d、… … 
         （ spring cloud对于中小型互联网公司来说是一颗惊雷）
 
