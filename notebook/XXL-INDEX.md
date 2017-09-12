@@ -6,10 +6,9 @@
 - baiduyun（master-slave, backup）
 
 > notebook（master-slave-index）
+- https://github.com/xuxueli/xxl-incubator#notebook
 - http://my.oschina.net/xuxueli/blog （仅同步）
 - http://www.cnblogs.com/xuxueli （仅同步）
-- http://blog.csdn.net/xuxueli0323 （仅同步）
-- youdao-note（master-slave, index）
 
 
 ### 开源产品汇总
