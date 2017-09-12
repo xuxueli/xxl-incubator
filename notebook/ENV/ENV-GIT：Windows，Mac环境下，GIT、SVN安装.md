@@ -84,6 +84,11 @@ git config user.name
 git config user.email   // query
 git config user.email "email info"  // update each
 git config --global user.email "email info"  // update global
+
+// 回滚commit
+git log
+git reset --hard <commit_id>
+git push origin HEAD --force
 ```
 ##### Git常用命令
 ```
