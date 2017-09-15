@@ -1,11 +1,11 @@
 ### GIT
 
----
-[windows下Git安装与配置](http://blog.csdn.net/renfufei/article/details/41647875)
+- [windows下Git安装与配置](http://blog.csdn.net/renfufei/article/details/41647875)
+- [Mac-OSX下安装Git](http://blog.csdn.net/zhangkongzhongyun/article/details/7903148)
+- [Git 常用命令速查表(图文+表格)](http://www.jb51.net/article/55442.htm)
+- [Git 教程](http://www.runoob.com/git/git-tutorial.html)
 
-[Mac-OSX下安装Git](http://blog.csdn.net/zhangkongzhongyun/article/details/7903148)
-
-##### 个人常用命令汇总
+> GIT常用命令汇总
 ```
 // 初始化
 cd git-workspace
@@ -121,11 +121,8 @@ git push <remote> <branch>	上传代码到远程
 git push <remote> :<branch/tag>	删除远程分支或标签
 
 ```
-- [Git 常用命令速查表(图文+表格)](http://www.jb51.net/article/55442.htm)
-- [Git 教程](http://www.runoob.com/git/git-tutorial.html)
 
 ### SVN
----
-[windows7环境下svn服务器的配置及使用](http://www.cnblogs.com/xingma0910/p/3772936.html)
 
-[CentOS-6.3安装配置SVN](http://www.cnblogs.com/zhoulf/archive/2013/02/02/2889949.html)
+- [windows7环境下svn服务器的配置及使用](http://www.cnblogs.com/xingma0910/p/3772936.html)
+- [CentOS-6.3安装配置SVN](http://www.cnblogs.com/zhoulf/archive/2013/02/02/2889949.html)

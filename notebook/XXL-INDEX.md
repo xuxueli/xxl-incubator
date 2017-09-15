@@ -1,4 +1,5 @@
 ### 资源汇总
+
 ---
 > src:（master-slave-backup）
 - https://github.com/xuxueli
@@ -12,7 +13,8 @@
 
 
 ### 开源产品汇总
-***
+
+---
 - 1、[xuxueli.github.io](https://github.com/xuxueli/xuxueli.github.io)  个人站项目, MD编辑, 静态化
     - net》spring-boot + vue-js + semantic-ui;
     - 轻博客，xxl-blog：组成=spring-boot + vuejs + ，markdown，静态化，
@@ -42,6 +44,32 @@
 - 12、[xxl-rpc](https://github.com/xuxueli/xxl-rpc)      分布式服务通讯框架 (V1.1)
 - 13、[xxl-search](https://github.com/xuxueli/xxl-search)搜索应用参考示例 (V1.0)
 - 14、[xxl-web](https://github.com/xuxueli/xxl-web)Java Web Framework (V1.0)
+
+
+### 书籍
+
+- 《Java编程思想》
+- 《Java并发编程实践》
+- 《深入理解Java虚拟机》
+
+### 开发环境
+
+-- | windows | mac
+--- | --- | ---
+jdk | jdk7 | jdk7
+git | git(eclipse的egit插件可替代之) | git
+maven | maven3 | maven3
+web server | tomcat7 | tomcat7
+ide | eclipse mars(jdk7+maven3+egit)(freemarker-ide+openexplorer) | idea
+database | mysql5.5 + navicat(oracle11g + pl/sql) | mysql5.5 + navicat
+linux | secureFX + secureCRT + vbox + centos6.5 | secureFX + secureCRT + vbox + centos6.5（terminal + scp）
+etc | jd-jui | vs code、Brew
+（搜狗输入法，有道笔记，谷歌浏览器+书签， 百度云，office/WPS, RAR）
+
+
+brew：http://brew.sh/index_zh-cn.html
+
+
 
 
 

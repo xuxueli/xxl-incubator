@@ -1,3 +1,20 @@
+### linux常用命令
+```
+// 为文件的用户添加执行权限（u代表所有者，x代表执行权限）
+chmod u+x *.sh
+
+// 创建目录，分配目录权限给用户
+sudo mkdir data     (root权限目录) 
+sudo chown xuxueli data     （目录权限分配给xuxueli）
+
+
+// 查看磁盘、文件大小（Mac有效）
+df -h  ：命令查看整个硬盘的大小 ，-h表示人可读的
+du -d 1 -h  ：命令查看当前目录下所有文件夹的大小 -d 指深度，后面加一个数值
+ls -all :查看文件大小
+du -h --max-depth=1 /data：linux可用，查看目录大小；
+```
+
 ### VirtualBox安装CentOS
 ***
 > VirtualBox获取：[官网](https://www.virtualbox.org/)下载virtualBox（从vmware转到virtualBox，首先virtualBox免费，其次virtualBox在sun公司手下，牌子很硬）。
