@@ -1,8 +1,7 @@
-package com.xuxueli.crawler.test;
+package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.JsoupUtil;
 import org.jsoup.select.Elements;
-import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,18 +16,7 @@ import java.util.*;
 public class JsoupUtilTest {
     private static Logger logger = LoggerFactory.getLogger(JsoupUtilTest.class);
 
-    /**
-     * url格式校验
-     */
-    @Test
-    public void isUrlTest(){
-        String url = "http://www.baidu.com/";
-
-        boolean ret = JsoupUtil.isUrl(url);
-        Assert.assertTrue(ret);
-    }
-
-    /**
+        /**
      * 加载解析页面
      */
     @Test

@@ -14,11 +14,14 @@ public class XxlCrawlerTest {
 
     public static void main(String[] args) {
         XxlCrawler crawler = new XxlCrawler.Builder()
-                .setIndexUrl("https://www.qiushibaike.com")
+                .setIndexUrl("https://my.oschina.net/xuxueli/blog")
                 .setThreadCount(3)
-                .setWhiteUrlSet(new HashSet<String>(Arrays.asList("https://www.qiushibaike.com")))
+                .setWhiteUrlRegexs(new HashSet<String>(Arrays.asList("https://my\\.oschina\\.net/xuxueli/blog/\\d+")))
                 .build();
+
+        System.out.println(111);
         crawler.start();
+        System.out.println(222);
     }
 
 }

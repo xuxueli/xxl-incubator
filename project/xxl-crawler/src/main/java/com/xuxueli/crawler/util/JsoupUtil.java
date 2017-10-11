@@ -21,16 +21,6 @@ public class JsoupUtil {
     private static Logger logger = LoggerFactory.getLogger(JsoupUtil.class);
 
     /**
-     * url格式校验
-     */
-    public static boolean isUrl(String url) {
-        if (url!=null && url.trim().length()>0 && url.startsWith("http")) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 加载解析页面
      *
      * @param url		：加载URL
@@ -46,7 +36,7 @@ public class JsoupUtil {
      */
     public static Elements loadParse(String url, Map<String, String> paramMap, Map<String, String> cookieMap,
             boolean ifPost, Map<Integer, Set<String>> tagMap) {
-        if (!isUrl(url)) {
+        if (!UrlUtil.isUrl(url)) {
             return null;
         }
         try {
@@ -124,7 +114,7 @@ public class JsoupUtil {
         if (resultAll!=null && resultAll.size() > 0) {
             for (Element item : resultAll) {
                 String href = item.attr("abs:href");    // href、abs:href
-                if (JsoupUtil.isUrl(href)) {
+                if (UrlUtil.isUrl(href)) {
                     links.add(href);
                 }
             }

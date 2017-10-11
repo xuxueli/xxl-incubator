@@ -1,4 +1,4 @@
-package com.xuxueli.crawler.test;
+package com.xuxueli.crawler.test.util;
 
 import com.xuxueli.crawler.util.PageDownLoader;
 import org.junit.Assert;
