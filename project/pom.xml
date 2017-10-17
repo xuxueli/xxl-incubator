@@ -16,7 +16,6 @@
         <module>xxl-admin</module>
         <module>xxl-blog</module>
         <module>xxl-note</module>
-        <module>xxl-crawler</module>
     </modules>
 
 </project>
