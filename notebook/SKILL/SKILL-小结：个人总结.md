@@ -365,6 +365,15 @@ CollectionUtils.disjunction(a, b)(交集的补集):  // {1,2,3,4,6,7}
 CollectionUtils.disjunction(b, a)(交集的补集):  // {1,2,3,4,6,7}
 CollectionUtils.subtract(a, b)(A与B的差):   // {1,2,3}
 CollectionUtils.subtract(b, a)(B与A的差):   // {4,6,7}
+
+// 抽取列表对象属性
+List<Integer> fieldList = (List<Integer>) CollectionUtils.collect(voList, new Transformer() {
+    @Override
+    public Object transform(Object input) {
+        Vo vo = (Vo) input;
+        return vo.getId();
+    }
+});
 ```
 
 * 推荐参考一下common-lang的api
