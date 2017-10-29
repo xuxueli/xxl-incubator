@@ -59,17 +59,14 @@
 -- | windows | mac
 --- | --- | ---
 jdk | jdk7 | jdk7
-git | git(eclipse的egit插件可替代之) | git
 maven | maven3 | maven3
+git | git | git
 web server | tomcat7 | tomcat7
-ide | eclipse mars(jdk7+maven3+egit)(freemarker-ide+openexplorer) | idea
+ide | idea | idea
 database | mysql5.5 + navicat(oracle11g + pl/sql) | mysql5.5 + navicat
 linux | secureFX + secureCRT + vbox + centos6.5 | secureFX + secureCRT + vbox + centos6.5（terminal + scp）
-etc | jd-jui | vs code、Brew
+etc | Sublime，jd-jui | Brew，Sublime
 （搜狗输入法，有道笔记，谷歌浏览器+书签， 百度云，office/WPS, RAR）
-
-
-brew：http://brew.sh/index_zh-cn.html
 
 
 
