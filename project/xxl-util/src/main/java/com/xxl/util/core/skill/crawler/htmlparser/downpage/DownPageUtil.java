@@ -84,7 +84,7 @@ public class DownPageUtil {
 
                 logger.error("-------downer-------:" + link);
                 PageDownLoader downer = new PageDownLoader();
-                downer.downloadFile(link);
+                downer.downloadFile(link, "/Users/xuxueli/Downloads");
 
                 Set<String> links = HtmlParserUtil.extracLinks(link);
                 if (links!=null && links.size() > 0) {

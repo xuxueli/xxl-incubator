@@ -1,10 +1,5 @@
 package com.xxl.util.core.skill.crawler.htmlparser.downpage;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -17,8 +12,14 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
- * 下载 url 指向的网页
+ * page downloader
+ *
  * @author xuxueli 2015-05-14 22:44:43
  */
 public class PageDownLoader {
@@ -26,30 +27,27 @@ public class PageDownLoader {
 
 	/**
 	 * 根据 url 和网页类型生成需要保存的网页的文件名 去除掉 url 中非文件名字符
+	 *
 	 * @param url
 	 * @param contentType
 	 * @return
 	 */
-	private String getFileNameByUrl(String url, String contentType) {
+	private static String getFileNameByUrl(String url, String contentType) {
 		url = url.substring(7);
-		if (contentType.indexOf("html") != -1) {
-			// text/html
-			url = url.replaceAll("[\\?/:*|<>\"]", "_") + ".html";
-			return url;
-		} else {
-			// 如application/pdf
-			return url.replaceAll("[\\?/:*|<>\"]", "_") + "." + contentType.substring(contentType.lastIndexOf("/") + 1);
-		}
+		url = url.replaceAll("[\\?/:*|<>\"]", "_") + "." + contentType.substring(contentType.lastIndexOf("/") + 1);	// text/html、application/pdf
+		return url;
 	}
 
 	/**
 	 * 保存网页字节数组到本地文件 filePath 为要保存的文件的相对地址
+	 *
 	 * @param data
 	 * @param filePath
+	 * @param fileName
 	 */
-	private void saveToLocal(byte[] data, String filePath) {
+	private static void saveToLocal(byte[] data, String filePath, String fileName) {
 		try {
-			DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(filePath)));
+			DataOutputStream out = new DataOutputStream(new FileOutputStream(new File(filePath, fileName)));
 			for (int i = 0; i < data.length; i++){
 				out.write(data[i]);
 			}
@@ -62,21 +60,21 @@ public class PageDownLoader {
 
 	/**
 	 * 下载 url 指向的网页
+	 *
 	 * @param url
 	 * @return
 	 */
-	public String downloadFile(String url) {
-		String filePath = null;
-		
-		//设置请求和传输超时时间
+	public static boolean downloadFile(String url, String filePath) {
+
+		// 设置请求和传输超时时间
 		HttpGet httpGet = new HttpGet(url);
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(5000)
 				.setConnectTimeout(5000)
-				.build(); 
+				.build();
 		httpGet.setConfig(requestConfig);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
-		
+
 		// 3.执行 HTTP GET 请求
 		try {
 			HttpResponse response = httpClient.execute(httpGet);
@@ -86,36 +84,37 @@ public class PageDownLoader {
 			if(statusCode == HttpStatus.SC_OK && null != entity){
 				byte[] responseBody = EntityUtils.toByteArray(entity);
 				EntityUtils.consume(entity);
-				
+
 				// 根据 url 和网页类型生成需要保存的网页的文件名 去除掉 url 中非文件名字符
-				filePath = "" + getFileNameByUrl(url,	entity.getContentType().getValue());
-				
+				String fileName = getFileNameByUrl(url,	entity.getContentType().getValue());
+
 				// 保存网页字节数组到本地文件 filePath 为要保存的文件的相对地址
-				saveToLocal(responseBody, filePath);
+				saveToLocal(responseBody, filePath, fileName);
+				return true;
 			} else {
-				logger.error("Method failed: " + statusCode);
-				filePath = null;
+				logger.error("load page fail, statusCode {}", statusCode);
 			}
 
-			
 		} catch (ClientProtocolException e) {
-			logger.error("", e);
+			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
-			logger.error("", e);
+			logger.error(e.getMessage(), e);
 		} finally{
 			httpGet.releaseConnection();
 			try {
 				httpClient.close();
 			} catch (IOException e) {
-				logger.error("", e);
+				logger.error(e.getMessage(), e);
 			}
 		}
-		return filePath;
+		return false;
 	}
 
-	// 测试的 main 方法
 	public static void main(String[] args) {
-		PageDownLoader downLoader = new PageDownLoader();
-		downLoader.downloadFile("http://www.baidu.com/");
+		String url = "http://www.baidu.com/";
+		String filePath = "/Users/xuxueli/Downloads";
+		boolean ret = PageDownLoader.downloadFile(url, filePath);
+		System.out.println(ret);
 	}
+
 }
