@@ -89,6 +89,11 @@ git config --global user.email "email info"  // update global
 git log
 git reset --hard <commit_id>
 git push origin HEAD --force
+
+// 放弃本地的修改，用远程的库覆盖本地
+git fetch --all
+git reset --hard origin/master
+
 ```
 ##### Git常用命令
 ```
