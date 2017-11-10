@@ -1,10 +1,7 @@
-[官网](http://kafka.apache.org/)
-
-[官方文档](http://kafka.apache.org/08/documentation.html#introduction)
-
-[文档](http://blog.csdn.net/colorant/article/details/12081909/)
-
-[文档](http://my.oschina.net/ielts0909/blog/110280)
+- [官网](http://kafka.apache.org/)
+- [官方文档](http://kafka.apache.org/documentation)
+- [文章1](http://blog.csdn.net/colorant/article/details/12081909/)
+- [文章2](http://my.oschina.net/ielts0909/blog/110280)
 
 ### Kafka
 Kafka是由Linkedin开发的一个分布式的消息队列系统(Message Queue)
@@ -23,127 +20,108 @@ kafka的集群有多个Broker服务器组成，每个类型的消息被定义为
 
 ### 使用教程
 引入maven依赖
-```
+```xml
 <dependency>
-	<groupId>org.apache.kafka</groupId>
-	<artifactId>kafka_2.10</artifactId>
-	<version>0.8.0</version>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>1.0.0</version>
 </dependency>
 ```
 
 生产者代码
-```
-package com.xxl.test;
+```java
+package com.xuxueli.demo.kafka;
 
-import java.text.MessageFormat;
+import org.apache.kafka.clients.producer.*;
+
 import java.util.Properties;
 
-import kafka.javaapi.producer.Producer;
-import kafka.producer.KeyedMessage;
-import kafka.producer.ProducerConfig;
-
 /**
- * kafka
+ * kafka producer
  *
+ * @author xuxueli 2017-11-11
  */
-public class KafkaProducer {
-	private static KafkaProducer instance = new KafkaProducer();
-	public static Producer<String, String> getInstance(){
-		return instance.producer;
-	}
-	
-	private Producer<String, String> producer;
-	private KafkaProducer() {
-		Properties props = new Properties();
-		
-		//props.put("metadata.broker.list", "192.168.56.101:9092,192.168.56.101:9093,192.168.56.101:9094");			// 此处配置的是kafka的端口
-		props.put("metadata.broker.list", "192.168.56.101:9092");
-		props.put("key.serializer.class", "kafka.serializer.StringEncoder");// 配置key的序列化类
-		props.put("serializer.class", "kafka.serializer.StringEncoder");	// 配置value的序列化类
-        props.put("request.required.acks","-1");							// 等待确认：0默认-不等待；1-等待leader确认；-1-等待所有存活确认；
-        producer = new Producer<String, String>(new ProducerConfig(props));
-	}
-	
+public class KafkaProducerTest {
 	public static void main(String[] args) {
-		String TOPIC = "test";
-		TOPIC = "my-replicated-topic";
-		// push 2 topic
-		for (int i = 1; i < 2; i++) {
-			String key = "key".concat(String.valueOf(i));
-			String value = "key".concat(String.valueOf(i));
-			KafkaProducer.getInstance().send(new KeyedMessage<String, String>(TOPIC, key, value));
-			System.out.println(MessageFormat.format("producer [{0} = {1}]", key, value));
-		}
+
+		// build producer
+		Properties props = new Properties();
+		props.put("bootstrap.servers", "127.0.0.1:9092");        // 此处配置的是kafka的端口
+		props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");        // 配置key的序列化类
+		props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");    // 配置value的序列化类
+		props.put("acks", "all");            // 等待确认：0 = 不等待/默认、1 = 等待leader确认、-1/all = 等待所有followers确认；
+		props.put("retries", 1);
+
+		Producer<String, String> producer = new KafkaProducer<String, String>(props);
+
+		// pub msg
+		String topic = "demo_topic";
+		producer.send(new ProducerRecord<String, String>(topic, "Hello"));
+		producer.send(new ProducerRecord<String, String>(topic, "World"), new Callback() {
+			@Override
+			public void onCompletion(RecordMetadata metadata, Exception e) {
+				if (e != null) {
+					e.printStackTrace();
+				} else {
+					System.out.println("offset = " + metadata.offset());
+					System.out.println("metadata = " + metadata.toString());
+				}
+			}
+		});
+		producer.flush();
+		producer.close();
+
 	}
-	
 }
 ```
 
 消费者代码
-```
-package com.xxl.test;
+```java
+package com.xuxueli.demo.kafka;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+
+import java.util.Arrays;
 import java.util.Properties;
 
-import kafka.consumer.ConsumerConfig;
-import kafka.consumer.ConsumerIterator;
-import kafka.consumer.KafkaStream;
-import kafka.javaapi.consumer.ConsumerConnector;
-import kafka.message.MessageAndMetadata;
-import kafka.serializer.StringDecoder;
-import kafka.utils.VerifiableProperties;
-
 /**
- * kafka的topic数据流向：producer.topic --> (1:n as topic)group.id --> (1:1 as queue)consumer
- * @author xuxueli
+ * kafka consumer （producer.topic --> (1:n as topic)group.id --> (1:1 as queue)consumer）
+ *
+ * @author xuxueli 2017-11-11
  */
-public class KafkaConsumer {
-	private static KafkaConsumer instance = new KafkaConsumer();
-	public static ConsumerConnector getInstance(){
-		return instance.consumer;
-	}
+public class KafkaConsumerTest {
 
-	private ConsumerConnector consumer;
-	private KafkaConsumer() {
-		Properties props = new Properties();
-		props.put("zookeeper.connect", "192.168.56.101:2181,192.168.56.101:2182,192.168.56.101:2183");	// zookeeper 配置
-		props.put("group.id", "default-group");					// group 代表一个消费组（可根据之，实现queue队列或者topic广播）
-		
-		props.put("zookeeper.session.timeout.ms", "4000");		// zk连接超时
-		props.put("zookeeper.sync.time.ms", "200");
-		props.put("auto.commit.interval.ms", "1000");
-		props.put("auto.offset.reset", "smallest");
-		
-		props.put("serializer.class", "kafka.serializer.StringEncoder");	// 配置value的序列化类
-
-		consumer = kafka.consumer.Consumer.createJavaConsumerConnector(new ConsumerConfig(props));
-	}
-	
 	public static void main(String[] args) {
-		String TOPIC = "test";
-		TOPIC = "my-replicated-topic";
-		// pull from topic
-		Map<String, Integer> topicCountMap = new HashMap<String, Integer>();
-		topicCountMap.put(TOPIC, new Integer(1));
 
-		StringDecoder keyDecoder = new StringDecoder(new VerifiableProperties());
-		StringDecoder valueDecoder = new StringDecoder(new VerifiableProperties());
+		// build consumer
+		Properties props = new Properties();
+		props.put("bootstrap.servers", "127.0.0.1:9092");
+		props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+		props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");		// 配置value的序列化类
+		props.setProperty("group.id", "0");				// group 代表一个消费组（可根据之，实现queue队列或者topic广播）
+		props.setProperty("enable.auto.commit", "true");
+		props.setProperty("auto.offset.reset", "earliest");
 
-		Map<String, List<KafkaStream<String, String>>> consumerMap = KafkaConsumer.getInstance().createMessageStreams(topicCountMap, keyDecoder, valueDecoder);
-		
-		KafkaStream<String, String> stream = consumerMap.get(TOPIC).get(0);
-		
-		ConsumerIterator<String, String> it = stream.iterator();
-		while (it.hasNext()){
-			MessageAndMetadata<String, String> item = it.next();
-			String key = item.key();
-			String value = item.message();
-			System.out.println(MessageFormat.format("consumer [{0} = {1}]", key, value));
+		Consumer<String, String> consumer = new KafkaConsumer<String, String>(props);
+
+		// sub msg
+		String topic = "demo_topic";
+		consumer.subscribe(Arrays.asList(topic));
+
+		for (int i = 0; i < 100; i++) {
+			ConsumerRecords<String, String> records = consumer.poll(1000);
+			System.out.println(records.count());
+			for (ConsumerRecord<String, String> record : records) {
+				System.out.println("record = " + record);
+			}
 		}
+
+		//  close consumer
+		consumer.close();
+
 	}
 }
 ```
