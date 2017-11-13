@@ -15,6 +15,7 @@ kafka的工作方式和其他MQ基本相同，只是在一些名词命名上有�
 - Consumer Group （CG）：这是kafka用来实现一个topic消息的广播（发给所有的consumer）和单播（发给任意一个consumer）的手段。一个 topic可以有多个CG。topic的消息会复制（不是真的复制，是概念上的）到所有的CG，但每个CG只会把消息发给该CG中的一个 consumer。如果需要实现广播，只要每个consumer有一个独立的CG就可以了。要实现单播只要所有的consumer在同一个CG。用CG还 可以将consumer进行自由的分组而不需要多次发送消息到不同的topic。
 - Broker （B）：一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。
 - Partition（P）：为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上。kafka只保证按一个partition中的顺序将消息发给consumer，不保证一个topic的整体（多个partition间）的顺序。
+- Key：Kafka根据传递消息的key来进行分区的分配，即hash(key) % numPartitions；保证了相同key的消息一定会被路由到相同的分区。
 
 kafka的集群有多个Broker服务器组成，每个类型的消息被定义为topic，同一topic内部的消息按照一定的key和算法被分区(partition)存储在不同的Broker上，消息生产者producer和消费者consumer可以在多个Broker上生产/消费topic
 

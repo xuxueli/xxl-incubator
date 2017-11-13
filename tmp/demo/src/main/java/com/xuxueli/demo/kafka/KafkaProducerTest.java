@@ -31,8 +31,7 @@ public class KafkaProducerTest {
 				if (e != null) {
 					e.printStackTrace();
 				} else {
-					System.out.println("offset = " + metadata.offset());
-					System.out.println("metadata = " + metadata.toString());
+					System.out.println("produce msg: offset = " + metadata.offset() + ", metadata = " + metadata.toString());
 				}
 			}
 		});
