@@ -10,9 +10,9 @@ public class ExclamationTopology {
     public static void main(String[] args) throws Exception {
         TopologyBuilder builder = new TopologyBuilder();
 
-        builder.setSpout("word", new TestWordSpout(), 1);
-        builder.setBolt("exclaim", new ExclamationBolt(), 1).shuffleGrouping("word");
-        builder.setBolt("print", new PrintBolt(), 1).shuffleGrouping("exclaim");
+        builder.setSpout("word", new WordSpout(), 1);
+        builder.setBolt("exclaim", new ExclamationBolt(), 1).shuffleGrouping("word");   // Tuple流向：word 》 exclaim
+        builder.setBolt("print", new PrintBolt(), 1).shuffleGrouping("exclaim");        // exclaim 》 print
 
         Config conf = new Config();
         conf.setDebug(true);
@@ -23,9 +23,9 @@ public class ExclamationTopology {
             StormSubmitter.submitTopologyWithProgressBar(args[0], conf, builder.createTopology());
         } else {
 
-            LocalCluster cluster = new LocalCluster();
+            LocalCluster cluster = new LocalCluster();      // storm依赖，<scope>provided</scope>--> 本地开发是注释掉 -->
             cluster.submitTopology("test3", conf, builder.createTopology());
-            Utils.sleep(20000);
+            Utils.sleep(60 * 1000);
             cluster.killTopology("test3");
             cluster.shutdown();
         }

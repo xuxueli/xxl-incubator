@@ -16,8 +16,8 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TestWordSpout extends BaseRichSpout {
-    public static Logger LOG = LoggerFactory.getLogger(TestWordSpout.class);
+public class WordSpout extends BaseRichSpout {
+    public static Logger logger = LoggerFactory.getLogger(WordSpout.class);
     SpoutOutputCollector _collector;
 
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
@@ -25,14 +25,14 @@ public class TestWordSpout extends BaseRichSpout {
     }
 
     public void nextTuple() {
-        Utils.sleep(100);
+        Utils.sleep(10 * 1000);
         final String[] words = new String[]{"nathan", "mike", "jackson", "golda", "bertels"};
-        final Random rand = new Random();
-        final String word = words[rand.nextInt(words.length)];
+        final String word = words[new Random().nextInt(words.length)];
         _collector.emit(new Values(word));
+        logger.info(">>>>>>>>>>> word spout：{}", word);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields("word"));
+        declarer.declare(new Fields("word"));   // 发射数据-发射字段："emit.Values"-"declare.Fields" 需要保持一致
     }
 }

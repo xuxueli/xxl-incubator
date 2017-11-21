@@ -156,7 +156,154 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
     ./storm supervisor &
     ```
     
+### Hello World
+```
+// 01：ExclamationTopology.java
+package com.xuxueli.demo.storm;
 
+import org.apache.storm.Config;
+import org.apache.storm.LocalCluster;
+import org.apache.storm.StormSubmitter;
+import org.apache.storm.topology.TopologyBuilder;
+import org.apache.storm.utils.Utils;
+
+public class ExclamationTopology {
+    public static void main(String[] args) throws Exception {
+        TopologyBuilder builder = new TopologyBuilder();
+
+        builder.setSpout("word", new WordSpout(), 1);
+        builder.setBolt("exclaim", new ExclamationBolt(), 1).shuffleGrouping("word");   // Tuple流向：word 》 exclaim
+        builder.setBolt("print", new PrintBolt(), 1).shuffleGrouping("exclaim");        // exclaim 》 print
+
+        Config conf = new Config();
+        conf.setDebug(true);
+
+        if (args != null && args.length > 0) {
+            conf.setNumWorkers(3);
+
+            StormSubmitter.submitTopologyWithProgressBar(args[0], conf, builder.createTopology());
+        } else {
+
+            LocalCluster cluster = new LocalCluster();      // storm依赖，<scope>provided</scope>--> 本地开发是注释掉 -->
+            cluster.submitTopology("test3", conf, builder.createTopology());
+            Utils.sleep(60 * 1000);
+            cluster.killTopology("test3");
+            cluster.shutdown();
+        }
+    }
+}
+
+// 02：WordSpout.java
+package com.xuxueli.demo.storm;
+
+import org.apache.storm.topology.OutputFieldsDeclarer;
+
+import java.util.Map;
+
+import org.apache.storm.spout.SpoutOutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.base.BaseRichSpout;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Values;
+import org.apache.storm.utils.Utils;
+
+import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WordSpout extends BaseRichSpout {
+    public static Logger logger = LoggerFactory.getLogger(WordSpout.class);
+    SpoutOutputCollector _collector;
+
+    public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
+        _collector = collector;
+    }
+
+    public void nextTuple() {
+        Utils.sleep(10 * 1000);
+        final String[] words = new String[]{"nathan", "mike", "jackson", "golda", "bertels"};
+        final String word = words[new Random().nextInt(words.length)];
+        _collector.emit(new Values(word));
+        logger.info(">>>>>>>>>>> word spout：{}", word);
+    }
+
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+        declarer.declare(new Fields("word"));   // 发射数据-发射字段："emit.Values"-"declare.Fields" 需要保持一致
+    }
+}
+
+// 03：ExclamationBolt.java
+package com.xuxueli.demo.storm;
+
+import java.util.Map;
+
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.tuple.Fields;
+import org.apache.storm.tuple.Tuple;
+import org.apache.storm.tuple.Values;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ExclamationBolt extends BaseRichBolt {
+    public static Logger logger = LoggerFactory.getLogger(ExclamationBolt.class);
+
+    OutputCollector _collector;
+
+    public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
+        _collector = collector;
+    }
+
+    public void execute(Tuple tuple) {
+        String value = tuple.getString(0) + "!!!";
+
+        _collector.emit(tuple, new Values(value));
+        _collector.ack(tuple);
+        logger.info(">>>>>>>>>>> exclaim bolt：{}", value);
+    }
+
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+        declarer.declare(new Fields("word"));
+    }
+
+}
+
+// 04：PrintBolt.java
+package com.xuxueli.demo.storm;
+
+import java.util.Map;
+
+import org.apache.storm.task.OutputCollector;
+import org.apache.storm.task.TopologyContext;
+import org.apache.storm.topology.OutputFieldsDeclarer;
+import org.apache.storm.topology.base.BaseRichBolt;
+import org.apache.storm.tuple.Tuple;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class PrintBolt extends BaseRichBolt {
+    public static Logger logger = LoggerFactory.getLogger(PrintBolt.class);
+
+    OutputCollector _collector;
+
+    public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
+        _collector = collector;
+    }
+
+    public void execute(Tuple tuple) {
+        String value = tuple.getString(0) + " Hello World!";
+
+        _collector.ack(tuple);
+        logger.info(">>>>>>>>>>> print bolt：{}", value);
+    }
+
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+    }
+}
+```
 
 
 

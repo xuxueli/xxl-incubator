@@ -11,7 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PrintBolt extends BaseRichBolt {
-    private static Logger LOG = LoggerFactory.getLogger(PrintBolt.class);
+    public static Logger logger = LoggerFactory.getLogger(PrintBolt.class);
+
     OutputCollector _collector;
 
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
@@ -19,8 +20,10 @@ public class PrintBolt extends BaseRichBolt {
     }
 
     public void execute(Tuple tuple) {
-        LOG.info(tuple.getString(0) + " Hello World!");
+        String value = tuple.getString(0) + " Hello World!";
+
         _collector.ack(tuple);
+        logger.info(">>>>>>>>>>> print bolt：{}", value);
     }
 
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
