@@ -127,11 +127,35 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
 #### Storm集群搭建
 - 1、安装zookeeper集群
 
-    zookeeper是nimbus和supervisor进行交互的中介。
+    - zookeeper是nimbus和supervisor进行交互的中介。
     - 1、nimbus通过在zookeeper上写状态信息来分配任务。supervisor则通过从zookeeper上读取这些状态信息，来领取任务。
     - 2、supervisor、task会发送心跳到zookeeper，使得nimbus可以监控整个集群的状态，从而在task执行失败时，可以重启他们。
     
-- 2、下载安装Storm
+- 2、下载安装Storm（Storm 1.1.0版本单节点部署）
+
+    1、解压安装
+    2、修改 "storm.yaml"
+    ```
+    storm.zookeeper.servers:
+        - "192.168.0.102"
+    ...
+    nimbus.seeds: ["192.168.0.102"]
+    ... 
+    drpc.servers:
+        - "192.168.0.102"
+    ```
+    3、启动服务
+    ```
+    // 启动nimbus
+    ./storm nimbus & 
+    
+    // 启动ui界面 
+    ./storm ui & 
+    
+    // 启动supervisor 
+    ./storm supervisor &
+    ```
+    
 
 
 
