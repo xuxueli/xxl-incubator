@@ -149,7 +149,7 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
     // 启动nimbus
     ./storm nimbus & 
     
-    // 启动ui界面 
+    // 启动ui界面 ( 地址：http://localhost:8080 )
     ./storm ui & 
     
     // 启动supervisor 

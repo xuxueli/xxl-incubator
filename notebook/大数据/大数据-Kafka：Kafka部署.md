@@ -142,7 +142,7 @@ cp -rf kafka_2.8.0-0.8.0 kafka01
 
 ##### CentOS 单机部署
 
-单机启动
+单机启动 （window路径格式：D:\\**\\**）
 ```
 cd /data/appdata/kafka_servers/kafka01
 // 启动内嵌zookeeper服务和kafka服务：
