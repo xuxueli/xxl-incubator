@@ -144,7 +144,7 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
     drpc.servers:
         - "192.168.0.102"
     ```
-    3、启动服务
+    3、启动关闭服务
     ```
     // 启动nimbus
     ./storm nimbus & 
@@ -154,11 +154,13 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
     
     // 启动supervisor 
     ./storm supervisor &
+    
+    // 关闭
+    ./storm kill
     ```
     
-    4、停止storm进程只有一种方式，就是kill
-    
 ### Hello World
+[Storm Example](https://github.com/apache/storm/tree/master/examples)
 ```
 // 01：ExclamationTopology.java
 package com.xuxueli.demo.storm;
