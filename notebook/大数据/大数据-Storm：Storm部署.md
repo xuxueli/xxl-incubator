@@ -156,6 +156,8 @@ Local or Shuffle Grouping | 功能上类似随机分组，但会尽可能发送�
     ./storm supervisor &
     ```
     
+    4、停止storm进程只有一种方式，就是kill
+    
 ### Hello World
 ```
 // 01：ExclamationTopology.java
