@@ -1,29 +1,35 @@
-## 介绍
+## 概念
 
 - 官网：http://hadoop.apache.org/ 
 - 文档：http://hadoop.apache.org/docs/r1.0.4/cn/quickstart.html
 
-Hadoop是一个由Apache基金会所开发的分布式系统基础架构。
+- Hadoop：
+    - 一个由Apache基金会所开发的分布式系统基础架构。用户可以在不了解分布式底层细节的情况下，开发分布式程序。
+    - 支持依靠横向扩展，通过不断增加廉价的商用服务器，来增加计算和存储能力。充分利用集群的威力进行高速运算和存储。
+    - Hadoop的框架最核心的设计就是：HDFS和MapReduce。HDFS为海量的数据提供了存储，则MapReduce为海量的数据提供了计算。
+- HDFS：Hadoop实现了一个分布式文件系统（Hadoop Distributed File System），简称HDFS。
+    - HDFS有高容错性的特点，并且设计用来部署在低廉的（low-cost）硬件上。
+    - 提供高吞吐量（high throughput）来访问应用程序的数据，适合那些有着超大数据集（large data set）的应用程序。
+    - HDFS放宽了（relax）POSIX的要求，可以以流的形式访问（streaming access）文件系统中的数据。
+- MapReduce：MapReduce为海量的数据提供了计算
 
-用户可以在不了解分布式底层细节的情况下，开发分布式程序。充分利用集群的威力进行高速运算和存储。
-[1] Hadoop实现了一个分布式文件系统（Hadoop Distributed File System），简称HDFS。HDFS有高容错性的特点，并且设计用来部署在低廉的（low-cost）硬件上；而且它提供高吞吐量（high throughput）来访问应用程序的数据，适合那些有着超大数据集（large data set）的应用程序。HDFS放宽了（relax）POSIX的要求，可以以流的形式访问（streaming access）文件系统中的数据。
-Hadoop的框架最核心的设计就是：HDFS和MapReduce。HDFS为海量的数据提供了存储，则MapReduce为海量的数据提供了计算。
-
-0.20.X系列： 0.20.2版本发布后，几个重要的特性没有基于trunk而是在0.20.2基础上继续研发。值得一提的主要有两个特性：Append与Security。其中，含Security特性的分支以0.20.203版本发布，而后续的0.20.205版本综合了这两个特性。需要注意的是，之后的1.0.0版本仅是0.20.205版本的重命名。0.20.X系列版本是最令用户感到疑惑的，因为它们具有的一些特性，trunk上没有；反之，trunk上有的一些特性，0.20.X系列版本却没有。
-
-0.21.0/0.22.X系列：这一系列版本将整个Hadoop项目分割成三个独立的模块，分别是 Common、HDFS和MapReduce。HDFS和MapReduce都对Common模块有依赖性，但是MapReduce对HDFS并没有依赖性。这样，MapReduce可以更容易地运行其他分布式文件系统，同时，模块间可以独立开发。具体各个模块的改进如下。
-
-    Common模块：最大的新特性是在测试方面添加了Large-Scale Automated Test Framework和Fault Injection Framework。 
-    HDFS模块：主要增加的新特性包括支持追加操作与建立符号连接、Secondary NameNode改进（Secondary NameNode被剔除，取而代之的是Checkpoint Node，同时添加一个Backup Node的角色，作为            NameNode的冷备）、允许用户自定义block放置算法等。 
-    MapReduce模块：在作业API方面，开始启动新MapReduce API，但老的API仍然兼容。 
-
-0.22.0在0.21.0的基础上修复了一些bug并进行了部分优化。
+- Hive：hive是基于Hadoop的一个数据仓库工具。
+    - 可以将结构化的数据文件映射为一张数据库表，并提供简单的sql查询功能。
+    - 可以将sql语句转换为MapReduce任务进行运行。
+    - 学习成本低，可以通过类SQL语句快速实现简单的MapReduce统计，不必开发专门的MapReduce应用，十分适合数据仓库的统计分析。
+    - Hive更适合于数据仓库的任务，Hive主要用于静态的结构以及需要经常分析的工作。Hive与SQL相似促使 其成为Hadoop与其他BI工具结合的理想交集。
+- HBase：一个构建在HDFS上的分布式列存储系统。
+    - 一个构建在HDFS上的分布式列存储系统。
+    - Apache Hadoop生态系统中的重要一员，主要用于海量结构化数据存储。从逻辑上讲，HBase将数据按照表、行和列进行存储。
+    - 大：一个表可以有数十亿行，上百万列；
+    - 无模式：每行都有一个可排序的主键和任意多的列，列可以根据需要动态的增加，同一张表中不同的行可以有截然不同的列；
+    - 面向列：面向列（族）的存储和权限控制，列（族）独立检索；
+    - 稀疏：空（null）列并不占用存储空间，表可以设计的非常稀疏；
+    - 数据多版本：每个单元中的数据可以有多个版本，默认情况下版本号自动分配，是单元格插入时的时间戳；
+    - 数据类型单一：Hbase中的数据都是字符串，没有类型。
     
-0.23.X系列：0.23.X是为了克服Hadoop在扩展性和框架通用性方面的不足而提出来的。它实际上是一个全新的平台，包括分布式文件系统HDFS Federation和资源管理框架YARN两部分，可对接入的各种计算框架（如MapReduce、Spark等）进行统一管理。它的发行版自带MapReduce库，而该库集成了迄今为止所有的MapReduce新特性。
-
-2.X系列：同0.23.X系列一样，2.X系列也属于下一代Hadoop。与0.23.X系列相比，2.X系列增加了NameNode HA和Wire-compatibility等新特性。
-
-
+    
+    
 ## 开发环境
 
 环境部署：http://www.cnblogs.com/xia520pi/archive/2012/05/20/2510723.html
