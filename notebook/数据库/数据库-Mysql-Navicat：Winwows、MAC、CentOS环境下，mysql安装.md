@@ -37,25 +37,22 @@ Tips：
     MySQL Community Server 是开源免费的，这也是我们通常用的MySQL的版本。根据不同的操作系统平台细分为多个版本，下面我们以windows平台为例来说明。
 
 ### 安装：
-[ Win7系统安装MySQL5.5.21图解教程](http://blog.csdn.net/ni_hao_ya/article/details/9235251/)
-
-- 、双击msi进入安装界面，接受条款；
+- 1、双击msi进入安装界面，接受条款；
 - 2、Choose Setup Type：Typical是指典型安装，Complete是完全安装，Custom是自定义安装，那么我们选择自定义安装；
-- 3、Custom Setup：Location选择安装目录，选择Next开始Installing；；
-- 4、安装完成，显示Completed the Mysql Server 5.5 Setup wizard，勾选Launch the Mysql Instance Configuration Wizard，点击Finish进去配置界面；
-- 5、Please select a configuraton type ：“Detailed Configuration（手动精确配置）”、“Standard Configuration（标准配置）”，我们选择“Detailed Configuration”，点击”Next“；
-- 6、Please selet a servet type：Developer Machine：开发测试，mysql 占用很少资源；Server Machine：服务器类型，mysql占用较多资源；Dedicated MySQL Server Machine：专门的数据库服务器，mysql占用所有可用资源；我选择”Developer Machine“，点击Next；
-- 7、Please select the database usage：“Multifunctional Database”：通用多功能型；“Transactional Database Only”：服务器类型，专注于事务处理；“Non-Transactional Database Only”：非事务处理型，较简单，主要做一些监控、记数用，对MyISAM数据类型的支持仅限于non-transactional；我选择”Multifunctional Database“，然后”Next“；
-- 8、Please select the drive fot the InnoDB datafile,if you do not wang to use the default settings.：选择InnoDB数据库文件存储空间，记住位置，重装的时候选择同样位置，否则可能数据库丢失。点击Next；
-- 9、Please set the approximate number concurrent connections to the server：“Decision Support(DSS)/OLAP”，20个左右；“Online Transaction Processing(OLTP)”，500个左右；“Manual Setting”，自定义；我做开发用，选择“Manual Setting”，填写15个；点击Next；
-- 10、Please set the networking options：“Ennable TCP、/IP Networking”，是否启用TCP/IP链接；“Port Number”，默认端口3306；“Add firewall exception for this port”，将监听端口，加入防火墙之外，避免防火墙阻断；“Enable Strict Mode（启用标准模式）”，选中，Mysql不会允许细小的语法错误，尽量使用标准模式，降低非法数据可能，养成好习惯；
-- 11、Please select the default character set：“Standard Charater Set”，西文编码Latin1；“Best Support For Multilingualism”，多字节的通用utf8编码；"Manual Selected Default Charater Set/ Clllation"，自定义编码；我选择UTF-8，它是国际编码，通用性好，而且线上也是此编码；
-- 12、Pleast set the Windows Service：“Install As Windows Service”，勾选，安装位windows服务，可自定义服务名称；“Launch the Mysql Server aotumatically”，开机启动；“Include Bin Directory in Window Path”，勾选后，cmd中可直接使用目录下命令，而不必切换到该目录；我选择全部勾选；
-- 13、设置数据库密码；”Enable root access from remotemachines“表示是否允许root 用户在其它的机器上登陆，如果要安全，就不要勾上，根据需要；“Create An Anonymous Account”表示新建一个匿名用户，匿名用户可以连接数据库但不能操作数据库，包括查询，一般就不用勾了，然后“Next”；
-- 14、确保前面的设置无误后，点击”Execute“。成功页点击“Finish”就OK了。打开cmd.exe，输入：mysql -uroot -p；然后”回车“，提示输入密码，即可登录；
+- 3、安装项选择 “Mysql Server”,右下角指定安装目录，数据目录，相同数据目录下次安装可恢复数据；
+- 4、安装完成，勾选Launch the Mysql Instance Configuration Wizard，点击Finish进去配置界面；
+- 6、选择Server类型，端口号，服务名称：开发测试，mysql 占用很少资源；Server Machine：服务器类型，mysql占用较多资源；Dedicated MySQL Server Machine：专门的数据库服务器，mysql占用所有可用资源；我选择”Developer Machine“，点击Next；
+- 7、输入Root账号密码；
+- 8、选择用途：“Multifunctional Database”：通用多功能型；“Transactional Database Only”：服务器类型，专注于事务处理；“Non-Transactional Database Only”：非事务处理型，较简单，主要做一些监控、记数用，对MyISAM数据类型的支持仅限于non-transactional；我选择”Multifunctional Database“；
+- 9、“Ennable TCP、/IP Networking”，是否启用TCP/IP链接；“Port Number”，默认端口3306；“Add firewall exception for this port”，将监听端口，加入防火墙之外，避免防火墙阻断；“Enable Strict Mode（启用标准模式）”，选中，Mysql不会允许细小的语法错误，尽量使用标准模式，降低非法数据可能，养成好习惯；
+- 10、“Standard Charater Set”，西文编码Latin1；“Best Support For Multilingualism”，多字节的通用utf8编码；"Manual Selected Default Charater Set/ Clllation"，自定义编码；我选择UTF-8，它是国际编码，通用性好，而且线上也是此编码；
+- 11、“Install As Windows Service”，勾选，安装位windows服务，可自定义服务名称；“Launch the Mysql Server aotumatically”，开机启动；“Include Bin Directory in Window Path”，勾选后，cmd中可直接使用目录下命令，而不必切换到该目录；我选择全部勾选；
+- 12、”Enable root access from remotemachines“表示是否允许root 用户在其它的机器上登陆，如果要安全，就不要勾上，根据需要；“Create An Anonymous Account”表示新建一个匿名用户，匿名用户可以连接数据库但不能操作数据库，包括查询，一般就不用勾了，然后“Next”；
+- 13、点击”Execute“。成功页点击“Finish”就OK了。
+- 14、在开始菜单找到刚刚新安装的mysql,选择command line client - Unicode。输入密码，此时出现的界面表示成功安装，输入show databases:验证；
 
 ### 乱码解决
-安装目录下》my.ini》修改两处
+安装目录（数据目录）下》my.ini》修改两处
 ```
 default-character-set=utf8
 ……
