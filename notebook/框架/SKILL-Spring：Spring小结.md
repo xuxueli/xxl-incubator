@@ -14,7 +14,15 @@ IOC：
 ##### spring常用类
 - ApplicationContextAware：实现接口，获取 "ApplicationContext"；
 - ApplicationListener：实现接口，监听Sping事件，比如销毁事件 "ContextClosedEvent"；
-- InitializingBean：接口方法 "afterPropertiesSet"，在 "init-method" 之前调用；
+
+- Spring 允许 Bean 在初始化完成后以及销毁前执行特定的操作。下面是常用的三种指定特定操作的方法
+    - 实现 "InitializingBean.afterPropertiesSet/DisposableBean.destroy" 接口
+    - <bean> 元素的 init-method/destroy-method属性指定方法；
+    - 指定方法上加上@PostConstruct或@PreDestroy注解；
+
+
+        Bean在实例化的过程中，执行顺序：Constructor > @PostConstruct >InitializingBean > init-method
+        Bean在销毁的过程中，执行顺序：@PreDestroy > DisposableBean > destroy-method
 
 ##### @RequestBody 请求体中传递JSON数据
 ```
