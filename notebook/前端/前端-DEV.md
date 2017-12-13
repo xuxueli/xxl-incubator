@@ -5,3 +5,9 @@
     - 1、WebStorm-8.0.5.exe
     - 2、WebStorm-8.0.5注册
     - 3、谷歌浏览器插件JetBrains IDE Support 2.0.4_0.zip
+    
+- Chrome:
+    - 1、EditThisCookie
+    - 2、JSONView
+    - 3、Jquery Selector Helper
+    
