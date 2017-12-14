@@ -3,10 +3,13 @@ package com.xuxueli.demo;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.ProxyConfig;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+
+import java.io.IOException;
 
 public class Demo {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         // 浏览器
         WebClient webClient = new WebClient(BrowserVersion.CHROME);
@@ -20,7 +23,11 @@ public class Demo {
         webClient.waitForBackgroundJavaScript(500);//设置页面等待js响应时间,
 
         // proxy
-        webClient.getOptions().setProxyConfig(new ProxyConfig("IP", 80));
+        //webClient.getOptions().setProxyConfig(new ProxyConfig("IP", 80));
+
+        HtmlPage page = webClient.getPage("http://---");
+        String pageXml = page.asXml(); //以xml的形式获取响应文本
+        System.out.println(pageXml);
 
     }
 
