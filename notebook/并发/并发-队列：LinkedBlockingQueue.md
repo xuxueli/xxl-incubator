@@ -11,7 +11,7 @@ BlockingQueue位于juc包，常用语并发的生产者、消费者场景，与�
 ##### 1.BlockingQueue定义的常用方法如下
 
 --          | 抛出异常  |   boolean/null  | 阻塞      | 超时
---|--|--|--|--
+---|---|---|---|---
 插入        | add(e)    |   offer(e)    | put(e)    | offer(e,time,unit)
 移除并返回  | remove()  |   poll()      | take()    | poll(time,unit)
 返回不移除  | element() |   peek()      | --        | --
