@@ -47,13 +47,39 @@ setData(“/path/child”) | 无 | EventType.NodeDataChanged
 
 
 《事件--Watch方式》 | Default Watcher | exists(“/path”) | getData(“/path”) | 	getChildren(“/path”)
---- | --- | --- | ---
+--- | --- | --- | --- | ---
 EventType.None  | 触发 | 触发 | 触发 | 触发 
 EventType.NodeCreated  |  | 触发 | 触发 |  
 EventType.NodeDeleted  |  | 触发 | 触发 | 
 EventType.NodeDataChanged  |  | 触发 | 触发 | 
 EventType.NodeChildrenChanged  |  |  |  | 触发 
 
+## tips
+- zookeeper使用HashMap<Path,Watcher>维护了所有路径的watcher，不论注册多少次，都只会有一个watcher存在。当watcheEvent产生的时候，会移除对应path的watcher，并且回调。
+- 当type=None的时候，就不会移除watcher，会向所有watcher发送事件。
+    - 初始化的sessionState=Disconnected，
+      所以第一次ping成功，（zookeeper client会不断的给server发送ping指令）
+      会产生一个watchEvent:State=SyncConnected，type=None，
+      此时sessionState=SyncConnected，所以后续的ping就不会产生事件了。
+      
+    - 当zk监听watcher的时候，如果发生网络断链，且在sessionTimeout/2的时间内都没有恢复连接。
+      那么所有注册的watcher都会接收到
+      state=Disconnected,type=None,path=Null的watchEvent
+      此时sessionState=Disconnected..
+        - 如果在剩下sessionTimeout/2的时间内恢复连接，即ping通了
+          那么就会收到watchEvent:state=SyncConnected,type=None，path=Null
+        - 如果超过sessionTimeout时间恢复连接，那么就会收到
+          watchEvent:state=Expired,type=None,path=Null
+          此时表示zookeeper客户端真正与服务端失去连接，就需要重建zookeeper的客户端了。
+        - 如果超过sessionTimeout时间也没恢复连接，只有等恢复连接才会收到Expired事件。
+- 所以对于watcheEvent的事件的处理方式是:
+    - DisConneted 无视，因为连不上你做啥事都没用，也就改改某些状态，能连上的话要么收到SyncConneted事件，要么收到Expired 事件
+    - Expired重新构建zookeeper客户端。
+    - SyncConnected
+        - 对于type!=None重新注册watcher.
+        - 对于监听的type做后续处理
+    
+      
 ## ZooKeeper的一个性能测试
 
 [测试数据来自阿里中间件团队](http://jm.taobao.org/2011/07/15/1070/)
