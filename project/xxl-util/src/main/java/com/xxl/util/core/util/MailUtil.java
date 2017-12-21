@@ -1,18 +1,17 @@
 package com.xxl.util.core.util;
 
-import java.io.File;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeUtility;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
+import java.io.File;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 邮件发送.Util
@@ -26,7 +25,6 @@ public class MailUtil {
 	private static String port;
 	private static String username;
 	private static String password;
-	private static String sendFrom;
 	private static String sendNick;
 	static{
 		Properties mailProp = PropertiesUtil.loadProperties("mail.properties");
@@ -34,30 +32,42 @@ public class MailUtil {
 		port = PropertiesUtil.getString(mailProp, "mail.port");
 		username = PropertiesUtil.getString(mailProp, "mail.username");
 		password = PropertiesUtil.getString(mailProp, "mail.password");
-		sendFrom = PropertiesUtil.getString(mailProp, "mail.sendFrom");
 		sendNick = PropertiesUtil.getString(mailProp, "mail.sendNick");
 	}
-	
+
+    /**
+     <!-- spring mail sender -->
+     <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"  scope="singleton" >
+     <property name="host" value="${mail.host}" />			<!-- SMTP发送邮件的服务器的IP和端口 -->
+     <property name="port" value="${mail.port}" />
+     <property name="username" value="${mail.username}" />	<!-- 登录SMTP邮件发送服务器的用户名和密码 -->
+     <property name="password" value="${mail.password}" />
+     <property name="javaMailProperties">					<!-- 获得邮件会话属性,验证登录邮件服务器是否成功 -->
+     <props>
+     <prop key="mail.smtp.auth">true</prop>
+     <prop key="prop">true</prop>
+     <!-- <prop key="mail.smtp.timeout">25000</prop> -->
+     </props>
+     </property>
+     </bean>
+     */
 	/**
 	 * 发送邮件 (完整版)(结合Spring)
 	 * 
-	 * @param javaMailSender: 发送Bean
-	 * @param sendFrom		: 发送人邮箱
-	 * @param sendNick		: 发送人昵称
 	 * @param toAddress		: 收件人邮箱
 	 * @param mailSubject	: 邮件主题
 	 * @param mailBody		: 邮件正文
 	 * @param mailBodyIsHtml: 邮件正文格式,true:HTML格式;false:文本格式
-	 * @param files[]		: 附件
+	 * @param attachments	: 附件
 	 */
-	public static boolean sendMailSpring(String toAddress, String mailSubject, String mailBody, 
+	public static boolean sendMailSpring(String toAddress, String mailSubject, String mailBody,
 			boolean mailBodyIsHtml,File[] attachments) {
 		JavaMailSender javaMailSender = (JavaMailSender) SpringContentAwareUtil.getBeanByName("javaMailSender");
 		try {
 			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, (attachments!=null && attachments.length>0), "UTF-8"); // 设置utf-8或GBK编码，否则邮件会有乱码;multipart,true表示文件上传
 			
-			helper.setFrom(sendFrom, sendNick);
+			helper.setFrom(username, sendNick);
 			helper.setTo(toAddress);
 
 			// 设置收件人抄送的名片和地址(相当于群发了)
@@ -91,8 +101,7 @@ public class MailUtil {
 	 * @param mailSubject	: 邮件主题
 	 * @param mailBody		: 邮件正文
 	 * @param mailBodyIsHtml: 邮件正文格式,true:HTML格式;false:文本格式
-	 * @param inLineFile	: 内嵌文件
-	 * @param files[]		: 附件
+	 * @param attachments	: 附件
 	 */
 	public static boolean sendMail (String toAddress, String mailSubject, String mailBody, 
 			boolean mailBodyIsHtml, File[] attachments){
@@ -105,6 +114,7 @@ public class MailUtil {
         	
 			//配置文件，用于实例化java.mail.session    
 			Properties pro = System.getProperties();
+            pro.put("mail.transport.protocol", "smtp");
 			pro.put("mail.smtp.auth", "true");		// 登录SMTP服务器,需要获得授权 (网易163邮箱新近注册的邮箱均不能授权,测试 sohu 的邮箱可以获得授权)
 			pro.put("mail.smtp.socketFactory.port", port);
 			pro.put("mail.smtp.socketFactory.fallback", "false");
@@ -114,12 +124,15 @@ public class MailUtil {
 			MimeMessage mimeMessage = mailSender.createMimeMessage();						
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, (attachments!=null && attachments.length>0), "UTF-8");
 			
-			helper.setFrom(sendFrom, sendNick);
+			helper.setFrom(username, sendNick);
 			helper.setTo(toAddress);
 
 			helper.setSubject(mailSubject);
-			helper.setText(mailBody, true); 
-			
+			helper.setText(mailBody, true);
+
+            // 设置收件人抄送的名片和地址(相当于群发)
+            //helper.setCc(InternetAddress.parse(MimeUtility.encodeText("邮箱001") + " <@163.com>," + MimeUtility.encodeText("邮箱002") + " <@foxmail.com>"));
+
 			// 添加内嵌文件，第1个参数为cid标识这个文件,第2个参数为资源
 			//helper.addInline(MimeUtility.encodeText(inLineFile.getName()), inLineFile);	
 			
@@ -129,6 +142,9 @@ public class MailUtil {
 					helper.addAttachment(MimeUtility.encodeText(file.getName()), file);	
 				}
 			}
+
+            // 群发
+            //MimeMessage[] mailMessages = { mimeMessage };
 			
 			mailSender.send(mimeMessage);
 			return true;
