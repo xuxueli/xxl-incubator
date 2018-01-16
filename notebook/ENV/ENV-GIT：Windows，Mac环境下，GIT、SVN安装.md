@@ -94,6 +94,8 @@ git push origin HEAD --force
 git fetch --all
 git reset --hard origin/master
 
+// 强制覆盖推送
+git push -f origin/bbbbbb
 ```
 ##### Git常用命令
 ```
