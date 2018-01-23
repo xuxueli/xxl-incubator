@@ -362,7 +362,7 @@ Git是一款免费、开源的分布式版本控制系统，用于敏捷高效�
 免费GIT服务器：
 
     https://github.com/xuxueli/
-    https://git.oschina.net/xuxueli0323
+    https://gitee.com/xuxueli0323
     
 centos搭建git服务器
 ```

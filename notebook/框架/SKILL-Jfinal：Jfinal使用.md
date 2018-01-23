@@ -4,7 +4,7 @@ JFinal 是基于 Java 语言的极速 WEB + ORM 框架，其核心设计目标�
 
 [github地址](https://github.com/jfinal/jfinal)
 
-[git-osc地址](https://git.oschina.net/jfinal/jfinal)
+[gitee地址](https://gitee.com/jfinal/jfinal)
 
 可以github搜索相关项目，参考学习；
 

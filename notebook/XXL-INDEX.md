@@ -3,7 +3,7 @@
 ---
 > src:（master-slave-backup）
 - https://github.com/xuxueli
-- http://git.oschina.net/xuxueli0323 （仅同步）
+- http://gitee.com/xuxueli0323 （仅同步）
 - baiduyun（master-slave, backup）
 
 > notebook（master-slave-index）
