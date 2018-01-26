@@ -1,1 +1,0 @@
-### Enterprise Application Development Platform
