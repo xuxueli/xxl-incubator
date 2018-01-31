@@ -10,6 +10,15 @@
 - [原理，SpringMVC对比Struts2](http://blog.csdn.net/liou825/article/details/24422113)
 -  [SpringMVC中的文件上传](http://www.iqiyi.com/lvyou/xfunchjlb.html)
 
+##### 文件下载
+```
+byte[] bytes = ExcelExportUtil.exportToBytes(exhibitionUserVoList);
+HttpHeaders headers = new HttpHeaders();
+headers.setContentDispositionFormData("attachment", new String("明细.xls".getBytes("UTF-8"),"iso-8859-1"));
+headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+ResponseEntity<byte[]> responseEntity = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.CREATED);
+return responseEntity;
+```
 
 ##### restful风格，spring mvc不匹配html后缀文件：
 - 场景：项目web.xml配置spring mvc为<url-pattern>/</url-pattern>；整站静态化首页为index.html;
