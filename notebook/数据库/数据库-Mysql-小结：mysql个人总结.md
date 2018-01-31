@@ -1,3 +1,21 @@
+### sum + casewhen & select count from other table
+```sql
+--- sum + casewhen
+SELECT
+    person,
+    SUM(CASE WHEN type = 'a' THEN 1 ELSE 0 END ) AS aNum,
+    SUM(CASE WHEN type = 'b' THEN 1 ELSE 0 END ) AS bNum,
+    SUM(CASE WHEN type IN ('a','b') THEN 1 ELSE 0 END ) AS totalNum
+FROM table
+--- select count from other table
+select
+    a.*,
+    (select count(1)
+        from b
+        where b.a_id = a.id) AS bCount
+from a
+```
+
 ### distance 慢查询
 explain 语句，看extra属性：
 Using where; Using temporary; Using filesort
