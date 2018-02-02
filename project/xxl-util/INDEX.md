@@ -114,6 +114,8 @@ Standby skill points
 
 - 39、com.xxl.util.core.util.CuratorUtil （zookeeper客户端，Curator版本）
 
+- 40、com.xxl.util.core.util.LocalCacheUtil （Local Cache）
+
 
 ### 技能点（com.xxl.util.core.skill目录）
 - 1、ThreadPoolQueueHelper.java/ThreadPoolLinkedHelper.java	(两种方式实现：生产消费者模型，FIFO队列，线程池，异步)
