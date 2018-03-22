@@ -17,7 +17,6 @@
         <module>xxl-blog</module>
         <module>xxl-note</module>
         <module>xxl-deep</module>
-        <module>xxl-sso</module>
     </modules>
 
 </project>
