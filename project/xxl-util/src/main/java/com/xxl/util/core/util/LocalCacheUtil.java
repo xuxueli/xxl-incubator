@@ -1,5 +1,6 @@
 package com.xxl.util.core.util;
 
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -60,6 +61,11 @@ public class LocalCacheUtil {
      * @return
      */
     public static boolean set(String key, Object val, long cacheTime){
+
+        // clean timeout cache, before set new cache (avoid cache too much)
+        cleanTimeutCache();
+
+        // set new cache
         if (key==null || key.trim().length()==0) {
             return false;
         }
@@ -106,6 +112,23 @@ public class LocalCacheUtil {
             remove(key);
             return null;
         }
+    }
+
+    /**
+     * clean timeout cache
+     *
+     * @return
+     */
+    public static boolean cleanTimeutCache(){
+        if (!cacheRepository.keySet().isEmpty()) {
+            for (String key: cacheRepository.keySet()) {
+                LocalCacheData localCacheData = cacheRepository.get(key);
+                if (localCacheData!=null && System.currentTimeMillis()>=localCacheData.getTimeoutTime()) {
+                    cacheRepository.remove(key);
+                }
+            }
+        }
+        return true;
     }
 
 }
