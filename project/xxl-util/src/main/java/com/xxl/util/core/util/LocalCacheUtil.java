@@ -1,6 +1,7 @@
 package com.xxl.util.core.util;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * local cache tool
@@ -9,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class LocalCacheUtil {
 
-    private static ConcurrentHashMap<String, LocalCacheData> cacheRepository = new ConcurrentHashMap<String, LocalCacheData>();
+    private static ConcurrentMap<String, LocalCacheData> cacheRepository = new ConcurrentHashMap<String, LocalCacheData>();     // 类型建议用抽象父类，兼容性更好；
     private static class LocalCacheData{
         private String key;
         private Object val;
