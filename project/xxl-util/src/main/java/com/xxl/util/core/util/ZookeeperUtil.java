@@ -115,6 +115,9 @@ public class ZookeeperUtil {
 								}
 							}
 						});
+
+						//zooKeeper.addAuthInfo("digest", (account + ":" + password).getBytes());
+
 						ZookeeperUtil.createWithParent(Environment.CONF_DATA_PATH);	// init cfg root path
 					} finally {
 						INSTANCE_INIT_LOCK.unlock();
