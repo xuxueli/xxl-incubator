@@ -17,6 +17,7 @@
         <module>xxl-blog</module>
         <module>xxl-note</module>
         <module>xxl-deep</module>
+        <module>xxl-url-shortener</module>
     </modules>
 
 </project>
