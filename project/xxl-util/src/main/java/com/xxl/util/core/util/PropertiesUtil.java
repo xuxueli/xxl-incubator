@@ -30,14 +30,18 @@ public class PropertiesUtil {
 		Properties prop = new Properties();
 		InputStream in = null;
 		try {
+
+			// 方式1：配置更新不需要重启JVM		（springboot 项目可能有问题）
 			ClassLoader loder = Thread.currentThread().getContextClassLoader();
-			URL url = loder.getResource(propertyFileName); // 方式1：配置更新不需要重启JVM
+			URL url = loder.getResource(propertyFileName);
 			if (url != null) {
 				in = new FileInputStream(url.getPath());
-				// in = loder.getResourceAsStream(propertyFileName); // 方式2：配置更新需重启JVM
-				if (in != null) {
-					prop.load(in);
-				}
+			}
+
+			// 方式2：配置更新需重启JVM
+			// in = loder.getResourceAsStream(propertyFileName);
+			if (in != null) {
+				prop.load(in);
 			}
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
