@@ -1,4 +1,3 @@
-import org.json.JSONObject;
 import v1.EmojiParser;
 
 public class Test {
