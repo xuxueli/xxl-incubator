@@ -1,5 +1,7 @@
 package com.xxl.emoji.core;
 
+import com.xxl.emoji.exception.XxlEmojiException;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -95,7 +97,7 @@ public class Emoji {
 
     public String getUnicode(Fitzpatrick fitzpatrick) {
         if (!this.supportsFitzpatrick()) {
-            throw new UnsupportedOperationException("Cannot get the unicode with a fitzpatrick modifier, the emoji doesn't support fitzpatrick.");
+            throw new XxlEmojiException("cannot get unicode with given fitzpatrick modifier, the emoji doesn't support fitzpatrick.");
         } else if (fitzpatrick == null) {
             return this.getUnicode();
         }
