@@ -1,4 +1,4 @@
-package v2.json;
+package com.xxl.util.core.skill.json;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 语法分析器
  */
-public class JsonParser {
+public class JSONParser {
 
     /**
      * parse object

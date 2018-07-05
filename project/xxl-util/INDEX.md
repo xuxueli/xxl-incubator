@@ -152,3 +152,6 @@ Standby skill points
 
 - 11、Jgroups之TCP广播
 > 详细：见：com.xxl.util.core.skill.jgroups.JgroupsNode
+
+- 12、自研JSON组件(待完善，toJson、Unicode解析等)）
+> 详细：见：com.xxl.util.core.skill.json.JSONParser

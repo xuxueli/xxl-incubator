@@ -1,4 +1,4 @@
-package v2.json;
+package com.xxl.util.core.skill.json;
 
 import java.util.LinkedList;
 import java.util.List;

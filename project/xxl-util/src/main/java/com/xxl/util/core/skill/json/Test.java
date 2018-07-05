@@ -1,4 +1,4 @@
-package v2.json;
+package com.xxl.util.core.skill.json;
 
 public class Test {
 
@@ -8,7 +8,7 @@ public class Test {
 
         JSONTokenizer JSONTokenizer = new JSONTokenizer(json);
 
-        Object map = JsonParser.parserObject(JSONTokenizer);
+        Object map = JSONParser.parserObject(JSONTokenizer);
         System.out.println(map);
     }
 }

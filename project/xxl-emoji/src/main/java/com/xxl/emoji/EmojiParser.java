@@ -1,6 +1,7 @@
-package v1;
+package com.xxl.emoji;
 
-import v2.Fitzpatrick;
+import com.xxl.emoji.core.Fitzpatrick;
+import com.xxl.emoji.model.Emoji;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,7 +95,7 @@ public class EmojiParser {
         // Replace the aliases by their unicode
         String result = input;
         for (AliasCandidate candidate : candidates) {
-            Emoji emoji = EmojiManager.getForAlias(candidate.alias);
+            Emoji emoji = EmojiFactory.getForAlias(candidate.alias);
             if (emoji != null) {
                 if (
                         emoji.supportsFitzpatrick() ||
@@ -113,7 +114,7 @@ public class EmojiParser {
         }
 
         // Replace the html
-        for (Emoji emoji : EmojiManager.getAll()) {
+        for (Emoji emoji : EmojiFactory.getAll()) {
             result = result.replace(emoji.getHtmlHexadecimal(), emoji.getUnicode());
             result = result.replace(emoji.getHtmlDecimal(), emoji.getUnicode());
         }
@@ -359,7 +360,7 @@ public class EmojiParser {
             int emojiEnd = getEmojiEndPos(chars, i);
 
             if (emojiEnd != -1) {
-                Emoji emoji = EmojiManager.getByUnicode(new String(chars, i, emojiEnd - i));
+                Emoji emoji = EmojiFactory.getByUnicode(new String(chars, i, emojiEnd - i));
                 String fitzpatrickString = (emojiEnd + 2 <= chars.length) ?
                         new String(chars, emojiEnd, 2) :
                         null;
@@ -391,7 +392,7 @@ public class EmojiParser {
     protected static int getEmojiEndPos(char[] text, int startPos) {
         int best = -1;
         for (int j = startPos + 1; j <= text.length; j++) {
-            EmojiTrie.Matches status = EmojiManager.isEmoji(Arrays.copyOfRange(
+            EmojiTrie.Matches status = EmojiFactory.isEmoji(Arrays.copyOfRange(
                     text,
                     startPos,
                     j

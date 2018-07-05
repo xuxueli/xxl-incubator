@@ -1,4 +1,4 @@
-import v1.EmojiParser;
+import com.xxl.emoji.EmojiParser;
 
 public class Test {
 
