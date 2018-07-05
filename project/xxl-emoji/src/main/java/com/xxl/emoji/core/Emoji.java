@@ -1,6 +1,4 @@
-package com.xxl.emoji.model;
-
-import com.xxl.emoji.core.Fitzpatrick;
+package com.xxl.emoji.core;
 
 import java.util.Collections;
 import java.util.List;

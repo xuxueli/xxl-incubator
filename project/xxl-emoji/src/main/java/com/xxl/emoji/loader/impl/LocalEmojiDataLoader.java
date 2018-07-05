@@ -1,7 +1,7 @@
 package com.xxl.emoji.loader.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xxl.emoji.model.Emoji;
+import com.xxl.emoji.core.Emoji;
 import com.xxl.emoji.loader.EmojiDataLoader;
 
 import java.io.BufferedReader;

@@ -1,7 +1,8 @@
 package com.xxl.emoji;
 
+import com.xxl.emoji.core.EmojiTrie;
 import com.xxl.emoji.core.Fitzpatrick;
-import com.xxl.emoji.model.Emoji;
+import com.xxl.emoji.core.Emoji;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,9 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Provides methods to parse strings with emojis.
- *
- * @author Vincent DURMONT [vdurmont@gmail.com]
+ * emoji tool
  */
 public class EmojiParser {
     private static final Pattern ALIAS_CANDIDATE_PATTERN =

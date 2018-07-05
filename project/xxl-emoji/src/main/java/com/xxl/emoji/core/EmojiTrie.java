@@ -1,6 +1,4 @@
-package com.xxl.emoji;
-
-import com.xxl.emoji.model.Emoji;
+package com.xxl.emoji.core;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,9 +22,9 @@ public class EmojiTrie {
      *      Emoji-B：abd
      *      Emoji-C：abef
      * <p>
-     *      root -- a -- b -- c -- child (Emoji-A)
-     *           -- d -- child (Emoji-B)
-     *           -- e -- f -- child (Emoji-C)
+     *      root -- a -- b -- c (Emoji-A)
+     *                     -- d (Emoji-B)
+     *                     -- e -- f (Emoji-C)
      *
      * @param emojis
      */
@@ -46,9 +44,10 @@ public class EmojiTrie {
     /**
      * check if contain (full or partially) an emoji.
      * <p>
-     * Matches.EXACTLY     :   if char sequence in its entirety is an emoji
-     * Matches.POSSIBLY    :   if char sequence matches prefix of an emoji
-     * Matches.IMPOSSIBLE  :   if char sequence matches no emoji or prefix of an
+     *
+     *      Matches.EXACTLY     :   if char sequence in its entirety is an emoji
+     *      Matches.POSSIBLY    :   if char sequence matches prefix of an emoji
+     *      Matches.IMPOSSIBLE  :   if char sequence matches no emoji or prefix of an
      *
      * @param sequence
      * @return
@@ -70,10 +69,10 @@ public class EmojiTrie {
     }
 
     /**
-     * Finds Emoji instance from emoji unicode
+     * find emoji by unicode
      *
-     * @param unicode unicode of emoji to get
-     * @return Emoji instance if unicode matches and emoji, null otherwise.
+     * @param unicode
+     * @return
      */
     public Emoji getEmoji(String unicode) {
         Node tree = root;

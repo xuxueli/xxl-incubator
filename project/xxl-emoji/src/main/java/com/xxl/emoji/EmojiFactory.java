@@ -1,9 +1,10 @@
 package com.xxl.emoji;
 
+import com.xxl.emoji.core.EmojiTrie;
 import com.xxl.emoji.exception.XxlEmojiException;
 import com.xxl.emoji.loader.EmojiDataLoader;
 import com.xxl.emoji.loader.impl.LocalEmojiDataLoader;
-import com.xxl.emoji.model.Emoji;
+import com.xxl.emoji.core.Emoji;
 
 import java.util.*;
 
