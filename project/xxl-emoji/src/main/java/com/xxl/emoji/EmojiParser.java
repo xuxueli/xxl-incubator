@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class EmojiParser {
 
 
-    // ------------------------ from unicode ------------------------
+    // ------------------------ [unicode to others] ------------------------
 
     /**
      * replace emoji unicode by one of their first alias (between 2 ':')
@@ -174,6 +174,23 @@ public class EmojiParser {
 
 
     /**
+     * extract emojis
+     *
+     * @param input
+     * @return
+     */
+    public static List<String> extractEmojis(String input) {
+        List<UnicodeCandidate> emojis = getUnicodeCandidates(input);
+        List<String> result = new ArrayList<String>();
+        for (UnicodeCandidate emoji : emojis) {
+            result.add(emoji.getEmoji().getUnicode());
+        }
+        return result;
+    }
+
+    // ------------------------ from/to unicode ------------------------
+
+    /**
      * detects all unicode emojis, and replaces them with the return value of transformer.transform()
      * [unicode emoji >> other]
      *
@@ -194,24 +211,6 @@ public class EmojiParser {
 
         return sb.append(input.substring(prev)).toString();
     }
-
-    /**
-     * extract emojis
-     *
-     * @param input
-     * @return
-     */
-    public static List<String> extractEmojis(String input) {
-        List<UnicodeCandidate> emojis = getUnicodeCandidates(input);
-        List<String> result = new ArrayList<String>();
-        for (UnicodeCandidate emoji : emojis) {
-            result.add(emoji.getEmoji().getUnicode());
-        }
-        return result;
-    }
-
-
-    // ------------------------ to unicode ------------------------
 
     /**
      * replace aliases and html representations by their unicode(modifiers).
