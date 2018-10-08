@@ -18,6 +18,7 @@
         <module>xxl-note</module>
         <module>xxl-deep</module>
         <module>xxl-url-shortener</module>
+        <module>xxl-fiber</module>
     </modules>
 
 </project>
