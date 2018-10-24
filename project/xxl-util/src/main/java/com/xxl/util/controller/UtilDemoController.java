@@ -84,11 +84,11 @@ public class UtilDemoController {
 		功能简介：Http客户端
 		使用步骤
 			1、maven依赖
-			<dependency>
-				<groupId>org.apache.httpcomponents</groupId>
-				<artifactId>httpclient</artifactId>
-				<version>4.3.6</version>
-			</dependency>
+			 <dependency>
+				 <groupId>org.apache.httpcomponents</groupId>
+				 <artifactId>httpclient</artifactId>
+				 <version>4.5.6</version>
+			 </dependency>
 			2、引入HttpClientUtil.java文件
 	 * </pre>
 	 */

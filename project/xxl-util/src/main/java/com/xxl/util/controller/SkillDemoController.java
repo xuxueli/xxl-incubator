@@ -224,7 +224,7 @@ public class SkillDemoController {
 					<dependency>
 						<groupId>org.apache.httpcomponents</groupId>
 						<artifactId>httpclient</artifactId>
-						<version>4.3.6</version>
+						<version>4.5.6</version>
 					</dependency>
 					<dependency>
 						<groupId>org.htmlparser</groupId>

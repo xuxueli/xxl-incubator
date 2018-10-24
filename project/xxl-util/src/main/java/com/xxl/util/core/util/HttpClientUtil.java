@@ -24,14 +24,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * http util to send data
+ * http util
  * 
- * @author xuxueli
- * @version 2015-11-28 15:30:59
+ * @author xuxueli 2015-11-28 15:30:59
  */
 public class HttpClientUtil {
 	private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
-	
+
+	// ---------------------- get post ----------------------
+
 	/**
 	 * http post request
 	 * @param url
@@ -147,18 +148,32 @@ public class HttpClientUtil {
 		}
 	}
 
+
+	// ---------------------- byte ----------------------
+
 	/**
 	 * post request
 	 */
-	public static byte[] postRequestByte(String url, byte[] date) {
+	public static byte[] postRequest(String reqURL, byte[] data, long timeout) throws Exception {
 		byte[] responseBytes = null;
 
-		HttpPost httpPost = new HttpPost(url);
-		CloseableHttpClient httpClient = HttpClients.createDefault();
+		HttpPost httpPost = new HttpPost(reqURL);
+		CloseableHttpClient httpClient = HttpClients.custom().disableAutomaticRetries().build();	// disable retry
+
 		try {
-			// init post datas
-			if (date != null) {
-				httpPost.setEntity(new ByteArrayEntity(date, ContentType.DEFAULT_BINARY));
+
+			// timeout
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setConnectionRequestTimeout((int)timeout)
+					.setSocketTimeout((int)timeout)
+					.setConnectTimeout((int)timeout)
+					.build();
+
+			httpPost.setConfig(requestConfig);
+
+			// data
+			if (data != null) {
+				httpPost.setEntity(new ByteArrayEntity(data, ContentType.DEFAULT_BINARY));
 			}
 			// do post
 			HttpResponse response = httpClient.execute(httpPost);
@@ -168,13 +183,13 @@ public class HttpClientUtil {
 				EntityUtils.consume(entity);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		} finally {
 			httpPost.releaseConnection();
 			try {
 				httpClient.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return responseBytes;
@@ -182,11 +197,12 @@ public class HttpClientUtil {
 
 	/**
 	 * read bytes from http request
+	 *
 	 * @param request
 	 * @return
 	 * @throws IOException
 	 */
-	public static final byte[] readRequestByte(HttpServletRequest request) throws IOException {
+	public static final byte[] readBytes(HttpServletRequest request) throws IOException {
 		request.setCharacterEncoding("UTF-8");
 		int contentLen = request.getContentLength();
 		InputStream is = request.getInputStream();
@@ -204,7 +220,7 @@ public class HttpClientUtil {
 				}
 				return message;
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error(e.getMessage(), e);
 			}
 		}
 		return new byte[] {};
