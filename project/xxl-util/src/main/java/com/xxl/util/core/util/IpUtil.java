@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 public class IpUtil {
     private static final Logger logger = LoggerFactory.getLogger(IpUtil.class);
 
-    public static final String ANYHOST = "0.0.0.0";
-    public static final String LOCALHOST = "127.0.0.1";
+    private static final String ANYHOST = "0.0.0.0";
+    private static final String LOCALHOST = "127.0.0.1";
     private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}(\\.\\d{1,3}){3,5}$");
 
     private static volatile InetAddress LOCAL_ADDRESS = null;
@@ -49,7 +49,7 @@ public class IpUtil {
                 return localAddress;
             }
         } catch (Throwable e) {
-            logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+            logger.error("Failed to retriving ip address, " + e.getMessage(), e);
         }
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -66,17 +66,17 @@ public class IpUtil {
                                         return address;
                                     }
                                 } catch (Throwable e) {
-                                    logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+                                    logger.error("Failed to retriving ip address, " + e.getMessage(), e);
                                 }
                             }
                         }
                     } catch (Throwable e) {
-                        logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+                        logger.error("Failed to retriving ip address, " + e.getMessage(), e);
                     }
                 }
             }
         } catch (Throwable e) {
-            logger.warn("Failed to retriving ip address, " + e.getMessage(), e);
+            logger.error("Failed to retriving ip address, " + e.getMessage(), e);
         }
         logger.error("Could not get local host ip address, will use 127.0.0.1 instead.");
         return localAddress;
