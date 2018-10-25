@@ -1,6 +1,5 @@
 package com.xxl.util.core.util.curator;
 
-import com.xxl.util.core.util.Environment;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -14,7 +13,7 @@ import org.apache.curator.retry.RetryNTimes;
  */
 public class CuratorUtil {
 
-    public static String zkAddress = Environment.ZK_ADDRESS;
+    public static String zkAddress = "127.0.0.1:2181";
     public static String zkPath = "/xxl-conf/default.key01";
 
     public static void main(String[] args) throws Exception {

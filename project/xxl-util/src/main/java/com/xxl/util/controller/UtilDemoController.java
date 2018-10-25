@@ -691,18 +691,18 @@ public class UtilDemoController {
 
 	/**
 	 * <pre>
-	 28、ZookeeperUtil.java
+	 28、XxlZkClient.java
 	 功能简介：Zookeeper工具类
 
-	 步骤1: 引入maven依赖, 见 "ZookeeperUtil.java" 注释;
-	 步骤2: 引入 "ZookeeperUtil.java", 使用启动方法即可;
+	 步骤1: 引入maven依赖, 见 "XxlZkClient.java" 注释;
+	 步骤2: 引入 "XxlZkClient.java", 使用启动方法即可;
 
 	 </pre>
 	 */
 	@RequestMapping(value = "/ZookeeperUtil" )
 	@ResponseBody
 	public Object ZookeeperUtil() {
-		return ZookeeperUtil.getAllData();
+		return new XxlZkClient("127.0.0.1:2181", null, null, null).getClient();
 	}
 
 	/**
