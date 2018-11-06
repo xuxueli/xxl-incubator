@@ -59,6 +59,7 @@ public class FiberHelper {
                 @Override
                 protected void onException(Throwable t) {
                     countDownLatch.countDown();
+                    logger.error(t.getMessage(), t);
                     super.onException(t);
                 }
             }.start();
