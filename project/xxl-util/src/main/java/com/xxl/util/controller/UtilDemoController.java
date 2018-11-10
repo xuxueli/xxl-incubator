@@ -430,34 +430,22 @@ public class UtilDemoController {
 			邮件发送工具类
 		使用步骤
 			1、maven依赖：
-				<dependency>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-					<version>1.4.6</version>
-				</dependency>
+	 			 <!-- commons-email -->
+				 <dependency>
+					 <groupId>org.apache.commons</groupId>
+					 <artifactId>commons-email</artifactId>
+					 <version>1.5</version>
+				 </dependency>
 			2、配置JavaMailSenderImpl的BEAN（API方式可忽略）
-				<bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"  scope="singleton" >
-					<property name="host" value="${mail.host}" />			<!-- SMTP发送邮件的服务器的IP和端口 -->
-					<property name="port" value="${mail.port}" />
-					<property name="username" value="${mail.username}" />	<!-- 登陆SMTP邮件发送服务器的用户名和密码 -->
-					<property name="password" value="${mail.password}" />
-					<property name="javaMailProperties">					<!-- 获得邮件会话属性,验证登录邮件服务器是否成功 -->
-						<props>
-							<prop key="mail.smtp.auth">true</prop>
-							<prop key="prop">true</prop>
-							<!-- <prop key="mail.smtp.timeout">25000</prop> -->
-						</props>
-					</property>
-				</bean>
 			3、引入MailUtil.java文件
-			4、如何使用：直接调用即可，如 “MailUtil.sendMailSpring("931591021@qq.com", "测试邮件1", "Hi", false, null);”
+			4、如何使用：直接调用即可，如 “MailUtil.sendMail("931591021@qq.com", "测试邮件1", "Hi");”
 	 * </pre>
 	 */
 	@RequestMapping("/MailUtil")
 	@ResponseBody
 	public boolean MailUtil(){
-		MailUtil.sendMailSpring("931591021@qq.com", "测试邮件1", "Hi", false, null);
-		return MailUtil.sendMail("931591021@qq.com", "测试邮件2", "Hi", false, null);
+		MailUtil.sendMail("931591021@qq.com", "测试邮件1", "Hi");
+		return true;
 	}
 	
 	/**
