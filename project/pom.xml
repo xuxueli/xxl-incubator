@@ -19,6 +19,7 @@
         <module>xxl-deep</module>
         <module>xxl-url-shortener</module>
         <module>xxl-fiber</module>
+        <module>xxl-json</module>
     </modules>
 
 </project>
