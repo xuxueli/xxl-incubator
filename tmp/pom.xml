@@ -9,7 +9,6 @@
     <modules>
         <module>demo</module>
         <module>hadoop-demo</module>
-        <module>jfinal-demo</module>
     </modules>
 
 </project>
