@@ -1,6 +1,5 @@
 package com.xxl.util.core.util;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import org.apache.commons.exec.*;
 
 import java.io.*;
@@ -135,8 +134,8 @@ public class ScriptUtil {
             int exitValue = exec.execute(commandline);
 
             // parse output
-            String out = outputStream.toString(OutputFormat.Defaults.Encoding);
-            String error = errorStream.toString(OutputFormat.Defaults.Encoding);
+            String out = outputStream.toString("UTF-8");
+            String error = errorStream.toString("UTF-8");
 
             System.out.println(out);
             System.out.println("---");
@@ -201,8 +200,8 @@ public class ScriptUtil {
             }
 
             // parse output
-            String out = outputStream.toString(OutputFormat.Defaults.Encoding);
-            String error = errorStream.toString(OutputFormat.Defaults.Encoding);
+            String out = outputStream.toString("UTF-8");
+            String error = errorStream.toString("UTF-8");
 
             System.out.println(out);
             System.out.println("---");
@@ -249,8 +248,8 @@ public class ScriptUtil {
             int exitValue = exec.execute(commandline);
 
             // parse output
-            String out = outputStream.toString(OutputFormat.Defaults.Encoding);
-            String error = errorStream.toString(OutputFormat.Defaults.Encoding);
+            String out = outputStream.toString("UTF-8");
+            String error = errorStream.toString("UTF-8");
 
             System.out.println(out);
             System.out.println("---");
