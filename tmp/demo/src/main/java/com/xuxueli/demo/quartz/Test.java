@@ -4,6 +4,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class Test {
@@ -101,7 +102,15 @@ public class Test {
                     }
 
                     // 推送时间轮，异步触发
-                    ringData.addAll(waitJob);
+                    for (JobInfo jobInfo: waitJob) {
+                        int second = (int)((jobInfo.nextTriggerTime/1000)%60);
+                        List<JobInfo> ringItemData = ringData.get(second);
+                        if (ringItemData == null) {
+                            ringItemData = new ArrayList<>();
+                            ringData.put(second, ringItemData);
+                        }
+                        ringItemData.add(jobInfo);
+                    }
 
                     // 随机休眠1s内
                     TimeUnit.MILLISECONDS.sleep(new Random().nextInt(1000));
@@ -113,26 +122,28 @@ public class Test {
         }
     }
 
-    private volatile static List<JobInfo> ringData = Collections.synchronizedList(new ArrayList<JobInfo>());
+    private volatile static Map<Integer, List<JobInfo>> ringData = new ConcurrentHashMap<>();
     public static class QuartzAdminRing implements Runnable {
         @Override
         public void run() {
             while (true) {
                 try {
                     TimeUnit.SECONDS.sleep(1);
-                    if (ringData.size() ==0) {
+
+                    int second = (int)((System.currentTimeMillis()/1000)%60);
+                    List<JobInfo> ringItemData = ringData.get(second);
+
+                    if (ringItemData==null || ringItemData.size() ==0) {
                         continue;
                     }
 
-                    for (JobInfo jobItem: ringData) {
-                        if (System.currentTimeMillis() >= jobItem.getNextTriggerTime()) {
-                            jobItem.setLastTriggerTime(System.currentTimeMillis());
-                            jobItem.setNextTriggerTime(jobItem.generateNextTriggerTime().getTime());
-                            jobItem.setStatus(0);   // 触发 + 释放
-                            System.out.println("[" + jobItem.getCron() + "]:" + DateFormatUtils.format(new Date(), "HH:mm:ss"));
-
-                        }
+                    for (JobInfo jobItem: ringItemData) {
+                        jobItem.setLastTriggerTime(System.currentTimeMillis());
+                        jobItem.setNextTriggerTime(jobItem.generateNextTriggerTime().getTime());
+                        jobItem.setStatus(0);   // 触发 + 释放
+                        System.out.println("[" + jobItem.getCron() + "]:" + DateFormatUtils.format(new Date(), "HH:mm:ss"));
                     }
+                    ringItemData.clear();
 
                 } catch (Exception e) {
                     e.printStackTrace();
