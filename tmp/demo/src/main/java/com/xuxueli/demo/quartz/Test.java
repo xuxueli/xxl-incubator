@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 public class Test {
 
     public static void main(String[] args) {
+        new Thread(new QuartzAdminRing()).start();
         for (int i = 0; i < 1; i++) {
             QuartzAdminNode adminNode = new QuartzAdminNode();
             new Thread(adminNode).start();
@@ -99,24 +100,38 @@ public class Test {
                         continue;
                     }
 
-                    // 任务排序，逐个等待执行
-                    Collections.sort(waitJob, new Comparator<JobInfo>() {
-                        @Override
-                        public int compare(JobInfo o1, JobInfo o2) {
-                            return (int)(o1.getNextTriggerTime() - o2.getNextTriggerTime());
-                        }
-                    });
+                    // 推送时间轮，异步触发
+                    ringData.addAll(waitJob);
 
-                    for (JobInfo jobItem: waitJob) {
-                        long waiTime = jobItem.getNextTriggerTime() - System.currentTimeMillis();
-                        if (waiTime > 0) {
-                            TimeUnit.MILLISECONDS.sleep(waiTime);
-                        }
-                        jobItem.setLastTriggerTime(System.currentTimeMillis());
-                        jobItem.setNextTriggerTime(jobItem.generateNextTriggerTime().getTime());
-                        jobItem.setStatus(0);   // 触发 + 释放
+                    // 随机休眠1s内
+                    TimeUnit.MILLISECONDS.sleep(new Random().nextInt(1000));
 
-                        System.out.println("job[" + jobItem.getCron() + "] run as " + DateFormatUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private volatile static List<JobInfo> ringData = Collections.synchronizedList(new ArrayList<JobInfo>());
+    public static class QuartzAdminRing implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                    if (ringData.size() ==0) {
+                        continue;
+                    }
+
+                    for (JobInfo jobItem: ringData) {
+                        if (System.currentTimeMillis() >= jobItem.getNextTriggerTime()) {
+                            jobItem.setLastTriggerTime(System.currentTimeMillis());
+                            jobItem.setNextTriggerTime(jobItem.generateNextTriggerTime().getTime());
+                            jobItem.setStatus(0);   // 触发 + 释放
+                            System.out.println("[" + jobItem.getCron() + "]:" + DateFormatUtils.format(new Date(), "HH:mm:ss"));
+
+                        }
                     }
 
                 } catch (Exception e) {
