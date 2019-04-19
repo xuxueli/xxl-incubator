@@ -130,7 +130,7 @@ public class Test {
                 try {
                     TimeUnit.SECONDS.sleep(1);
 
-                    int second = (int)((System.currentTimeMillis()/1000)%60);
+                    int second = (int)((System.currentTimeMillis()/1000)%60);   // 记录 pre_second，避免处理耗时太长，跨过刻度；
                     List<JobInfo> ringItemData = ringData.get(second);
 
                     if (ringItemData==null || ringItemData.size() ==0) {
