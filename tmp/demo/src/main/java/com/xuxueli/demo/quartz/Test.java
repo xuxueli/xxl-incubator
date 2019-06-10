@@ -11,7 +11,7 @@ public class Test {
 
     public static void main(String[] args) {
         new Thread(new QuartzAdminRing()).start();
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
             QuartzAdminNode adminNode = new QuartzAdminNode();
             new Thread(adminNode).start();
         }
