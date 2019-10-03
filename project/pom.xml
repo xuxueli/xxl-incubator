@@ -7,6 +7,9 @@
     <packaging>pom</packaging>
 
     <modules>
+        <!-- level A -->
+        <module>xxl-web</module>
+        <!-- level B -->
         <module>xxl-db</module>
         <module>xxl-seckill</module>
         <module>xxl-util</module>
