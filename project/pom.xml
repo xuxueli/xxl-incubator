@@ -10,6 +10,7 @@
         <!-- level A -->
         <module>xxl-web</module>
         <module>xxl-hex</module>
+        <module>xxl-search</module>
         <!-- level B -->
         <module>xxl-db</module>
         <module>xxl-seckill</module>
