@@ -8,7 +8,6 @@
 
     <modules>
         <module>demo</module>
-        <module>hadoop-demo</module>
     </modules>
 
 </project>
