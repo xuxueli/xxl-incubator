@@ -69,7 +69,7 @@ XXL-HEX 的API接口通讯数据以HEX的格式存在, 天然加密, 安全性�
 
 ### 2.1 架构图
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_LoMR.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_LoMR.jpg "在这里输入图片标题")
 
 XXL-HEX作为一个API接口实现方案, 是个典型的CS模型。
 
@@ -86,7 +86,7 @@ Client端主要由两个模块组成:
 
 ### 2.2 "一次API接口请求时序图" 分析
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_HpcK.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_HpcK.jpg "在这里输入图片标题")
 
 从上图可知, 一次API请求过程所经历的流程为:
 
@@ -101,7 +101,7 @@ Client端主要由两个模块组成:
 
 ### 2.3 "消息体结构(HEX数据结构)" 设计
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_JIyu.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_JIyu.jpg "在这里输入图片标题")
 
 网络传输时, 请求响应数据以HEX(16进制字符串)的格式存在。HEX格式消息的数据来源如下 (以将请求参数转换为HEX为例) :
 
@@ -118,19 +118,19 @@ Client端主要由两个模块组成:
 
 - 1、配置maven依赖
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_8JXN.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_8JXN.png "在这里输入图片标题")
 
 - 2、配置HexHandler路由入口
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_5tWp.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_5tWp.png "在这里输入图片标题")
 
 - 3、配置HexHandler工厂, 并配置HexHandler扫描路径
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_N4BV.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_N4BV.png "在这里输入图片标题")
 
 - 4、开发第一个API接口 (可参考下面Demo示例, 进行理解和学习)
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_AaGt.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_AaGt.jpg "在这里输入图片标题")
 
 每个API接口, 由三部分组成: HexHandler + Request + HexResponse
 
@@ -150,15 +150,15 @@ Client端主要由两个模块组成:
 
 访问地址 http://localhost:8080/hex 可查看在提供服务的的API接口
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_yLAg.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_yLAg.png "在这里输入图片标题")
 
 ### 3.2 客户端开发 (可参考提供的三种Client调用Demo, 进行理解和学习，并定制其他版本Client端实现)
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_v1LK.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_v1LK.jpg "在这里输入图片标题")
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_CHQ4.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_CHQ4.jpg "在这里输入图片标题")
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_cmyP.jpg "在这里输入图片标题")
+![输入图片说明](./doc/images/img_cmyP.jpg "在这里输入图片标题")
 
 三种Client调用Demo说明:
 
@@ -174,9 +174,9 @@ Client端主要由两个模块组成:
 
 ### 3.3 JS版本客户端开发
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_d7pH.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_d7pH.png "在这里输入图片标题")
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-hex/master/doc/images/img_WiOh.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_WiOh.png "在这里输入图片标题")
 
 系统已经提供了JavaScript版本的Client端实现，调用DemoHandler的JS代码如上图，简单易用。接入之后，底层数据通讯将会以HEX加密串的形式进行数据传输。
 

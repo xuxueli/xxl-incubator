@@ -77,7 +77,7 @@ XXL-SEARCH 是以 "lucene/elasticsearch" 为核心的，Pragmatic风格的搜索
 
 - 1、设置搜索方案
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_KwoJ.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_KwoJ.png "在这里输入图片标题")
 
 目前, 针对 "搜索列表页" 的演示项目, 已经内置实现两种搜索方案, 通过上图参数 "xxl.search.type" 配置:
 
@@ -96,7 +96,7 @@ XXL-SEARCH 是以 "lucene/elasticsearch" 为核心的，Pragmatic风格的搜索
  
 部署 "xxl-search-example" 项目, 访问项目跟地址即可:
  
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_3tnV.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_3tnV.png "在这里输入图片标题")
 
 从上图可知, 演示界面主要分为两个区域:
 
@@ -127,7 +127,7 @@ XXL-SEARCH 是以 "lucene/elasticsearch" 为核心的，Pragmatic风格的搜索
 
 该项目是一个JAR项目, 主方法为: com.xxl.search.embed.Application , 运行可查看主界面如下:
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_3DQ1.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_3DQ1.png "在这里输入图片标题")
 
 2、配置 "索引模板参数", 生成索引模板 :
 
@@ -137,23 +137,23 @@ XXL-SEARCH 是以 "lucene/elasticsearch" 为核心的，Pragmatic风格的搜索
 
 点击 "生成模板" 按钮, 将会在 "索引生成目录" 输入框对应的目录下, 生成索引模板, 索引模板是一个 excel表格, 如下图所示:
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_qtRy.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_qtRy.png "在这里输入图片标题")
 
 3、根据索引模板, 填充索引数据 :
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_zScc.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_zScc.png "在这里输入图片标题")
 
 4、生成索引文件:
 
 点击 "生成索引文件" 按钮, 将会根据索引模板中的数据, 在 "索引生成目录" 下的 "search_fs" 目录中生成索引文件, 如下图:
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_29lq.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_29lq.png "在这里输入图片标题")
 
 5、索引查询:
 
 在最下方的 "搜索" 输入框中输入关键字, 点击右侧的 "搜索" 按钮, 即可在索引文件中进行分词搜索, 关键词和索引模板中的参数 "keywords" 进行分词匹配:
 
-![输入图片说明](https://raw.githubusercontent.com/xuxueli/xxl-search/master/doc/images/img_6mKC.png "在这里输入图片标题")
+![输入图片说明](./doc/images/img_6mKC.png "在这里输入图片标题")
 
 可通过一下命令, 将项目打包成JAR包:
 ```
