@@ -7,18 +7,15 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!-- level A -->
         <module>xxl-web</module>
         <module>xxl-hex</module>
         <module>xxl-search</module>
-        <!-- level B -->
         <module>xxl-dal</module>
         <module>xxl-seckill</module>
         <module>xxl-util</module>
         <module>xxl-app</module>
         <module>xxl-pm</module>
         <module>xxl-permission</module>
-        <module>xxl-note</module>
         <module>xxl-fiber</module>
         <module>xxl-json</module>
     </modules>

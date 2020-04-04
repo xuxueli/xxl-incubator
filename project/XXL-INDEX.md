@@ -27,32 +27,32 @@
         10、xxl-api
         11、xxl-crawler
         12、xxl-glue
-        13、xxl-excel
-        14、xxl-emoji
-        15、xxl-tool     ( >>  mult tool, TODO )
-        16、xxl-code-generator
+        13、xxl-code-generator
+        14、xxl-tool     ( >>  mult tool, TODO )
+        15、xxl-excel    【merge to xxl-tool-excel】
+        16、xxl-emoji    【merge to xxl-tool-emoji】
     其他:
         17、xuxueli.github.io
             blog/notebook
         18、xxl-incubator
             - /project
-                - level A
+                - 历史
                     - xxl-web
                     - xxl-hex
                     - xxl-search
-                - level B
+                    - xxl-permission : RBAC权限系统
                     - xxl-app : 个人APP
+                - 规划
                     - xxl-dal : 分库分表中间件
                     - xxl-deep：分布式企业应用开发平台
-                    - xxl-fiber
-                    - xxl-json                  【merge】
-                    - xxl-note : 笔记小程序
-                    - xxl-permission : RBAC权限系统
-                    - xxl-pm : 工作流驱动的项目管理平台
                     - xxl-seckill : 秒杀系统
                     - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
                     - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
-                    - xxl-util : 实用工具类汇总    【merge】
+                - 其他
+                    - xxl-pm : 工作流驱动的项目管理平台
+                    - xxl-util : 实用工具类汇总          【merge to tool】
+                    - xxl-fiber                         【merge to tool】
+                    - xxl-json                          【merge to tool】
             - /tmp : demo项目
                 - ws ：微信小程序
         
