@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ueditor demo</title>
+</head>
+
+<body>
+
+<!--
+---------------------- 方式01：ueditor + 本地文件上传 ----------------------
+1、引入 "ueditor.config.js" 和 "ueditor.all.min.js" ；
+2、页面定义编辑器 ：<script id="container" type="text/plain"></script>"；
+3、JS初始化编辑器 ：var ue = UE.getEditor('container');ue.ready(function() {    ue.setContent('初始化内容');    });
+4、上传文件配置：位置见 "jsp/config.json（参考：config.local-my.json）"，主要是前后缀，如 "imageUrlPrefix：为空则根路径" 和 "imagePathFormat：文件相对路径和格式"；
+5、maven引入 "jsp/lib" 目录下的依赖：ueditor、json、commmons-upload。。。等；
+```
+
+<dependency>
+    <groupId>com.baidu.ueditor</groupId>
+    <artifactId>ueditor</artifactId>
+    <version>1.1.2</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.2.jar</systemPath>
+</dependency>
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20140107</version>
+</dependency>
+```
+
+---------------------- 方式01：ueditor + 七牛云 ----------------------
+1、2、3步骤同上；
+4、上传文件配置：位置见 "jsp/config.json（参考：config.qiniu.json）"，主要是前后缀，如 "imageUrlPrefix：填写七牛图片空间地址" 和 "imagePathFormat：文件相对路径和格式"；
+5、maven引入 "jsp/lib" 目录下的依赖：其他如上，只有 "ueditor-1.1.2.jar" 依赖 需要更换为 "ueditor-1.1.1-qiniu-xxl.jar"；因为内部做了定制，图片直接上传至七牛云；同时需要引入七牛云的依赖：
+
+```
+<dependency>
+    <groupId>com.baidu.ueditor</groupId>
+    <artifactId>ueditor</artifactId>
+    <version>1.1.1</version>
+    <scope>system</scope>
+    <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ueditor-1.1.1-qiniu-xxl.jar</systemPath>
+</dependency>
+<dependency>
+    <groupId>org.json</groupId>
+    <artifactId>json</artifactId>
+    <version>20140107</version>
+</dependency>
+<dependency>
+    <groupId>com.qiniu</groupId>
+    <artifactId>qiniu-java-sdk</artifactId>
+    <version>6.1.9</version>
+</dependency>
+```
+
+备注：ueditor-定制Jar中修改的逻辑为：优先判断 "ueditor.properties" ，如启用七牛云配置，则优先上传文件至七牛云
+修改文件：com.baidu.ueditor.upload.StorageManager.java、com.baidu.ueditor.util.QiniuUtil.java、PropertiesUtil.java；
+
+-->
+
+<!-- 加载编辑器的容器 -->
+<script id="container" type="text/plain">
+</script>
+
+<!-- 配置文件 -->
+<script type="text/javascript" src="../static/plugins/ueditor1_4_3/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="../static/plugins/ueditor1_4_3/ueditor.all.min.js"></script>
+
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+    var ue = UE.getEditor('container');
+
+    ue.ready(function() {
+        ue.setContent('初始化内容');
+    });
+
+</script>
+
+</body>
+</html>
