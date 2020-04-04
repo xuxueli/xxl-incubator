@@ -14,25 +14,24 @@
 ### 开源产品汇总
 
     核心：
-        1、xxl-job
-        2、xxl-conf
-        3、xxl-rpc
-        4、xxl-mq
-        5、xxl-sso
-        6、xxl-cache     ( >> like rpc；proxy and manage, TODO )
-        7、xxl-apm       ( >> improve, TODO )
-        8、xxl-im        ( >> im and push, TODO )
+        1、xxl-job：20191212
+        2、xxl-conf：20181221
+        3、xxl-rpc：20191122
+        4、xxl-mq：20181221
+        5、xxl-sso：20181116
+        6、xxl-cache：--          ( >> like rpc；proxy and manage, TODO )
+        7、xxl-apm：--            ( >> improve, TODO )
+        8、xxl-im：--             ( >> im and push, TODO )
     实用工具：
-        9、xxl-api
-        10、xxl-crawler
-        11、xxl-glue
-        12、xxl-code-generator
-        13、xxl-excel
-        14、xxl-emoji
+        9、xxl-api：20181026
+        10、xxl-crawler：20181024
+        11、xxl-code-generator：20180503
+        12、xxl-excel：20181024
+        13、xxl-emoji：20180706
     其他:
-        16、xuxueli.github.io
+        14、xuxueli.github.io
             - blog/notebook
-        17、xxl-incubator
+        15、xxl-incubator
             - /project
                 - 孵化器
                     - xxl-dal : 分库分表中间件
@@ -45,6 +44,7 @@
                     - xxl-web
                     - xxl-hex
                     - xxl-search
+                    - xxl-glue
                     - xxl-pm : 工作流驱动的项目管理平台
                 - 其他
                     - xxl-app : 个人APP

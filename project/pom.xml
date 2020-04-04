@@ -7,17 +7,20 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>xxl-web</module>
-        <module>xxl-hex</module>
-        <module>xxl-search</module>
-        <module>xxl-dal</module>
-        <module>xxl-seckill</module>
-        <module>xxl-util</module>
-        <module>xxl-app</module>
-        <module>xxl-pm</module>
-        <module>xxl-permission</module>
-        <module>xxl-fiber</module>
-        <module>xxl-json</module>
+        <!-- level-1 -->
+        <module>level-1/xxl-fiber</module>
+        <module>level-1/xxl-glue</module>
+        <module>level-1/xxl-hex</module>
+        <module>level-1/xxl-permission</module>
+        <module>level-1/xxl-web</module>
+        <!-- level-2 -->
+        <module>level-2/xxl-app</module>
+        <module>level-2/xxl-dal</module>
+        <module>level-2/xxl-json</module>
+        <module>level-2/xxl-pm</module>
+        <module>level-2/xxl-search</module>
+        <module>level-2/xxl-seckill</module>
+        <module>level-2/xxl-util</module>
     </modules>
 
 </project>
