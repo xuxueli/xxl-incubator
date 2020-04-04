@@ -27,8 +27,8 @@
         10、xxl-crawler
         11、xxl-glue
         12、xxl-code-generator
-        13、xxl-excel        【rename to tool/excel】
-            - xxl-emoji        【merge to tool/emoji】
+        13、xxl-excel
+        14、xxl-emoji
     其他:
         16、xuxueli.github.io
             - blog/notebook
