@@ -17,7 +17,6 @@
         1、xxl-job
         2、xxl-conf
         3、xxl-rpc
-            - xxl-registry  【merge to rpc】
         4、xxl-mq
         5、xxl-sso
         6、xxl-cache     ( >> like rpc；proxy and manage, TODO )
