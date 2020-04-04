@@ -16,26 +16,25 @@
     核心：
         1、xxl-job
         2、xxl-conf
-        3、xxl-rpc       【ING，registry 合并至 rpc】
-            xxl-registry
-        4、xxl-mq
-        5、xxl-sso
-        6、xxl-cache     ( >> like rpc；proxy and manage, TODO )
-        7、xxl-apm       ( >> improve, TODO )
-        8、xxl-im        ( >> im and push, TODO )
+        3、xxl-rpc
+        4、xxl-registry
+        5、xxl-mq
+        6、xxl-sso
+        7、xxl-cache     ( >> like rpc；proxy and manage, TODO )
+        8、xxl-apm       ( >> improve, TODO )
+        9、xxl-im        ( >> im and push, TODO )
     实用工具：
-        9、xxl-api
-        10、xxl-crawler
-        11、xxl-glue     ( >> long-polling, TODO )
-        12、xxl-tool     【ING，new project】
-            - xxl-excel  【ING，merge to tool 】
-            - xxl-emoji  【ING，merge to tool 】
-            - xxl-json   【merge】
-        13、xxl-code-generator
+        10、xxl-api
+        11、xxl-crawler
+        12、xxl-glue
+        13、xxl-excel
+        14、xxl-emoji
+        15、xxl-tool     ( >>  mult tool, TODO )
+        16、xxl-code-generator
     其他:
-        14、xuxueli.github.io
+        17、xuxueli.github.io
             blog/notebook
-        15、xxl-incubator
+        18、xxl-incubator
             - /project
                 - level A
                     - xxl-web
