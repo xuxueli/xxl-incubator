@@ -25,32 +25,32 @@
     实用工具：
         9、xxl-api：20181026
         10、xxl-crawler：20181024
-        11、xxl-code-generator：20180503
-        12、xxl-excel：20181024
-        13、xxl-emoji：20180706
+        11、xxl-excel：20181024
+        12、xxl-emoji：20180706
+        13、xxl-code-generator：20180503
     其他:
         14、xuxueli.github.io
             - blog/notebook
         15、xxl-incubator
             - /project
-                - 孵化器
-                    - xxl-dal : 分库分表中间件
-                    - xxl-seckill : 秒杀系统
+                - level-1：成品
+                    - xxl-fiber
+                    - xxl-glue
+                    - xxl-hex
+                    - xxl-permission: RBAC权限系统
+                    - xxl-web
+                - level-2：demo级别
+                    - xxl-dal   : 分库分表中间件
+                    - xxl-app
+                    - xxl-json
+                    - xxl-pm
+                    - xxl-search
+                    - xxl-seckill   : 秒杀系统
+                    - xxl-util
+                - 规划
                     - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
                     - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
-                    - xxl-permission : RBAC权限系统
                     - xxl-deep：分布式企业应用开发平台
-                - 退休
-                    - xxl-web
-                    - xxl-hex
-                    - xxl-search
-                    - xxl-glue
-                    - xxl-pm : 工作流驱动的项目管理平台
-                - 其他
-                    - xxl-app : 个人APP
-                    - xxl-util : 实用工具类汇总
-                    - xxl-fiber
-                    - xxl-json
             - /tmp : demo项目
                 - ws ：微信小程序
         
