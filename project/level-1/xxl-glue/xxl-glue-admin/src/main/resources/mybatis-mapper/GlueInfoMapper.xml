@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="GlueInfoMapper">
+	
+	<resultMap id="GlueInfoResultMap" type="com.xxl.glue.admin.core.model.GlueInfo" >
+		<result column="id" property="id" />
+		<result column="project_id" property="projectId" />
+	    <result column="name" property="name" />
+	    <result column="about" property="about" />
+	    <result column="source" property="source" />
+	    <result column="add_time" property="addTime" />
+	    <result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.id,
+		t.name,
+		t.project_id,
+		t.about,
+		t.source,
+		t.add_time,
+		t.update_time
+	</sql>
+	
+	<select id="pageList" parameterType="java.util.HashMap" resultMap="GlueInfoResultMap">
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_glue_glueinfo AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+		ORDER BY id DESC
+		LIMIT #{offset}, #{pagesize}
+	</select>
+	
+	<select id="pageListCount" parameterType="java.util.HashMap" resultType="int">
+		SELECT count(1)
+		FROM xxl_glue_glueinfo AS t
+		<trim prefix="WHERE" prefixOverrides="AND | OR" >
+			<if test="projectId gt 0">
+				AND t.project_id = #{projectId}
+			</if>
+			<if test="name != null and name!=''">
+				AND t.name like CONCAT(CONCAT('%', #{name}), '%')
+			</if>
+		</trim>
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.Integer" >
+		delete from xxl_glue_glueinfo
+		where id = #{id}
+	</delete>
+	
+	<insert id="save" parameterType="com.xxl.glue.admin.core.model.GlueInfo" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO xxl_glue_glueinfo (
+			project_id,
+			name,
+			about,
+			source,
+			add_time,
+			update_time
+		) VALUES (
+			#{projectId},
+			#{name},
+			#{about}, 
+			#{source},
+			now(),
+			now()
+		);
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id"> 
+			SELECT LAST_INSERT_ID() 
+		</selectKey> 
+	</insert>
+	
+	<update id="update" parameterType="com.xxl.glue.admin.core.model.GlueInfo">
+		update xxl_glue_glueinfo
+		set about = #{about},
+			source = #{source},
+			update_time = now()
+		where id = #{id}
+	</update>
+	
+	<select id="load" parameterType="java.lang.Integer" resultMap="GlueInfoResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_glue_glueinfo AS t
+		where id = #{id}
+	</select>
+	
+	<select id="loadByName" parameterType="java.lang.String" resultMap="GlueInfoResultMap" >
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_glue_glueinfo AS t
+		where name = #{name}
+	</select>
+	
+</mapper>

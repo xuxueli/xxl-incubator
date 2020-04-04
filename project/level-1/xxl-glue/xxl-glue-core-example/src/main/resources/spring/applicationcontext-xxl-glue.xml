@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<!-- ********************** 配置01：GLUE工厂，负责GLUE实例化和运行【必须】 ********************** -->
+
+	<!-- glueFactory -->
+	<bean id="glueFactory" class="com.xxl.glue.core.GlueFactory" init-method="init" destroy-method="destory" >
+		<!-- GLUE示例缓存失效时间，单位毫秒 -->
+		<property name="cacheTimeout" value="300000" />
+		<property name="appName" value="xxl-glue-core-exapmle" />
+		<property name="glueLoader" >
+			<!-- DB源码加载器，可加载维护在管理中心的GLUE源码。依赖jdbc连接，推荐借鉴内部逻辑，抽象成远程RPC服务，取消jdbc依赖。 -->
+			<bean class="com.xxl.glue.core.loader.impl.DBGlueLoader" >
+				<property name="dataSource" ref="dataSource" />
+			</bean>
+			<!-- File源码加载器，只可以加载本地资源路径 "resources/config/glue" 下的GLUE脚本源码。不依赖jdbc，逻辑修改时修改或覆盖原file文件即可。 -->
+			<!--<bean class="com.xxl.glue.core.loader.impl.FileGlueLoader" />-->
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="fileEncoding" value="utf-8" />
+		<property name="locations">
+			<list>
+				<value>classpath*:xxl-glue.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- ********************** 配置02：GLUE广播监听器，负责监听GLUE变动并异步更新GLUE示例。当不设置时，只能通过GlueFatory的缓存失效机制更新GLUE示例。【非必须】 ********************** -->
+
+	<!-- xxl-glue broadcast -->
+	<bean id="xxlGlueBroadcaster" class="com.xxl.glue.core.broadcast.XxlGlueBroadcaster" init-method="getClient" destroy-method="close" >
+		<constructor-arg index="0" value="${xxl.glue.zkserver}" />
+	</bean>
+
+	<!-- ********************** 配置03：GLUE源码加载jdbc，【使用DBGlueLoader时，必须】 ********************** -->
+
+	<!-- DataSource  -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+		<property name="driverClass" value="${xxl.glue.db.driverClass}" />
+		<property name="jdbcUrl" value="${xxl.glue.db.url}" />
+		<property name="user" value="${xxl.glue.db.user}" />
+		<property name="password" value="${xxl.glue.db.password}" />
+		<property name="initialPoolSize" value="3" />
+		<property name="minPoolSize" value="2" />
+		<property name="maxPoolSize" value="10" />
+		<property name="maxIdleTime" value="60" />
+		<property name="acquireRetryDelay" value="1000" />
+		<property name="acquireRetryAttempts" value="10" />
+		<property name="preferredTestQuery" value="SELECT 1" />
+	</bean>
+
+
+</beans>

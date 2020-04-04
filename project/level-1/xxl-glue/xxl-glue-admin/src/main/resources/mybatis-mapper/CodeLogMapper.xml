@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CodeLogMapper">
+	
+	<resultMap id="CodeLog" type="com.xxl.glue.admin.core.model.CodeLog" >
+		<result column="id" property="id" />
+	    <result column="glue_id" property="glueId" />
+		<result column="remark" property="remark" />
+	    <result column="source" property="source" />
+	    <result column="add_time" property="addTime" />
+	    <result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.id,
+		t.glue_id,
+		t.remark,
+		t.source,
+		t.add_time,
+		t.update_time
+	</sql>
+	
+	<insert id="save" parameterType="com.xxl.glue.admin.core.model.CodeLog" useGeneratedKeys="true" keyProperty="id" >
+		INSERT INTO xxl_glue_codelog (
+			glue_id,
+			remark,
+			source,
+			add_time,
+			update_time
+		) VALUES (
+			#{glueId},
+			#{remark},
+			#{source},
+			now(),
+			now()
+		);
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id"> 
+			SELECT LAST_INSERT_ID() 
+		</selectKey> 
+	</insert>
+	
+	<select id="findByGlueId" parameterType="java.lang.Integer" resultMap="CodeLog" >
+		SELECT <include refid="Base_Column_List" />
+		FROM xxl_glue_codelog AS t
+		where t.glue_id = #{glueId}
+		order by add_time desc
+	</select>
+	
+	<delete id="removeOldLogs" parameterType="java.lang.Integer" >
+		DELETE FROM xxl_glue_codelog
+		WHERE id NOT in(
+			SELECT id FROM(
+				SELECT id FROM xxl_glue_codelog
+				WHERE glue_id = #{glueId}
+				ORDER BY update_time desc
+				LIMIT 0, 30
+			) t1
+		)
+	</delete>
+	
+	<delete id="delete" parameterType="java.lang.Integer" >
+		DELETE FROM xxl_glue_codelog
+		WHERE glue_id = #{glueId}
+	</delete>
+	
+</mapper>
