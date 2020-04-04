@@ -17,42 +17,41 @@
         1、xxl-job
         2、xxl-conf
         3、xxl-rpc
-        4、xxl-registry
-        5、xxl-mq
-        6、xxl-sso
-        7、xxl-cache     ( >> like rpc；proxy and manage, TODO )
-        8、xxl-apm       ( >> improve, TODO )
-        9、xxl-im        ( >> im and push, TODO )
+            - xxl-registry  【merge to rpc】
+        4、xxl-mq
+        5、xxl-sso
+        6、xxl-cache     ( >> like rpc；proxy and manage, TODO )
+        7、xxl-apm       ( >> improve, TODO )
+        8、xxl-im        ( >> im and push, TODO )
     实用工具：
-        10、xxl-api
-        11、xxl-crawler
-        12、xxl-glue
-        13、xxl-code-generator
-        14、xxl-tool     ( >>  mult tool, TODO )
-        15、xxl-excel    【merge to xxl-tool-excel】
-        16、xxl-emoji    【merge to xxl-tool-emoji】
+        9、xxl-api
+        10、xxl-crawler
+        11、xxl-glue
+        12、xxl-code-generator
+        13、xxl-excel        【rename to tool/excel】
+            - xxl-emoji        【merge to tool/emoji】
     其他:
-        17、xuxueli.github.io
-            blog/notebook
-        18、xxl-incubator
+        16、xuxueli.github.io
+            - blog/notebook
+        17、xxl-incubator
             - /project
-                - 历史
-                    - xxl-web
-                    - xxl-hex
-                    - xxl-search
-                    - xxl-permission : RBAC权限系统
-                    - xxl-app : 个人APP
-                - 规划
+                - 孵化器
                     - xxl-dal : 分库分表中间件
-                    - xxl-deep：分布式企业应用开发平台
                     - xxl-seckill : 秒杀系统
                     - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
                     - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
-                - 其他
+                    - xxl-permission : RBAC权限系统
+                    - xxl-deep：分布式企业应用开发平台
+                - 退休
+                    - xxl-web
+                    - xxl-hex
+                    - xxl-search
                     - xxl-pm : 工作流驱动的项目管理平台
-                    - xxl-util : 实用工具类汇总          【merge to tool】
-                    - xxl-fiber                         【merge to tool】
-                    - xxl-json                          【merge to tool】
+                - 其他
+                    - xxl-app : 个人APP
+                    - xxl-util : 实用工具类汇总
+                    - xxl-fiber
+                    - xxl-json
             - /tmp : demo项目
                 - ws ：微信小程序
         
