@@ -26,14 +26,13 @@
         9、xxl-api：20181026
         10、xxl-crawler：20181024
         11、xxl-tool：--          
-        12、xxl-deep：--          ( >> new project, include xxl-code-generator+xxl-permission, TODO )
+        12、xxl-deep：--          ( >> 分布式企业开发平台, include xxl-code-generator+xxl-permission, TODO )
     其他:
         13、xuxueli.github.io
             - blog/notebook
         14、xxl-incubator
             - /project
                 - level-1：成品
-                    - xxl-fiber
                     - xxl-glue
                     - xxl-hex
                     - xxl-web
@@ -47,7 +46,6 @@
                 - 规划
                     - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
                     - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
-                    - xxl-deep：分布式企业应用开发平台
             - /tmp : demo项目
                 - ws ：微信小程序
         
