@@ -8,7 +8,6 @@
 
     <modules>
         <!-- level-1 -->
-        <module>level-1/xxl-code-generator</module>
         <module>level-1/xxl-fiber</module>
         <module>level-1/xxl-glue</module>
         <module>level-1/xxl-hex</module>

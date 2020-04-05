@@ -25,16 +25,15 @@
     实用工具：
         9、xxl-api：20181026
         10、xxl-crawler：20181024
-        11、xxl-excel：20181024
-        12、xxl-emoji：20180706
-        13、xxl-code-generator：20180503
+        11、xxl-deep：--          ( >> new project, TODO )
+        12、xxl-excel：20181024
+            13、xxl-emoji：20180706
     其他:
         14、xuxueli.github.io
             - blog/notebook
         15、xxl-incubator
             - /project
                 - level-1：成品
-                    - xxl-code-generator
                     - xxl-fiber
                     - xxl-glue
                     - xxl-hex
