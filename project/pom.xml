@@ -11,7 +11,6 @@
         <module>level-1/xxl-fiber</module>
         <module>level-1/xxl-glue</module>
         <module>level-1/xxl-hex</module>
-        <module>level-1/xxl-permission</module>
         <module>level-1/xxl-web</module>
         <!-- level-2 -->
         <module>level-2/xxl-app</module>

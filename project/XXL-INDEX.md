@@ -25,7 +25,7 @@
     实用工具：
         9、xxl-api：20181026
         10、xxl-crawler：20181024
-        11、xxl-deep：--          ( >> new project, include xxl-code-generator, TODO )
+        11、xxl-deep：--          ( >> new project, include xxl-code-generator+xxl-permission, TODO )
         12、xxl-tool：--          ( >> new project, include xxl-excel + xxl-emoji)
     其他:
         13、xuxueli.github.io
@@ -36,7 +36,6 @@
                     - xxl-fiber
                     - xxl-glue
                     - xxl-hex
-                    - xxl-permission: RBAC权限系统      ( >> merge to xxl-deep, TODO )
                     - xxl-web
                 - level-2：demo级别
                     - xxl-dal   : 分库分表中间件
