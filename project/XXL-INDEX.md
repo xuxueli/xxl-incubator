@@ -37,7 +37,7 @@
                     - xxl-fiber
                     - xxl-glue
                     - xxl-hex
-                    - xxl-permission: RBAC权限系统
+                    - xxl-permission: RBAC权限系统      ( >> merge to xxl-deep, TODO )
                     - xxl-web
                 - level-2：demo级别
                     - xxl-dal   : 分库分表中间件
