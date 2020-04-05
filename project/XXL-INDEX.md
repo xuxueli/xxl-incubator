@@ -34,6 +34,7 @@
         15、xxl-incubator
             - /project
                 - level-1：成品
+                    - xxl-code-generator
                     - xxl-fiber
                     - xxl-glue
                     - xxl-hex
