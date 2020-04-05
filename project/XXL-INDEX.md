@@ -25,8 +25,8 @@
     实用工具：
         9、xxl-api：20181026
         10、xxl-crawler：20181024
-        11、xxl-deep：--          ( >> new project, include xxl-code-generator+xxl-permission, TODO )
-        12、xxl-tool：--          ( >> new project, include xxl-excel + xxl-emoji)
+        11、xxl-tool：--          
+        12、xxl-deep：--          ( >> new project, include xxl-code-generator+xxl-permission, TODO )
     其他:
         13、xuxueli.github.io
             - blog/notebook
