@@ -40,7 +40,6 @@
                 - level-2：demo级别
                     - xxl-dal   : 分库分表中间件
                     - xxl-app
-                    - xxl-json
                     - xxl-pm
                     - xxl-search
                     - xxl-seckill   : 秒杀系统
