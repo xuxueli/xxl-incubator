@@ -35,7 +35,6 @@
                     - xxl-glue
                     - xxl-hex
                     - xxl-web
-                    
                 - level-2：demo级别
                     - xxl-im：im and push
                     - xxl-dal   : 分库分表中间件
