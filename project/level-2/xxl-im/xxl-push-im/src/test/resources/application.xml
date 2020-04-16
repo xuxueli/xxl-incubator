@@ -1,0 +1,12 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xxl-push="https://www.xuxueli.com/schema/xxl-push"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+            https://www.xuxueli.com/schema/xxl-push
+            https://www.xuxueli.com/schema/xxl-push.xsd">
+
+    <xxl-push:core id="xxlPush" address="127.0.0.1:6379" beat="5" />
+
+</beans>
