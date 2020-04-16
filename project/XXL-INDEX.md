@@ -14,18 +14,18 @@
 ### 开源产品汇总
 
     中间件：
-        1、xxl-job：20191212
-        2、xxl-conf：20181221
-        3、xxl-rpc：20191122
-        4、xxl-mq：20181221
-        5、xxl-cache：--          ( >> like rpc；proxy and manage, TODO )
-        6、xxl-apm：--            ( >> improve, TODO )
+        1、xxl-job
+        2、xxl-conf
+        3、xxl-rpc
+        4、xxl-mq
+        5、xxl-cache                  ( >> like rpc；proxy and manage, TODO )
+        6、xxl-apm：                  ( >> improve, TODO )
     工具：
-        7、xxl-sso：20181116
-        8、xxl-api：20181026
-        9、xxl-crawler：20181024
-        10、xxl-tool：--          
-        11、xxl-deep：--          ( >> 分布式企业开发平台, include xxl-code-generator+xxl-permission, TODO )
+        7、xxl-sso：
+        8、xxl-api：
+        9、xxl-crawler：
+        10、xxl-tool：                          
+        11、xxl-deep：                ( >> 分布式企业开发平台, include xxl-code-generator+xxl-permission, TODO )
     其他:
         12、xuxueli.github.io
             - blog/notebook
