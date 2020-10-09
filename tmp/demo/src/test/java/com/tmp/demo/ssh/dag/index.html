@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<center id="profile_center"></center>
+
+</body>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/viz.js/2.1.2/lite.render.js"></script>
+
+<script>
+
+    // data
+    var data = 'digraph G {\n' +
+        '\ta1 -> a2;\n' +
+        '\ta1 -> a3;\n' +
+        '\ta2 -> a4;\n' +
+        '\ta3 -> a4;\n' +
+        '}';
+
+    // init
+    var viz = new Viz();
+    viz.renderSVGElement(data)
+        .then(function(element) {
+            document.getElementById("profile_center").appendChild(element)
+        });
+
+
+    /*var image = viz.render(data, { format: "png-image-element" });
+    document.getElementById("profile_center").appendChild(image);*/
+
+</script>
+</html>
