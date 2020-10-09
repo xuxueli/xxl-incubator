@@ -6,7 +6,28 @@
 </head>
 <body>
 
-<center id="profile_center"></center>
+<table>
+    <tr>
+        <td>
+<textarea rows="20;" cols="50" id="digraphData" onkeyup="paintDagImage();" >
+digraph G {
+	a1 -> a2;
+	a1 -> a3;
+	a2 -> a4;
+	a3 -> a4;
+	a1[style=filled,color="#00a65a", state="完成";];
+	a2[style=filled,color="#f39c12", state="进行中";];
+	a3[style=filled,color="#dd4b39", state="失败";];
+	a4[style=filled,color="gray", state="未开始";];
+}
+</textarea>
+        </td>
+        <td>
+            <center id="dagImage"></center>
+        </td>
+    </tr>
+</table>
+
 
 </body>
 
@@ -19,32 +40,35 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/viz.js/2.1.2/lite.render.js"></script>
 
 <script>
-
-    // data
-    var digraphData = 'digraph G {\n' +
-        // edge
-        '\ta1 -> a2;\n' +
-        '\ta1 -> a3;\n' +
-        '\ta2 -> a4;\n' +
-        '\ta3 -> a4;\n' +
-
-        // node
-        '\ta1[style=filled,color="#00a65a", state="完成";];\n' +
-        '\ta2[style=filled,color="#f39c12", state="进行中";];\n' +
-        '\ta3[style=filled,color="#dd4b39", state="失败";];\n' +
-        '\ta4[style=filled,color="gray", state="未开始";];\n' +
-        '}';
-
     // init
-    var viz = new Viz();
-    viz.renderSVGElement(digraphData)   // renderImageElement
-        .then(function(element) {
-            document.getElementById("profile_center").appendChild(element)
-        })
-        .catch(error => {
-            // Possibly display the error
-            console.error(error);
-        });
+    var viz;
+    function initViz(){
+        viz = new Viz();
+    }
+    initViz();
+
+    // paint
+    function paintDagImage(){
+        // load data
+        var digraphData = document.getElementById('digraphData').value;
+
+        // clean
+        document.getElementById("dagImage").innerHTML = '';
+
+        // paint
+        viz.renderSVGElement(digraphData)   // renderImageElement
+            .then(function(element) {
+                document.getElementById("dagImage").appendChild(element)
+            })
+            .catch(function(error) {
+                alert('DAG语法非法：' + error);
+                console.error(error);
+
+                initViz();
+            });
+    }
+
+    paintDagImage();
 
 </script>
 </html>
