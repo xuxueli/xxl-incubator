@@ -10,29 +10,41 @@
 
 </body>
 
+<!--
+1、graphviz dot语言（DAG描述语言）：https://www.jianshu.com/p/e44885a777f0
+2、DOT前端渲染JS（DAG渲染）：http://viz-js.com/
+3、后端（DAG识别、执行）：TODO
+-->
 <script src="https://cdn.bootcdn.net/ajax/libs/viz.js/2.1.2/viz.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/viz.js/2.1.2/lite.render.js"></script>
 
 <script>
 
     // data
-    var data = 'digraph G {\n' +
+    var digraphData = 'digraph G {\n' +
+        // edge
         '\ta1 -> a2;\n' +
         '\ta1 -> a3;\n' +
         '\ta2 -> a4;\n' +
         '\ta3 -> a4;\n' +
+
+        // node
+        '\ta1[style=filled,color="#00a65a", state="完成";];\n' +
+        '\ta2[style=filled,color="#f39c12", state="进行中";];\n' +
+        '\ta3[style=filled,color="#dd4b39", state="失败";];\n' +
+        '\ta4[style=filled,color="gray", state="未开始";];\n' +
         '}';
 
     // init
     var viz = new Viz();
-    viz.renderSVGElement(data)
+    viz.renderSVGElement(digraphData)   // renderImageElement
         .then(function(element) {
             document.getElementById("profile_center").appendChild(element)
+        })
+        .catch(error => {
+            // Possibly display the error
+            console.error(error);
         });
-
-
-    /*var image = viz.render(data, { format: "png-image-element" });
-    document.getElementById("profile_center").appendChild(image);*/
 
 </script>
 </html>
