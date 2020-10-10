@@ -8,6 +8,7 @@ import com.paypal.digraph.parser.GraphParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,28 +16,62 @@ public class Test2 {
 
     public static void main(String[] args) {
 
+        // init
         MutableGraph<Integer> graph1 = GraphBuilder.directed() //指定为有向图
                 .nodeOrder(ElementOrder.<Integer>insertion()) //节点按插入顺序输出  //(还可以取值无序unordered()、节点类型的自然顺序natural())
                 .expectedNodeCount(50) //预期节点数
                 .allowsSelfLoops(false) //允许自环
                 .build();
 
-        graph1.putEdge(1, 2);
+        /*graph1.putEdge(1, 2);
         graph1.putEdge(1, 3);
         graph1.putEdge(2, 4);
-        graph1.putEdge(3, 1);
+        graph1.putEdge(3, 4);*/
 
-        //返回图中所有的节点(顺序依赖nodeOrder)
-        Set<Integer> nodes = graph1.nodes();
-        System.out.println("graph1 nodes count:" + nodes.size() + ", nodes value:" + nodes);
-
-        //返回图中所有的边集合
-        Set<EndpointPair<Integer>> edges = graph1.edges();
-        System.out.println("graph1 edge count:" + edges.size() + ", edges value:" + edges);
-
+        graph1.putEdge(1, 2);
+        graph1.putEdge(2, 3);
+        graph1.putEdge(3, 4);
         System.out.println("initlized graph1: " + graph1);
 
-        System.out.println( "前驱结点："+graph1.predecessors(1) );;
+        // dag run
+        Set<Integer> allNodes = graph1.nodes();
+        Set<Integer> invokedNode = new HashSet<>();
+
+        for (Integer nodeItem: allNodes) {
+            System.out.println(nodeItem + " - 入度 - " + graph1.inDegree(nodeItem) );
+            System.out.println(nodeItem + " - 出度- " + graph1.outDegree(nodeItem) );
+        }
+
+        boolean hasNewNode = true;
+        while (hasNewNode) {
+            hasNewNode = false;
+            for (Integer nodeItem: allNodes) {
+                // 入口任务
+                if (graph1.inDegree(nodeItem) == 0) {
+                    invokedNode.add(nodeItem);
+                    System.out.println(nodeItem + " - 入口任务， Run - " + nodeItem);
+                    continue;
+                }
+
+                // 前置任务运行情况
+                boolean preAllRuned = true;
+                Set<Integer> preNodes = graph1.predecessors(1);
+                if (preNodes!=null && preNodes.size()>0) {
+                    for (Integer preNode:preNodes) {
+                        if (!invokedNode.contains(preNode)) {
+                            preAllRuned = false;
+                        }
+                    }
+                }
+                if (preAllRuned) {
+                    System.out.println(nodeItem + " - 依赖任务全部执行， Run - " + nodeItem);
+                    continue;
+                }
+
+                hasNewNode = true;
+            }
+        }
+
         System.out.println("是否有环：" + Graphs.hasCycle(graph1) );
 
     }
