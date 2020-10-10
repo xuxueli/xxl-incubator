@@ -30,7 +30,7 @@ public class Test2 {
 
         graph1.putEdge(1, 2);
         graph1.putEdge(2, 3);
-        graph1.putEdge(3, 4);
+        graph1.putEdge(3, 1);
         System.out.println("initlized graph1: " + graph1);
 
         // dag run
@@ -42,14 +42,16 @@ public class Test2 {
             System.out.println(nodeItem + " - 出度- " + graph1.outDegree(nodeItem) );
         }
 
-        boolean hasNewNode = true;
-        while (hasNewNode) {
+        Boolean hasNewNode = null;
+        while (hasNewNode==null || hasNewNode) {
             hasNewNode = false;
+            boolean deadCycle = true;
             for (Integer nodeItem: allNodes) {
                 // 入口任务
                 if (graph1.inDegree(nodeItem) == 0) {
                     invokedNode.add(nodeItem);
                     System.out.println(nodeItem + " - 入口任务， Run - " + nodeItem);
+                    deadCycle = false;
                     continue;
                 }
 
@@ -65,10 +67,15 @@ public class Test2 {
                 }
                 if (preAllRuned) {
                     System.out.println(nodeItem + " - 依赖任务全部执行， Run - " + nodeItem);
+                    deadCycle = false;
                     continue;
                 }
 
                 hasNewNode = true;
+            }
+            if (deadCycle) {
+                System.out.println("死循环，跳出");
+                break;
             }
         }
 
