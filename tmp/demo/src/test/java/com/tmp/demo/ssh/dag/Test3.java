@@ -23,12 +23,25 @@ public class Test3 {
             if (edge.indexOf("->") == -1) {
                 continue;
             }
+            if (edge.indexOf("[") != -1) {
+                edge = edge.substring(0, edge.indexOf("["));
+            }
             edge = edge.replace(";", "");
-
             String[] nodeForEdge = edge.split("->");
-            System.out.println(Arrays.asList(nodeForEdge));
+
+            for (int i = 0; i < nodeForEdge.length; i++) {
+                if (i+1 < nodeForEdge.length) {
+                    System.out.println(nodeForEdge[i] + " -> " +nodeForEdge[i+1]);
+                }
+            }
+
+            //System.out.println(Arrays.asList(nodeForEdge));
 
         }
+
+
+
+
 
     }
 }
