@@ -7,19 +7,32 @@ public class TestB {
 
     public static void main(String[] args) {
 
-        List<Action> actionList = Arrays.asList(
-                new Demo01Action(),
-                new Demo02Action(),
-                new Demo03Action()
-        );
-        System.out.println("pipeline : " +  actionList.toString());
+        String actionConf = "1, 3, 2";
 
-        doProcess(actionList, new ActionContext(new HashMap<String, String>()));
+        doProcess(actionConf, new ActionContext(new HashMap<String, String>()));
     }
 
-    public static void doProcess(List<Action> actionList, ActionContext context) {
+    private static Map<String, Action> actionMap = new HashMap<>();
+    static {
+        actionMap.put("1", new Demo01Action());
+        actionMap.put("2", new Demo02Action());
+        actionMap.put("3", new Demo03Action());
+    }
+
+    public static void doProcess(String actionConf, ActionContext context) {
+
+        // parse
+        List<Action> actionList = new ArrayList<>();
+        List<String> actionConfList = Arrays.asList(actionConf.split(","));
+        for (String actionName: actionConfList) {
+            Action action = actionMap.get(actionName.trim());
+            actionList.add(action);
+        }
+
+        // param
         List<Action> invokedActionList = new ArrayList<>();
         boolean processSuccess = true;
+
         // invoke
         for (Action action: actionList) {
             invokedActionList.add(action);
@@ -57,8 +70,8 @@ public class TestB {
         public void process(ActionContext context) {
             System.out.println("Demo01Action process");
 
-            context.getContextData().put("Demo01Action", "1");
-            System.out.println(context.getContextData().values());
+            /*context.getContextData().put("Demo01Action", "1");
+            System.out.println(context.getContextData().values());*/
         }
 
         @Override
@@ -74,10 +87,10 @@ public class TestB {
         public void process(ActionContext context) {
             System.out.println("Demo02Action process");
 
-            context.getContextData().put("Demo02Action", "2");
+            /*context.getContextData().put("Demo02Action", "2");
             System.out.println(context.getContextData().values());
 
-            throw new RuntimeException("Demo02Action Error");
+            throw new RuntimeException("Demo02Action Error");*/
         }
 
         @Override
@@ -93,8 +106,8 @@ public class TestB {
         public void process(ActionContext context) {
             System.out.println("Demo03Action process");
 
-            context.getContextData().put("Demo03Action", "3");
-            System.out.println(context.getContextData().values());
+            /*context.getContextData().put("Demo03Action", "3");
+            System.out.println(context.getContextData().values());*/
         }
 
         @Override
