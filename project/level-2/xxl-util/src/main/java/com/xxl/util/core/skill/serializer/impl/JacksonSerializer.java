@@ -10,7 +10,18 @@ import java.io.IOException;
 
 /**
  * Jackson工具类
- * 1、obj need private and set/get；2、do not support inner class；
+ *
+ * 		1、obj need private and set/get；
+ * 		2、do not support inner class；
+ *
+ * 		<!-- jackson (provided) -->
+ * 		<dependency>
+ * 		    <groupId>com.fasterxml.jackson.core</groupId>
+ * 		    <artifactId>jackson-databind</artifactId>
+ * 		    <version>${jackson.version}</version>
+ * 		    <scope>provided</scope>
+ * 		</dependency>
+ *
  * @author xuxueli 2015-9-25 18:02:56
  */
 public class JacksonSerializer extends Serializer {
