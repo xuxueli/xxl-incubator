@@ -18,7 +18,7 @@
         2、xxl-conf
         3、xxl-rpc
         4、xxl-mq
-        5、xxl-cache                  ( >> like rpc；proxy and manage, TODO )
+        5、xxl-cache                  ( >> improve：manage + proxy，local-cache，multi-store、multi-level, TODO )
         6、xxl-apm：                  ( >> improve, TODO )
     工具：
         7、xxl-sso：
