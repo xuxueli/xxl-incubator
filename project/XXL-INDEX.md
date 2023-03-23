@@ -52,9 +52,9 @@
        
 ### 开发环境
 
-- OS：mac（win）
-- Java：jdk7 + maven3 + git + idea
-- DB：mysql5.6 + idea-database（navicat） 
-- Linux：docker(centos6.5) + terminal(scp)（secureFX + secureCRT）  
-- Etc：Sublime + Brew
-- Other：Chrome + 搜狗输入法 + 7Z + 百度云 + 有道笔记 + office/WPS
+- OS：mac + homebrew 
+- Java：jdk + maven + git + idea
+- DB：mysql + idea-database
+- Linux：docker + terminal
+- Etc：sublime
+- Other：Chrome + 百度云 + 有道笔记 + office/WPS
