@@ -13,9 +13,6 @@
         <module>level-1/xxl-web</module>
         <!-- level-2 -->
         <module>level-2/xxl-app</module>
-        <module>level-2/xxl-dal</module>
-        <module>level-2/xxl-im</module>
-        <module>level-2/xxl-pm</module>
         <module>level-2/xxl-search</module>
         <module>level-2/xxl-seckill</module>
         <module>level-2/xxl-util</module>

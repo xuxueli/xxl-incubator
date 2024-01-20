@@ -1,8 +1,0 @@
-<% include header.ejs %>
-<h1><%= title %></h1>
-<form action="/post/edit/<%= post[0].ID %>" method="post">
-    <p><input type="text" name="title" value="<%= post[0].post_title %>" /></p>
-    <p><textarea rows="30" cols="80" name="content"><%= post[0].post_markdown %></textarea><br/></p>
-    <p><input type="submit" value="更新" /></p>
-</form>
-<% include footer.ejs %>

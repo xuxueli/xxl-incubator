@@ -1,6 +1,0 @@
-<% include header.ejs %>
-<h1><%= title %></h1>
-<%- post[0].post_content %>
-<%= post[0].post_date %>
-<% if (user) { %><a href="/post/edit/<%= post.ID %>">编辑</a><a href="/post/remove/<%= post.ID %>">删除</a><% } %>
-<% include footer.ejs %>
