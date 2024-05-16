@@ -24,7 +24,7 @@
         7、xxl-api：
         8、xxl-crawler：
         9、xxl-tool：                          
-        10、xxl-deep：                ( >> Java快速开发框架, include xxl-code-generator+xxl-permission, TODO )
+        10、xxl-admin：                ( >> Java快速开发框架, xxl-code-generator + xxl-permission + 模板引擎/前后端分离, TODO )
     其他:
         11、xuxueli.github.io
             - blog/notebook
