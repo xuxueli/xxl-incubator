@@ -18,23 +18,23 @@
         2、xxl-conf
         3、xxl-rpc
         4、xxl-mq
-        5、xxl-cache                  ( >> improve：manage + proxy，local-cache，multi-store、multi-level, TODO )
-        6、xxl-apm：                  ( >> improve, TODO )
+        5、xxl-cache                  ( >> multi-level cache：redis+ caffeine   )
     工具：
-        7、xxl-sso：
-        8、xxl-api：
-        9、xxl-crawler：
-        10、xxl-tool：                          
-        11、xxl-deep：                ( >> Java快速开发框架, include xxl-code-generator+xxl-permission, TODO )
+        6、xxl-sso：
+        7、xxl-api：
+        8、xxl-crawler：
+        9、xxl-tool：                          
+        10、xxl-deep：                ( >> Java快速开发框架, include xxl-code-generator+xxl-permission, TODO )
     其他:
-        12、xuxueli.github.io
+        11、xuxueli.github.io
             - blog/notebook
-        13、xxl-incubator
+        12、xxl-incubator
             - /project
                 - level-1：成品
                     - xxl-glue
                     - xxl-hex
                     - xxl-web
+                    - xxl-apm：      APM 
                 - level-2：demo级别
                     - xxl-app
                     - xxl-search
