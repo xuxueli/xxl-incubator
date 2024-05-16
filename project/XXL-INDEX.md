@@ -25,7 +25,7 @@
         8、xxl-api：
         9、xxl-crawler：
         10、xxl-tool：                          
-        11、xxl-deep：                ( >> 分布式企业开发平台, include xxl-code-generator+xxl-permission, TODO )
+        11、xxl-deep：                ( >> Java快速开发框架, include xxl-code-generator+xxl-permission, TODO )
     其他:
         12、xuxueli.github.io
             - blog/notebook
@@ -54,4 +54,4 @@
 - DB：mysql + idea-database
 - Linux：docker + terminal
 - Etc：sublime
-- Other：Chrome + 百度云 + 有道笔记 + office/WPS
+- Other：Chrome + 百度云 + office
