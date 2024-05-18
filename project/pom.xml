@@ -11,6 +11,7 @@
         <module>level-1/xxl-glue</module>
         <module>level-1/xxl-hex</module>
         <module>level-1/xxl-web</module>
+        <module>level-1/xxl-apm</module>
         <!-- level-2 -->
         <module>level-2/xxl-app</module>
         <module>level-2/xxl-search</module>
