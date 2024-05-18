@@ -18,13 +18,31 @@
         2、xxl-conf
         3、xxl-rpc
         4、xxl-mq
-        5、xxl-cache                  ( >> multi-level cache：redis+ caffeine   )
+        5、xxl-cache      ( >> multi-level cache：redis+ caffeine   )
     工具：
         6、xxl-sso：
         7、xxl-api：
         8、xxl-crawler：
         9、xxl-tool：                          
-        10、xxl-admin：                ( >> Java快速开发框架, xxl-code-generator + xxl-permission + 模板引擎/前后端分离, TODO )
+        10、xxl-deep：    ( >> Java快速开发框架)
+            - 多套技术栈：
+                - 单体版本：SpringBoot + 模板引擎[Bootstrap]；(admin + web)
+                - 分布式版本：SpringBoot + 前后端分离[vue] + RPC/CONF/JOB/MQ；(admin + web + service/api)
+            - 系统管理：
+                - 组织管理：部门 + 岗位
+                - 人员管理：用户
+                - 资源管理：菜单 + 按钮 + 资源
+                - 权限管理：授权
+            - 技术能力：代码生成 + 工作流 + 操作日志 + 系统监控 + 通知公告 + 字典管理；
+            - 业务能力：
+                - 端：管理端 + 用户端
+                - 业务：内容发布（发布-CRUD，查询-RPC，定时发布-MQ，发布黑名单-CONF）、内容排行（排行生成-JOB、排行查询-Cache）；
+
+
+-  /CRUD + 内容查询/RPC + 文章拉黑/CONF + 缓存全量更新/JOB + 定时发布/MQ
+
+
+                 
     其他:
         11、xuxueli.github.io
             - blog/notebook
