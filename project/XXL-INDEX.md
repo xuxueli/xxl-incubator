@@ -26,8 +26,9 @@
         9、xxl-tool：                          
         10、xxl-deep：    ( >> Java快速开发框架)
             - 多套技术栈：
-                - 单体版本：SpringBoot + 模板引擎[Bootstrap]；(admin + web)
-                - 分布式版本：SpringBoot + 前后端分离[vue] + RPC/CONF/JOB/MQ；(admin + web + service/api)
+                - 前端：模板引擎[Bootstrap] or 前后端分离[vue] + SpringBoot 
+                - 架构：单体（admin + web） + 分布式:RPC/CONF/JOB/MQ(admin + web + service/api)
+                - 业务：开发框架（系统管理/技术能力） + CMS + 工作流 + …；
             - 系统管理：
                 - 组织管理：部门 + 岗位
                 - 人员管理：用户
