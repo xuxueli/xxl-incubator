@@ -53,7 +53,9 @@
                     - xxl-glue
                     - xxl-hex
                     - xxl-web
-                    - xxl-apm：      APM 
+                    - xxl-apm：             :APM
+                    - xxl-code-generator    : xxl-code-generator
+                    - xxl-permission        : 权限管理系统、项目脚手架，easyui
                 - level-2：demo级别
                     - xxl-app
                     - xxl-search
