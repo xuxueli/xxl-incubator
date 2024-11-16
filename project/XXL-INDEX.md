@@ -13,59 +13,42 @@
 
 ### 开源产品汇总
 
-    中间件：
-        1、xxl-job
-        2、xxl-conf
-        3、xxl-rpc
-        4、xxl-mq
-        5、xxl-cache      ( >> multi-level cache：redis+ caffeine   )
-    工具：
-        6、xxl-sso：
-        7、xxl-api：
-        8、xxl-crawler：
-        9、xxl-tool：                          
-        10、xxl-deep：    ( >> Java快速开发框架)
-            - 多套技术栈：
-                - 前端：模板引擎[Bootstrap] or 前后端分离[vue] + SpringBoot 
-                - 架构：单体（admin + web） + 分布式:RPC/CONF/JOB/MQ(admin + web + service/api)
-                - 业务：开发框架（系统管理/技术能力） + CMS + 工作流 + …；
-            - 系统管理：
-                - 组织管理：部门 + 岗位
-                - 人员管理：用户
-                - 资源管理：菜单 + 按钮 + 资源
-                - 权限管理：授权
-            - 技术能力：代码生成 + 工作流 + 操作日志 + 系统监控 + 通知公告 + 字典管理；
-            - 业务能力：
-                - 端：管理端 + 用户端
-                - 业务：内容发布（发布-CRUD，查询-RPC，定时发布-MQ，发布黑名单-CONF）、内容排行（排行生成-JOB、排行查询-Cache）；
+序号 | 项目             | 协议         | 特征        |  特征
+----|----------------|------------|-----------|--- 
+1   | xxl-job        | GPL        | 作业调度（产品）  |  轻量级、分布式
+2   | xxl-conf       | GPL        | 配置管理（产品）  |  妙级推送、一致性、权限、安全     
+3   | xxl-rpc        | Apache     | 服务通讯（框架）  |  轻量级、高性能       
+4   | xxl-mq         | GPL【TODO】 | 消息队列（框架）  |  轻量级、可追溯、延时、重试          
+5   | xxl-cache      | GPL【TODO】 | 多级缓存（框架）  |  两级缓存、redis+ caffeine 
+6   | xxl-sso        | GPL        | 单点登录（产品）  |  单点登录、登录、鉴权
+7   | xxl-api        | GPL        | API管理（产品）  |   API管理、Mock、测试、导入导出 
+8   | xxl-crawler    | Apache     | 爬虫框架 （框架） |  爬虫                 
+9   | xxl-tool       | Apache     | 工具包 （框架）   |  工具包                
+10  | xxl-boot       | GPL        | 脚手架（产品）    |  快速开发框架             
+11  | pages          | GPL        | 官网            |  官网、博客 blog/notebook、文档 doc；
+12  | xxl-incubator  | GPL        | 孵化器          |   孵化器，脑暴             
 
-
--  /CRUD + 内容查询/RPC + 文章拉黑/CONF + 缓存全量更新/JOB + 定时发布/MQ
-
-
-                 
-    其他:
-        11、xuxueli.github.io
-            - blog/notebook
-        12、xxl-incubator
-            - /project
-                - level-1：成品
-                    - xxl-glue
-                    - xxl-hex
-                    - xxl-web
-                    - xxl-apm：             :APM
-                    - xxl-code-generator    : xxl-code-generator
-                    - xxl-permission        : 权限管理系统、项目脚手架，easyui
-                - level-2：demo级别
-                    - xxl-app
-                    - xxl-search
-                    - xxl-seckill   : 秒杀系统
-                    - xxl-util
-                - 规划
-                    - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
-                    - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
-            - /tmp : demo项目
-                - ws ：微信小程序
+### etc 
+```
+xxl-incubator
+    - /project
+        - level-1：成品
+            - xxl-apm
+            - xxl-code-generator    : xxl-code-generator
+            - xxl-glue
+            - xxl-hex
+            - xxl-permission        : 权限管理系统、项目脚手架，easyui
+            - xxl-web
+        - level-2：demo级别
+            - xxl-app
+            - xxl-search
+            - xxl-seckill 
+            - xxl-util
+        - 规划
+            - xxl-url-shortener：url shortener；url rule, case when 'app/holiday/date/os/cityid/usertype/param' then 'real-url'
+            - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
+    - /tmp : demo项目
+        - ws ：微信小程序
         
        
 ### 开发环境
