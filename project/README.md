@@ -31,7 +31,7 @@
 1   | xxl-rpc       | Apache          | RPC框架              |  轻量级、高性能、全注解、运营（手动/自动、服务/节点禁用）
 2   | xxl-crawler   | Apache          | 爬虫框架               |  爬虫
 3   | xxl-tool      | Apache          | 工具包                |  工具包，零依赖
-4   | xxl-cache     | Apache          | 缓存管理平台             |  主动清理，内存优化；二级缓存（caffeine+redis），双写；热点探测；
+4   | xxl-cache     | GPL【整合】         | 缓存管理平台             |  主动清理，内存优化；二级缓存（caffeine+redis），双写；热点探测；
 
 
 ##### 其他
