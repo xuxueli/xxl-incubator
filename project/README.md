@@ -39,7 +39,7 @@
 ----|----------------|----------------|---------|---
 1  | xuxuelipage    | GPL            | 官网          |  官网、博客 blog/notebook、文档 doc；
 2  | xxl-incubator  | GPL            | 孵化器        |   孵化器，脑暴
-3  | xxl-cache      | GPL            | 二级缓存      |  两级缓存（redis+ caffeine）、全局热点(自定义规则)、防穿透/击穿/雪崩。
+
 
 ### 孵化产品
 ```
@@ -52,7 +52,7 @@ xxl-incubator
             - xxl-hex
             - xxl-permission        : 权限管理系统、项目脚手架，easyui
             - xxl-web
-            - xxl-cache             ：缓存远程管理
+            - xxl-cache             ：缓存管理
         - level-2：demo级别
             - xxl-app
             - xxl-search
