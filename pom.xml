@@ -7,7 +7,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>project</module>
-		<module>tmp</module>
+		<!--<module>project</module>-->
+		<!--<module>tmp</module>-->
     </modules>
 </project>
