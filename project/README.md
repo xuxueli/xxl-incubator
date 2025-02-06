@@ -53,7 +53,6 @@ xxl-incubator
             - xxl-hex
             - xxl-permission        : 权限管理系统、项目脚手架，easyui
             - xxl-web
-            - xxl-cache             ：缓存管理
         - level-2：demo级别
             - xxl-app
             - xxl-search
