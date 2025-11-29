@@ -7,7 +7,20 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<!--<module>project</module>-->
-		<!--<module>tmp</module>-->
+        <!-- level-1 -->
+        <!--<module>project/level-1/xxl-glue</module>
+        <module>project/level-1/xxl-hex</module>
+        <module>project/level-1/xxl-web</module>
+        <module>project/level-1/xxl-apm</module>
+        <module>project/level-1/xxl-code-generator</module>
+        <module>project/level-1/xxl-permission</module>
+        <module>project/level-1/xxl-cache</module>-->
+
+        <!-- level-2 -->
+        <!--<module>project/level-2/xxl-app</module>
+        <module>project/level-2/xxl-search</module>
+        <module>project/level-2/xxl-seckill</module>
+        <module>project/level-2/xxl-util</module>-->
     </modules>
+
 </project>
