@@ -1,3 +1,9 @@
+
+CREATE database if NOT EXISTS `boot` default character set utf8mb4 collate utf8mb4_unicode_ci;
+use `boot`;
+
+SET NAMES utf8mb4;
+
 -- ----------------------------
 -- 1、部门表
 -- ----------------------------
