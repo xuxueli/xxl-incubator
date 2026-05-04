@@ -5,8 +5,6 @@ import com.simple.api.entity.Product;
 import com.simple.api.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 商品控制器
  * 提供商品增删改查的 RESTful API
@@ -24,12 +22,15 @@ public class ProductController {
     }
 
     /**
-     * 查询所有商品列表
-     * GET /api/product/list
+     * 分页查询商品列表，支持按商品名搜索
+     * GET /api/product/list?name=xxx&pageNum=1&pageSize=10
      */
     @GetMapping("/list")
-    public Result<List<Product>> list() {
-        return Result.success(productService.list());
+    public Result<com.simple.api.entity.common.PageResult<Product>> list(
+            @RequestParam(required = false, defaultValue = "") String name,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return Result.success(productService.page(name, pageNum, pageSize));
     }
 
     /**

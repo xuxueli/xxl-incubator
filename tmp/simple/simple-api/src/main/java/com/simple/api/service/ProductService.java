@@ -68,6 +68,31 @@ public class ProductService {
     }
 
     /**
+     * 分页查询商品列表，支持按商品名模糊搜索
+     *
+     * @param name    商品名（可选，模糊匹配）
+     * @param pageNum 页码（从 1 开始）
+     * @param pageSize 每页条数
+     * @return 分页结果
+     */
+    public com.simple.api.entity.common.PageResult<Product> page(String name, int pageNum, int pageSize) {
+        List<Product> all = new ArrayList<>(productStore.values());
+        // 按商品名模糊过滤
+        if (name != null && !name.isBlank()) {
+            String keyword = name.toLowerCase();
+            all = all.stream()
+                    .filter(p -> p.getName().toLowerCase().contains(keyword))
+                    .toList();
+        }
+        long total = all.size();
+        // 分页截取
+        int fromIndex = Math.min((pageNum - 1) * pageSize, all.size());
+        int toIndex = Math.min(fromIndex + pageSize, all.size());
+        List<Product> records = all.subList(fromIndex, toIndex);
+        return new com.simple.api.entity.common.PageResult<>(total, records);
+    }
+
+    /**
      * 查询所有商品列表
      */
     public List<Product> list() {

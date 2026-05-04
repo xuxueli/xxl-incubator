@@ -64,6 +64,31 @@ public class UserService {
     }
 
     /**
+     * 分页查询用户列表，支持按用户名模糊搜索
+     *
+     * @param username 用户名（可选，模糊匹配）
+     * @param pageNum  页码（从 1 开始）
+     * @param pageSize 每页条数
+     * @return 分页结果
+     */
+    public com.simple.api.entity.common.PageResult<User> page(String username, int pageNum, int pageSize) {
+        List<User> all = new ArrayList<>(userStore.values());
+        // 按用户名模糊过滤
+        if (username != null && !username.isBlank()) {
+            String keyword = username.toLowerCase();
+            all = all.stream()
+                    .filter(u -> u.getUsername().toLowerCase().contains(keyword))
+                    .toList();
+        }
+        long total = all.size();
+        // 分页截取
+        int fromIndex = Math.min((pageNum - 1) * pageSize, all.size());
+        int toIndex = Math.min(fromIndex + pageSize, all.size());
+        List<User> records = all.subList(fromIndex, toIndex);
+        return new com.simple.api.entity.common.PageResult<>(total, records);
+    }
+
+    /**
      * 查询所有用户列表
      */
     public List<User> list() {

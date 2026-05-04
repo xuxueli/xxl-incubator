@@ -6,11 +6,12 @@ import request from '@/utils/request'
  */
 export default {
   /**
-   * 查询所有商品列表
-   * @returns {Promise<Array>} 商品数组
+   * 分页查询商品列表
+   * @param {Object} params - { name, pageNum, pageSize }
+   * @returns {Promise<Object>} { total, records }
    */
-  list() {
-    return request.get('/api/product/list')
+  list(params = {}) {
+    return request.get('/api/product/list', { params })
   },
 
   /**

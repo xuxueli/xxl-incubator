@@ -1,13 +1,27 @@
 <template>
-  <!-- 商品管理页：数据表格 + 弹窗表单 -->
+  <!-- 商品管理页：搜索栏 + 数据表格 + 分页 + 弹窗表单 -->
   <el-card>
-    <!-- 工具栏：新增按钮 -->
+    <!-- 工具栏：新增按钮 + 搜索框 -->
     <template #header>
       <div class="card-header">
         <el-button type="primary" @click="handleAdd">
           <el-icon><Plus /></el-icon>
           新增商品
         </el-button>
+        <el-input
+          v-model="searchName"
+          placeholder="搜索商品名称"
+          clearable
+          style="width: 250px"
+          @clear="handleSearch"
+          @keyup.enter="handleSearch"
+        >
+          <template #append>
+            <el-button @click="handleSearch">
+              <el-icon><Search /></el-icon>
+            </el-button>
+          </template>
+        </el-input>
       </div>
     </template>
 
@@ -30,6 +44,18 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <el-pagination
+      v-model:current-page="pageNum"
+      v-model:page-size="pageSize"
+      :total="total"
+      :page-sizes="[10, 20, 50]"
+      layout="total, sizes, prev, pager, next"
+      style="margin-top: 16px; justify-content: flex-end"
+      @size-change="fetchProductList"
+      @current-change="fetchProductList"
+    />
   </el-card>
 
   <!-- 新增/编辑弹窗 -->
@@ -88,13 +114,20 @@ import productApi from '@/api/product'
 
 /**
  * 商品管理页面
- * 功能：商品列表展示、新增、编辑、删除
- * 使用 ElInputNumber 处理价格和库存输入
+ * 功能：商品列表展示（支持搜索、分页）、新增、编辑、删除
  */
+
+// 搜索关键词
+const searchName = ref('')
 
 // 表格数据与加载状态
 const productList = ref([])
 const loading = ref(false)
+
+// 分页
+const pageNum = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
 
 // 弹窗控制
 const dialogVisible = ref(false)
@@ -152,12 +185,26 @@ onMounted(() => {
 async function fetchProductList() {
   loading.value = true
   try {
-    productList.value = await productApi.list()
+    const res = await productApi.list({
+      name: searchName.value,
+      pageNum: pageNum.value,
+      pageSize: pageSize.value
+    })
+    productList.value = res.records
+    total.value = res.total
   } catch {
     // 错误提示由响应拦截器处理
   } finally {
     loading.value = false
   }
+}
+
+/**
+ * 搜索商品
+ */
+function handleSearch() {
+  pageNum.value = 1
+  fetchProductList()
 }
 
 /**

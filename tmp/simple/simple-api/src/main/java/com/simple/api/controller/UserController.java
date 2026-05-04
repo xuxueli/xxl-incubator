@@ -5,8 +5,6 @@ import com.simple.api.entity.User;
 import com.simple.api.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 用户控制器
  * 提供用户增删改查的 RESTful API
@@ -24,12 +22,15 @@ public class UserController {
     }
 
     /**
-     * 查询所有用户列表
-     * GET /api/user/list
+     * 分页查询用户列表，支持按用户名搜索
+     * GET /api/user/list?username=xxx&pageNum=1&pageSize=10
      */
     @GetMapping("/list")
-    public Result<List<User>> list() {
-        return Result.success(userService.list());
+    public Result<com.simple.api.entity.common.PageResult<User>> list(
+            @RequestParam(required = false, defaultValue = "") String username,
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        return Result.success(userService.page(username, pageNum, pageSize));
     }
 
     /**
