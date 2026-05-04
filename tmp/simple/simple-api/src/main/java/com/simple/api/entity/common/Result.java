@@ -1,6 +1,5 @@
-package com.simple.api.common;
+package com.simple.api.entity.common;
 
-import lombok.Data;
 
 /**
  * 统一 API 响应包装类
@@ -9,7 +8,6 @@ import lombok.Data;
  *
  * @param <T> 响应数据的类型
  */
-@Data
 public class Result<T> {
 
     /** 状态码：0 表示成功，其他值表示失败 */
@@ -25,6 +23,30 @@ public class Result<T> {
     private Result(int code, String message, T data) {
         this.code = code;
         this.message = message;
+        this.data = data;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
         this.data = data;
     }
 

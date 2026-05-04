@@ -1,10 +1,9 @@
 package com.simple.api.controller;
 
-import com.simple.api.common.Result;
+import com.simple.api.entity.common.Result;
 import com.simple.api.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -122,9 +121,26 @@ public class AuthController {
     /**
      * 登录请求体 DTO
      */
-    @Data
     public static class LoginRequest {
         private String username;
         private String password;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
     }
+
 }

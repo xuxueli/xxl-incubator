@@ -1,6 +1,6 @@
 package com.simple.api.controller;
 
-import com.simple.api.common.Result;
+import com.simple.api.entity.common.Result;
 import com.simple.api.entity.User;
 import com.simple.api.service.UserService;
 import org.springframework.web.bind.annotation.*;

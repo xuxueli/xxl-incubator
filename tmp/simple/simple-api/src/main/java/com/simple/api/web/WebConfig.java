@@ -1,6 +1,6 @@
-package com.simple.api.config;
+package com.simple.api.web;
 
-import com.simple.api.interceptor.AuthInterceptor;
+import com.simple.api.web.interceptor.AuthInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

@@ -1,4 +1,4 @@
-package com.simple.api.common;
+package com.simple.api.web.session;
 
 import org.springframework.stereotype.Component;
 

@@ -1,6 +1,5 @@
-package com.simple.api.config;
+package com.simple.api.web.session;
 
-import com.simple.api.common.SessionStore;
 import org.springframework.stereotype.Component;
 
 /**

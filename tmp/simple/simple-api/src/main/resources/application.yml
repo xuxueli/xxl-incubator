@@ -28,6 +28,3 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     # 时区：亚洲/上海（东八区）
     time-zone: Asia/Shanghai
-    # LocalDateTime 序列化为字符串而非时间戳数组
-    serialization:
-      write-dates-as-timestamps: false

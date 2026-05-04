@@ -1,6 +1,6 @@
-package com.simple.api.exception;
+package com.simple.api.web.exception;
 
-import com.simple.api.common.Result;
+import com.simple.api.entity.common.Result;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

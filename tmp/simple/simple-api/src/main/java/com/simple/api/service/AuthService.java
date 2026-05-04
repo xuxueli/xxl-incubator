@@ -1,6 +1,6 @@
 package com.simple.api.service;
 
-import com.simple.api.config.SessionManager;
+import com.simple.api.web.session.SessionManager;
 import org.springframework.stereotype.Service;
 
 /**
