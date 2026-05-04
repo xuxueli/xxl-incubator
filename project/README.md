@@ -63,6 +63,7 @@ xxl-incubator
             - xxl-dynamic-page：可见即所得，拖拽组件、填写数据，立即生成生产环境页面地址；组件打通前后端，全流程；https://www.cnblogs.com/zhuanzhuanfe/p/10500786.html
     - /tmp : demo项目
         - ws ：微信小程序
+        - simple : 前后端分离示例项目
 ```
 
 ### 开发环境

@@ -21,6 +21,9 @@
         <module>project/level-2/xxl-search</module>
         <module>project/level-2/xxl-seckill</module>
         <module>project/level-2/xxl-util</module>-->
+
+		<!-- tmp -->
+		<module>tmp/simple/simple-api</module>
     </modules>
 
 </project>

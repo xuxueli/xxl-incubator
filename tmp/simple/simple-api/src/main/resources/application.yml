@@ -1,0 +1,33 @@
+server:
+  # 后端服务端口
+  port: 8080
+  servlet:
+    # Session Cookie 配置
+    session:
+      cookie:
+        name: SIMPLE_SESSION_ID  # Cookie 名称
+        http-only: true           # 禁止 JS 读取，防止 XSS
+        secure: false             # 开发环境使用 HTTP，生产环境应设为 true
+        max-age: 86400            # Cookie 有效期 24 小时
+  # 未找到路由时返回 404，不抛异常
+  error:
+    include-message: always
+    include-stacktrace: never
+
+# Spring MVC 配置
+spring:
+  mvc:
+    # 未找到 Handler 时返回 404，不抛异常
+    throw-exception-if-no-handler-found: false
+  # 关闭静态资源映射（纯 API 服务不需要）
+  web:
+    resources:
+      add-mappings: false
+  jackson:
+    # 日期格式：年-月-日 时:分:秒
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 时区：亚洲/上海（东八区）
+    time-zone: Asia/Shanghai
+    # LocalDateTime 序列化为字符串而非时间戳数组
+    serialization:
+      write-dates-as-timestamps: false

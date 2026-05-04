@@ -9,3 +9,7 @@
 /.idea
 .DS_Store
 .gitattributes
+
+# for node
+node_modules/
+dist/
