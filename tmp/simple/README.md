@@ -518,3 +518,18 @@ curl http://localhost:8080/api/user/list
 # 登出
 curl -b cookies.txt -X POST http://localhost:8080/api/auth/logout
 ```
+
+
+### 备注
+
+原始诉求：
+写个前后端分离项目，严格遵循下面要求：
+1、前端写在 simple-ui 子目录下；后端写在 simple-api 子目录下。
+2、前端技术栈： element-plus + vue3。
+3、后端技术栈： java + springboot；数据层不用连接数据库，使用 hashmap 模拟替代即可。
+4、项目结构：前端 + 后端项目，均要求清晰、规范，方便后续扩展多业务模块；
+5、项目注释：前端 + 后端项目，均要求注释详细、丰富；
+4、实现功能：
+- 登录：前端登录页，以及后端登录API。采用 cookie + session 方式，后端session存储在内存里。
+- 用户管理：前端支持数据 CRUD，后端API实现对应功能；API能够联调通顺。
+- 商品管理：前端支持数据 CRUD，后端API实现对应功能；API能够联调通顺。
