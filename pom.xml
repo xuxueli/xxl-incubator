@@ -23,6 +23,7 @@
         <module>project/level-2/xxl-util</module>-->
 
 		<!-- tmp -->
+		<module>tmp/boot/boot-admin</module>
 		<module>tmp/simple/simple-api</module>
     </modules>
 
