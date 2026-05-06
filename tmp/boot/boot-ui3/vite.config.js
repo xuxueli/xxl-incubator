@@ -86,15 +86,15 @@ export default defineConfig(({ mode, command }) => {
        *     翻译：
        */
       ...(() => {
-        const arr = []
+        const compressionList = []
         if (isBuild) {
-          arr.push(
+          compressionList.push(
               compression({
                 ext: '.gz',
                 deleteOriginFile: false
               })
           )
-          arr.push(
+          compressionList.push(
               compression({
                 ext: '.br',
                 algorithm: 'brotliCompress',
@@ -102,7 +102,7 @@ export default defineConfig(({ mode, command }) => {
               })
           )
         }
-        return arr
+        return compressionList
       })()
     ],
     /**
