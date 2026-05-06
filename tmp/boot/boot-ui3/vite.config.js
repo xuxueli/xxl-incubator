@@ -14,7 +14,7 @@ export default defineConfig(({ mode, command }) => {
    */
   const rawEnv = loadEnv(mode, process.cwd());                      // 获取环境变量
   const API_URL = rawEnv.VITE_API_URL || 'http://localhost:8080';   // 后端API地址
-  const API_BASE = rawEnv.VITE_APP_BASE_API || '/dev-api';          // 后端API前缀
+  const APP_BASE_API = rawEnv.VITE_APP_BASE_API || '/api';              // 后端路由前缀
   const APP_ENV = rawEnv.VITE_APP_ENV;                              // 环境配置
   const APP_PORT = Number(rawEnv.VITE_APP_PORT) || 3000;    // 端口号
 
@@ -73,16 +73,21 @@ export default defineConfig(({ mode, command }) => {
       open: true,           // 运行自动打开浏览器
       proxy: {              // 代理配置，
         // development environment proxy
-        '/dev-api': {
+        [APP_BASE_API]: {
           target: API_URL,
           changeOrigin: true,
-          rewrite: (p) => p.replace(/^\/dev-api/, '')
+          rewrite: (p) => p.replace(new RegExp(`^${APP_BASE_API}`), '')
         },
          // springdoc proxy
          '^/v3/api-docs/(.*)': {
           target: API_URL,
           changeOrigin: true,
         }
+        /*'/api': {
+          target: VITE_BASE_URL,
+          changeOrigin: true,
+          rewrite: (p) => p.replace(/^\/api/, '')
+        }*/
       }
     },
     /**
