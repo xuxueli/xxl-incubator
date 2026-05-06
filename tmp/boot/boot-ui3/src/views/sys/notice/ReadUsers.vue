@@ -47,7 +47,7 @@
 
 <script setup name="ReadUsers">
 import { Search } from "@element-plus/icons-vue"
-import { listNoticeReadUsers } from "@/api/system/notice"
+import { listNoticeReadUsers } from "@/api/sys/notice"
 
 const { proxy } = getCurrentInstance()
 

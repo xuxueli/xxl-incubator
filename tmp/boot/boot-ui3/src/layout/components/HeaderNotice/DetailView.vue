@@ -53,7 +53,7 @@
 </template>
 
 <script setup>
-import { getNotice } from '@/api/system/notice'
+import { getNotice } from '@/api/sys/notice'
 
 const visible = ref(false)
 const loading = ref(false)

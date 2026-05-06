@@ -26,7 +26,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
-import { getConfigKey } from "@/api/system/config"
+import { getConfigKey } from "@/api/sys/config"
 import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/boot'
 
 // 分页组件

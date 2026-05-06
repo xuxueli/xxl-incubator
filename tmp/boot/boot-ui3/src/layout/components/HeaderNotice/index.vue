@@ -39,7 +39,7 @@
 
 <script setup>
 import NoticeDetailView from './DetailView'
-import { listNoticeTop, markNoticeRead, markNoticeReadAll } from '@/api/system/notice'
+import { listNoticeTop, markNoticeRead, markNoticeReadAll } from '@/api/sys/notice'
 
 const noticePopover = ref(null)
 const noticeList = ref([])

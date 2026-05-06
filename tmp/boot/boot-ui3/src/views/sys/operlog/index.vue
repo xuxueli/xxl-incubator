@@ -154,7 +154,7 @@
 
 <script setup name="Operlog">
 import OperlogDetail from './detail'
-import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog"
+import { list, delOperlog, cleanOperlog } from "@/api/sys/operlog"
 
 const { proxy } = getCurrentInstance()
 const { sys_oper_type, sys_common_status } = useDict("sys_oper_type", "sys_common_status")

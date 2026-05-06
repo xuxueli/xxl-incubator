@@ -165,7 +165,7 @@
 </template>
 
 <script setup name="Config">
-import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config"
+import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/sys/config"
 
 const { proxy } = getCurrentInstance()
 const { sys_yes_no } = useDict("sys_yes_no")

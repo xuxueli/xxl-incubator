@@ -163,7 +163,7 @@
 <script setup name="Notice">
 import NoticeDetailView from "@/layout/components/HeaderNotice/DetailView"
 import ReadUsersDialog from "./ReadUsers"
-import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice"
+import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/sys/notice"
 
 const { proxy } = getCurrentInstance()
 const { sys_notice_status, sys_notice_type } = useDict("sys_notice_status", "sys_notice_type")
