@@ -24,62 +24,12 @@ export default defineConfig(({ mode, command }) => {
   const APP_ENV = rawEnv.VITE_APP_ENV;                              // 环境配置
   const APP_PORT = Number(rawEnv.VITE_APP_PORT) || 3000;    // 端口号
 
-  // build flag
-  const isBuild = command === 'build'
+  // 是否为生产环境：
+  const isBuild = command === 'build';
 
-  // create plugins array (inlined implementation of createVitePlugins)
-  const vitePlugins = [vue()]
-  // auto import
-  vitePlugins.push(
-    autoImport({
-      imports: [
-        'vue',
-        'vue-router',
-        'pinia',
-        {
-          '@/utils/dict': ['useDict'],
-          '@/utils/ruoyi': ['selectDictLabel']
-        }
-      ],
-      dts: false
-    })
-  )
-  // setup extend
-  vitePlugins.push(setupExtend({}))
-  // svg icon plugin
-  vitePlugins.push(
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
-      symbolId: 'icon-[dir]-[name]',
-      svgoOptions: isBuild
-    })
-  )
-
-  // compression plugins (only on build)
-  if (isBuild) {
-    const VITE_BUILD_COMPRESS = rawEnv.VITE_BUILD_COMPRESS || ''
-    if (VITE_BUILD_COMPRESS) {
-      const compressList = VITE_BUILD_COMPRESS.split(',')
-      if (compressList.includes('gzip')) {
-        vitePlugins.push(
-          compression({
-            ext: '.gz',
-            deleteOriginFile: false
-          })
-        )
-      }
-      if (compressList.includes('brotli')) {
-        vitePlugins.push(
-          compression({
-            ext: '.br',
-            algorithm: 'brotliCompress',
-            deleteOriginFile: false
-          })
-        )
-      }
-    }
-  }
-
+  /**
+   * Vite 配置项：
+   */
   return {
     /**
      * 基础公共路径 (Base Public Path)
@@ -92,7 +42,53 @@ export default defineConfig(({ mode, command }) => {
      *    作用：注册 Vite 插件。
      *    文档：https://cn.vitejs.dev/guide/api-plugin.html
      */
-    plugins: vitePlugins,
+    plugins: [
+      vue(),
+      autoImport({
+        imports: [
+          'vue',
+          'vue-router',
+          'pinia',
+          {
+            '@/utils/dict': ['useDict'],
+            '@/utils/ruoyi': ['selectDictLabel']
+          }
+        ],
+        dts: false
+      }),
+      setupExtend({}),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
+        symbolId: 'icon-[dir]-[name]',
+        svgoOptions: isBuild
+      }),
+      // inline compression plugins via IIFE to avoid extra vars
+      ...(() => {
+        const arr = []
+        const VITE_BUILD_COMPRESS = rawEnv.VITE_BUILD_COMPRESS || ''
+        if (isBuild && VITE_BUILD_COMPRESS) {
+          const compressList = VITE_BUILD_COMPRESS.split(',')
+          if (compressList.includes('gzip')) {
+            arr.push(
+              compression({
+                ext: '.gz',
+                deleteOriginFile: false
+              })
+            )
+          }
+          if (compressList.includes('brotli')) {
+            arr.push(
+              compression({
+                ext: '.br',
+                algorithm: 'brotliCompress',
+                deleteOriginFile: false
+              })
+            )
+          }
+        }
+        return arr
+      })()
+    ],
     /**
      * 路径配置：
      *    作用：配置路径别名，简化模块导入路径；配置文件扩展名，允许在导入时省略扩展名
@@ -111,7 +107,7 @@ export default defineConfig(({ mode, command }) => {
      *    文档：https://cn.vitejs.dev/config/#build-options
      */
     build: {
-      sourcemap: command === 'build' ? false : 'inline',        // 生产环境打包时‌不生成Source Map；减小打包体积，提高加载速度；防止源代码泄露；
+      sourcemap: isBuild ? false : 'inline',        // 生产环境打包时‌不生成Source Map；减小打包体积，提高加载速度；防止源代码泄露；
       outDir: 'dist',                                           // 构建输出目录
       assetsDir: 'assets',                                      // 静态资源目录
       chunkSizeWarningLimit: 2000,                              // 构建时超过指定大小会警告
