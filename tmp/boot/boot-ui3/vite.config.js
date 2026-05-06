@@ -2,37 +2,58 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
 
-const baseUrl = 'http://localhost:8080' // 后端接口
-
-// https://vitejs.dev/config/
+/**
+ * Vite 配置文件：
+ *    作用：Vite 配置文件，用于配置 Vite 的各种选项，如：构建、代理、环境变量、插件等
+ *    文档：https://vitejs.dev/config/
+ */
 export default defineConfig(({ mode, command }) => {
-  const env = loadEnv(mode, process.cwd())
-  const { VITE_APP_ENV } = env
+
+  /**
+   * 获取环境变量：
+   */
+  const rawEnv = loadEnv(mode, process.cwd());                      // 获取环境变量
+  const API_URL = rawEnv.VITE_API_URL || 'http://localhost:8080';   // 后端API地址
+  const API_BASE = rawEnv.VITE_APP_BASE_API || '/dev-api';          // 后端API前缀
+  const APP_ENV = rawEnv.VITE_APP_ENV;                              // 环境配置
+  const APP_PORT = Number(rawEnv.VITE_APP_PORT) || 3000;    // 端口号
+
   return {
-    // 部署生产环境和开发环境下的URL。
-    // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    // 例如 https://www.boot.vip/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.boot.vip/admin/，则设置 baseUrl 为 /admin/。
-    base: VITE_APP_ENV === 'production' ? '/' : '/',
-    plugins: createVitePlugins(env, command === 'build'),
+    /**
+     * 基础公共路径 (Base Public Path)
+     *    作用：指定打包后资源（JS, CSS, 图片等）在 HTML 中的引用前缀。通常生产环境如果部署在子目录（如 /app/），需修改为对应路径。
+     *    文档：https://cn.vitejs.dev/config/#base
+     */
+    base: '/',
+    /**
+     * 插件系统 (Plugins)
+     *    作用：注册 Vite 插件。
+     *    文档：https://cn.vitejs.dev/guide/api-plugin.html
+     */
+    plugins: createVitePlugins(rawEnv, command === 'build'),
+    /**
+     * 路径配置：
+     *    作用：配置路径别名，简化模块导入路径；配置文件扩展名，允许在导入时省略扩展名
+     *    文档：https://cn.vitejs.dev/config/#resolve-alias 和 https://cn.vitejs.dev/config/#resolve-extensions
+     */
     resolve: {
-      // https://cn.vitejs.dev/config/#resolve-alias
       alias: {
-        // 设置路径
-        '~': path.resolve(__dirname, './'),
-        // 设置别名
-        '@': path.resolve(__dirname, './src')
+        '~': path.resolve(__dirname, './'),         // ~ 映射到根目录
+        '@': path.resolve(__dirname, './src')       // @ 映射到 src 目录
       },
-      // https://cn.vitejs.dev/config/#resolve-extensions
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'] // 配置文件扩展名，允许在导入时省略扩展名
     },
-    // 打包配置
+    /**
+     * 构建配置：
+     *    作用：构建优化，如：代码分割、静态资源处理、压缩、优化第三方依赖项
+     *    文档：https://cn.vitejs.dev/config/#build-options
+     */
     build: {
-      // https://vite.dev/config/build-options.html
-      sourcemap: command === 'build' ? false : 'inline',
-      outDir: 'dist',
-      assetsDir: 'assets',
-      chunkSizeWarningLimit: 2000,
-      rollupOptions: {
+      sourcemap: command === 'build' ? false : 'inline',        // 生产环境打包时‌不生成Source Map；减小打包体积，提高加载速度；防止源代码泄露；
+      outDir: 'dist',                                           // 构建输出目录
+      assetsDir: 'assets',                                      // 静态资源目录
+      chunkSizeWarningLimit: 2000,                              // 构建时超过指定大小会警告
+      rollupOptions: {                                          // rollup 配置
         output: {
           chunkFileNames: 'static/js/[name]-[hash].js',
           entryFileNames: 'static/js/[name]-[hash].js',
@@ -40,25 +61,35 @@ export default defineConfig(({ mode, command }) => {
         }
       }
     },
-    // vite 相关配置
+    /**
+     * Vite 开发服务器（Dev Server）的代理配置‌：
+     *    作用：解决前端开发过程中的‌跨域问题‌（CORS），前端应用将特定路径的请求转发到后端服务器，而浏览器认为这些请求是发往同源服务器的
+     *    文档：https://cn.vitejs.dev/config/#server-proxy
+     */
     server: {
-      port: 80,
-      host: true,
-      open: true,
-      proxy: {
-        // https://cn.vitejs.dev/config/#server-proxy
+      port: APP_PORT,       // 端口号
+      strictPort: true,     // 端口被占用时直接退出
+      host: true,           // 默认是localhost
+      open: true,           // 运行自动打开浏览器
+      proxy: {              // 代理配置，
+        // development environment proxy
         '/dev-api': {
-          target: baseUrl,
+          target: API_URL,
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
         },
          // springdoc proxy
          '^/v3/api-docs/(.*)': {
-          target: baseUrl,
+          target: API_URL,
           changeOrigin: true,
         }
       }
     },
+    /**
+     * css 配置：
+     *    作用：配置PostCSS插件以自动移除 CSS 文件中 @charset 声明，解决浏览器兼容性
+     *    文档：https://cn.vitejs.dev/config/#css-postcss
+     */
     css: {
       postcss: {
         plugins: [
