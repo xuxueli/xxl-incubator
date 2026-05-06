@@ -43,48 +43,64 @@ export default defineConfig(({ mode, command }) => {
      *    文档：https://cn.vitejs.dev/guide/api-plugin.html
      */
     plugins: [
+      /**
+       * Vue 插件：解析 Vue 文件，将 .vue 文件中的模板、样式和脚本转换为 JavaScript。
+       *    文档：https://cn.vitejs.dev/guide/using-vue.html
+       */
       vue(),
+      /**
+       * 自动导入插件：自动导入 Vue 组件、Vue 函数、第三方库等，减少重复代码；
+       *    文档：https://github.com/antfu/unplugin-auto-import
+       */
       autoImport({
         imports: [
-          'vue',
-          'vue-router',
-          'pinia',
-          {
+          'vue',                                      // 引入 Vue 官方组件
+          'vue-router',                               // 引入 Vue 路由
+          'pinia',                                    // 引入 Pinia 官方状态管理
+          {                                           // 引入自定义字典
             '@/utils/dict': ['useDict'],
             '@/utils/ruoyi': ['selectDictLabel']
           }
         ],
         dts: false
       }),
+      /**
+       * 组件名称自动补充插件：自动补充组件名称，如：<setup-extend /> => <SetupExtend />
+       *     文档：https://github.com/sxzz/vite-plugin-setup-extend
+        */
       setupExtend({}),
+      /**
+       * SVG 图标插件：自动导入 SVG 图标，并生成 SVG 图标组件
+       *     文档：https://github.com/sxzz/vite-plugin-svg-icons
+       */
       createSvgIconsPlugin({
         iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
         symbolId: 'icon-[dir]-[name]',
         svgoOptions: isBuild
       }),
-      // inline compression plugins via IIFE to avoid extra vars
+      /**
+       * 压缩插件：压缩构建后的文件，如：gzip、brotli
+       *     文档：https://github.com/vbenjs/vite-plugin-compression
+       *
+       *     inline compression plugins via IIFE to avoid extra vars
+       *     翻译：
+       */
       ...(() => {
         const arr = []
-        const VITE_BUILD_COMPRESS = rawEnv.VITE_BUILD_COMPRESS || ''
-        if (isBuild && VITE_BUILD_COMPRESS) {
-          const compressList = VITE_BUILD_COMPRESS.split(',')
-          if (compressList.includes('gzip')) {
-            arr.push(
+        if (isBuild) {
+          arr.push(
               compression({
                 ext: '.gz',
                 deleteOriginFile: false
               })
-            )
-          }
-          if (compressList.includes('brotli')) {
-            arr.push(
+          )
+          arr.push(
               compression({
                 ext: '.br',
                 algorithm: 'brotliCompress',
                 deleteOriginFile: false
               })
-            )
-          }
+          )
         }
         return arr
       })()
