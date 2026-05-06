@@ -81,9 +81,6 @@ export default defineConfig(({ mode, command }) => {
       /**
        * 压缩插件：压缩构建后的文件，如：gzip、brotli
        *     文档：https://github.com/vbenjs/vite-plugin-compression
-       *
-       *     inline compression plugins via IIFE to avoid extra vars
-       *     翻译：
        */
       ...(() => {
         const compressionList = []
