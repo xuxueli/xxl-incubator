@@ -59,7 +59,7 @@ export default defineConfig(({ mode, command }) => {
           'pinia',                                    // 引入 Pinia 官方状态管理
           {                                           // 引入自定义字典
             '@/utils/dict': ['useDict'],
-            '@/utils/ruoyi': ['selectDictLabel']
+            '@/utils/boot': ['selectDictLabel']
           }
         ],
         dts: false
