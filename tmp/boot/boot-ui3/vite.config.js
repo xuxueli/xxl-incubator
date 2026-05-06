@@ -1,6 +1,12 @@
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
-import createVitePlugins from './vite/plugins'
+
+// Vite plugins (inlined from ./vite/plugins)
+import vue from '@vitejs/plugin-vue'
+import autoImport from 'unplugin-auto-import/vite'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+import compression from 'vite-plugin-compression'
+import setupExtend from 'unplugin-vue-setup-extend-plus/vite'
 
 /**
  * Vite 配置文件：
@@ -18,6 +24,62 @@ export default defineConfig(({ mode, command }) => {
   const APP_ENV = rawEnv.VITE_APP_ENV;                              // 环境配置
   const APP_PORT = Number(rawEnv.VITE_APP_PORT) || 3000;    // 端口号
 
+  // build flag
+  const isBuild = command === 'build'
+
+  // create plugins array (inlined implementation of createVitePlugins)
+  const vitePlugins = [vue()]
+  // auto import
+  vitePlugins.push(
+    autoImport({
+      imports: [
+        'vue',
+        'vue-router',
+        'pinia',
+        {
+          '@/utils/dict': ['useDict'],
+          '@/utils/ruoyi': ['selectDictLabel']
+        }
+      ],
+      dts: false
+    })
+  )
+  // setup extend
+  vitePlugins.push(setupExtend({}))
+  // svg icon plugin
+  vitePlugins.push(
+    createSvgIconsPlugin({
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
+      symbolId: 'icon-[dir]-[name]',
+      svgoOptions: isBuild
+    })
+  )
+
+  // compression plugins (only on build)
+  if (isBuild) {
+    const VITE_BUILD_COMPRESS = rawEnv.VITE_BUILD_COMPRESS || ''
+    if (VITE_BUILD_COMPRESS) {
+      const compressList = VITE_BUILD_COMPRESS.split(',')
+      if (compressList.includes('gzip')) {
+        vitePlugins.push(
+          compression({
+            ext: '.gz',
+            deleteOriginFile: false
+          })
+        )
+      }
+      if (compressList.includes('brotli')) {
+        vitePlugins.push(
+          compression({
+            ext: '.br',
+            algorithm: 'brotliCompress',
+            deleteOriginFile: false
+          })
+        )
+      }
+    }
+  }
+
   return {
     /**
      * 基础公共路径 (Base Public Path)
@@ -30,7 +92,7 @@ export default defineConfig(({ mode, command }) => {
      *    作用：注册 Vite 插件。
      *    文档：https://cn.vitejs.dev/guide/api-plugin.html
      */
-    plugins: createVitePlugins(rawEnv, command === 'build'),
+    plugins: vitePlugins,
     /**
      * 路径配置：
      *    作用：配置路径别名，简化模块导入路径；配置文件扩展名，允许在导入时省略扩展名
