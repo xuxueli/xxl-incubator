@@ -10,14 +10,16 @@
   <title>%VITE_APP_TITLE%</title>
   <!--[if lt IE 11]><script>window.location.href='/public/ie.html';</script><![endif]-->
   <style>
+    /* 全局基础样式配置 */
     html,
     body,
     #app {
       height: 100%;
-      margin: 0px;
-      padding: 0px;
+      margin: 0;
+      padding: 0;
     }
 
+    /* Chrome 框架兼容性提示样式 */
     .chromeframe {
       margin: 0.2em 0;
       background: #ccc;
@@ -25,6 +27,7 @@
       padding: 0.2em 0;
     }
 
+    /* 页面加载动画容器样式 */
     #loader-wrapper {
       position: fixed;
       top: 0;
@@ -34,6 +37,7 @@
       z-index: 999999;
     }
 
+    /* 主加载动画圆圈样式 */
     #loader {
       display: block;
       position: relative;
@@ -53,6 +57,7 @@
       z-index: 1001;
     }
 
+    /* 加载动画内层圆圈（第一层伪元素） */
     #loader:before {
       content: "";
       position: absolute;
@@ -70,6 +75,7 @@
       animation: spin 3s linear infinite;
     }
 
+    /* 加载动画最内层圆圈（第二层伪元素） */
     #loader:after {
       content: "";
       position: absolute;
@@ -87,7 +93,7 @@
       animation: spin 1.5s linear infinite;
     }
 
-
+    /* WebKit 浏览器旋转动画关键帧定义 */
     @-webkit-keyframes spin {
       0% {
         -webkit-transform: rotate(0deg);
@@ -102,6 +108,7 @@
       }
     }
 
+    /* 标准旋转动画关键帧定义 */
     @keyframes spin {
       0% {
         -webkit-transform: rotate(0deg);
@@ -116,28 +123,30 @@
       }
     }
 
-
+    /* 加载遮罩层分区样式 */
     #loader-wrapper .loader-section {
       position: fixed;
       top: 0;
       width: 51%;
       height: 100%;
-      background: #7171C6;
+      background: #3c8dbc;
       z-index: 1000;
       -webkit-transform: translateX(0);
       -ms-transform: translateX(0);
       transform: translateX(0);
     }
 
+    /* 左侧遮罩分区定位 */
     #loader-wrapper .loader-section.section-left {
       left: 0;
     }
 
+    /* 右侧遮罩分区定位 */
     #loader-wrapper .loader-section.section-right {
       right: 0;
     }
 
-
+    /* 页面加载完成后左侧遮罩滑出动画 */
     .loaded #loader-wrapper .loader-section.section-left {
       -webkit-transform: translateX(-100%);
       -ms-transform: translateX(-100%);
@@ -146,6 +155,7 @@
       transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
+    /* 页面加载完成后右侧遮罩滑出动画 */
     .loaded #loader-wrapper .loader-section.section-right {
       -webkit-transform: translateX(100%);
       -ms-transform: translateX(100%);
@@ -154,12 +164,14 @@
       transition: all 0.7s 0.3s cubic-bezier(0.645, 0.045, 0.355, 1.000);
     }
 
+    /* 页面加载完成后加载图标淡出动画 */
     .loaded #loader {
       opacity: 0;
       -webkit-transition: all 0.3s ease-out;
       transition: all 0.3s ease-out;
     }
 
+    /* 页面加载完成后整个加载容器隐藏 */
     .loaded #loader-wrapper {
       visibility: hidden;
       -webkit-transform: translateY(-100%);
@@ -169,16 +181,19 @@
       transition: all 0.3s 1s ease-out;
     }
 
+    /* JavaScript 禁用时的降级处理 */
     .no-js #loader-wrapper {
       display: none;
     }
 
+    /* JavaScript 禁用时的标题样式调整 */
     .no-js h1 {
       color: #222222;
     }
 
+    /* 加载提示文字样式 */
     #loader-wrapper .load_title {
-      font-family: 'Open Sans';
+      font-family: 'Open Sans',serif;
       color: #FFF;
       font-size: 19px;
       width: 100%;
@@ -190,6 +205,7 @@
       line-height: 30px;
     }
 
+    /* 加载提示文字的副标题/版本信息样式 */
     #loader-wrapper .load_title span {
       font-weight: normal;
       font-style: italic;
@@ -206,7 +222,7 @@
       <div id="loader"></div>
       <div class="loader-section section-left"></div>
       <div class="loader-section section-right"></div>
-      <div class="load_title">正在加载系统资源，请耐心等待</div>
+      <div class="load_title">正在加载系统资源，请耐心等待 ...</div>
     </div>
   </div>
   <script type="module" src="/src/main.js"></script>
