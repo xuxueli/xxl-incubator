@@ -202,18 +202,11 @@ function handleTheme(val) {
 /**
  * 菜单导航-切换监听：刷新
  */
-function handleNavType(val) {
-  settingsStore.setNavType(val)
-  // 菜单导航-级联变更
-  applyNavTypeBehavior(val)
-}
+function handleNavType(type) {
+  settingsStore.setNavType(type)
 
-// 菜单导航-级联变更
-function applyNavTypeBehavior(type) {
-  // type: 1 = 左侧, 2 = 混合, 3 = 顶部
-  if (type === 1) {
-    appStore.openSideBar( true)
-  } else if (type === 2) {
+  // 菜单导航-级联变更：type: 1 = 左侧, 2 = 混合, 3 = 顶部
+  if (type === 1 || type === 2) {
     appStore.openSideBar(true)
   } else if (type === 3) {
     appStore.hideSideBar(true)
@@ -225,9 +218,11 @@ function applyNavTypeBehavior(type) {
   }
 }
 
-// 初始化时应用当前 navType（若其它模块直接修改 settingsStore.navType，建议改为 watch）
+// 页面初始化：顶部导航时，隐藏侧边栏（若其它模块直接修改 settingsStore.navType，建议改为 watch）
 onMounted(() => {
-  handleNavType(settingsStore.navType);
+  if (settingsStore.navType === 3) {
+    appStore.hideSideBar(true)
+  }
 })
 
 /**
