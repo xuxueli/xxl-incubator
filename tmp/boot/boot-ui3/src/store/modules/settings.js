@@ -27,6 +27,11 @@ const storageSetting = JSON.parse(localStorage.getItem(LAYOUT_SETTING_KEY)) || {
  *
  *
  * Pinia 简介：提供简洁、模块化且类型友好的状态管理能力。
+ *      - 单一实例‌：Store 实例在应用生命周期内只创建一次，当第一次调用 useStore() 时生成。这种单例模式确保了应用全局状态的一致性和共享性。
+ *      - 注册机制：Pinia 内部维护一个 Map 结构，以 Store 的 ID‌（即 defineStore 的第一个参数）作为键，Store 实例作为值。
+ *      - 生命周期：Store 生命周期与 Vue 组件生命周期一致，当Vue 组件销毁时，Store 也会自动销毁。
+ *      - 跨组件同步‌：在组件 A 中修改了 Store 的状态，组件 B 中读取到的状态会立即更新，因为它们引用的是内存中的同一个对象。
+ *      - 注意：虽然 Store 实例是单例且响应式的，但直接解构 State 或 Getters 会导致‌失去响应性‌（因为解构出来的是普通变量，不再是 Proxy 对象）。
  * Pinia 定义：
  * <pre>
  *      import { defineStore } from 'pinia'

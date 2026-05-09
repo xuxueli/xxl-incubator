@@ -19,7 +19,7 @@ import Cookies from 'js-cookie'
 import App from '@/App'
 import router from '@/router'
 import store from '@/store'
-import '@/router/guards'                                    // 全局路由权限守卫（副作用导入/side-effect import，执行时会自动注册路由守卫）
+import '@/router/guards'                                    // 全局路由权限守卫：“副作用导入/side-effect import”方式，模块加载时自动注册全局路由权限守卫，无需引入具体变量；
 
 // 全局配置
 import directive from '@/directive'                         // 自定义指令
@@ -53,8 +53,8 @@ import ImagePreview from '@/components/ImagePreview'        // 图片预览组�
 const app = createApp(App)
 
 // ==================== 安装核心插件 ====================
-app.use(router)                     // 路由系统
-app.use(store)                      // 状态管理
+app.use(router)                     // 路由系统：router 安装 + 副作用导入 “路由守卫 / guards”；
+app.use(store)                      // 状态管理：Pinia安装；Store实例懒加载方式生成并缓存；
 app.use(plugins)                    // 全局插件
 app.use(elementIcons)               // 图标组件
 app.use(ElementPlus, {      // UI组件库：element-plus，配置语言和尺寸
