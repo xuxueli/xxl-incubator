@@ -171,13 +171,13 @@ getCookie()
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-color: #d2d6de;
   background-size: cover;
 }
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
-  color: #707070;
+  color: #444;
 }
 
 .login-form {
@@ -219,7 +219,7 @@ getCookie()
   bottom: 0;
   width: 100%;
   text-align: center;
-  color: #fff;
+  color: #666;
   font-family: Arial;
   font-size: 12px;
   letter-spacing: 1px;
@@ -229,11 +229,15 @@ getCookie()
   padding-left: 12px;
 }
 
+/* 暗黑模式 */
 html.dark .login {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../assets/images/login-background.jpg");
+  background-color: #d2d6de;
   .login-form {
     background: var(--el-bg-color-overlay) !important;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
   }
+}
+html.dark .title {
+  color: #c5c5c5;
 }
 </style>

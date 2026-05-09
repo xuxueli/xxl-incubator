@@ -160,7 +160,7 @@ getCode()
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-color: #d2d6de;
   background-size: cover;
 }
 .title {

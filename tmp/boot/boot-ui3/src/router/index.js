@@ -1,3 +1,13 @@
+/**
+ * Description：路由配置，包括静态路由和动态路由
+ *
+ *  1. 静态路由（constantRoutes）：所有用户都可以访问的基础路由，如登录、注册、404 等；
+ *  2. 动态路由（dynamicRoutes）：基于用户权限动态加载的路由，如用户管理、角色管理等；
+ *  3. 路由元信息（meta）：用于控制路由的显示、权限等，如 title、icon、roles、permissions 等；
+ *  4. 路由守卫：在 guards.js 中定义全局路由守卫，根据用户权限动态添加路由；
+ *  5. 路由懒加载：使用动态 import 实现组件的按需加载，优化性能。
+ *
+ */
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
 import Layout from '@/layout'

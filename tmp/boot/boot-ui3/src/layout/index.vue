@@ -1,3 +1,11 @@
+<!--
+  功能：框架主布局组件，包含侧边栏、导航栏、标签页和设置组件
+  逻辑：
+    1. 根据窗口大小自动切换设备类型（移动端/桌面端）
+    2. 在移动端打开侧边栏时显示遮罩层，点击遮罩层关闭侧边栏
+    3. 根据设置动态调整主题颜色和布局
+    4. 移动端打开侧边栏时，点击遮罩层关闭侧边栏
+-->
 <template>
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme, '--current-color-light': theme + '1a', '--current-color-dark-bg': theme + '33' }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
