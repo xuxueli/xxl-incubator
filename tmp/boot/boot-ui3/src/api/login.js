@@ -20,7 +20,7 @@ export function login(username, password, code, uuid) {
 }
 
 // 注册方法
-export function register(data) {
+/*export function register(data) {
   return request({
     url: '/register',
     headers: {
@@ -29,7 +29,7 @@ export function register(data) {
     method: 'post',
     data: data
   })
-}
+}*/
 
 // 获取用户详细信息
 export function getInfo() {
@@ -40,13 +40,13 @@ export function getInfo() {
 }
 
 // 解锁屏幕
-export function unlockScreen(password) {
+/*export function unlockScreen(password) {
   return request({
     url: '/unlockscreen',
     method: 'post',
     data: { password }
   })
-}
+}*/
 
 // 退出方法
 export function logout() {

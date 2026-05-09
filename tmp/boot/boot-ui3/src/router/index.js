@@ -52,11 +52,11 @@ export const constantRoutes = [
     component: () => import('@/views/login'),
     hidden: true
   },
-  {
+  /*{
     path: '/register',
     component: () => import('@/views/register'),
     hidden: true
-  },
+  },*/
   {
     path: "/:pathMatch(.*)*",
     component: () => import('@/views/error/404'),
@@ -80,12 +80,12 @@ export const constantRoutes = [
       }
     ]
   },
-  {
+  /*{
     path: '/lock',
     component: () => import('@/views/lock'),
     hidden: true,
     meta: { title: '锁定屏幕' }
-  },
+  },*/
   {
     path: '/user',
     component: Layout,
