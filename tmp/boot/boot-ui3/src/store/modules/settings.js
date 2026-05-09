@@ -131,6 +131,30 @@ const useSettingsStore = defineStore(
             },
 
             /**
+             * 设置：标签页持久化选项，并在关闭持久化时清理标签页缓存
+             * @param {boolean} val
+             */
+            setTagsViewPersist(val) {
+                this.tagsViewPersist = val
+                if (!val) {
+                    try {
+                        localStorage.removeItem('tags-view-visited')
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+            },
+            /**
+             * 设置：侧边主题（例如 'theme-dark'/'theme-light'），集中处理更新逻辑
+             * @param {string} val
+             */
+            setSideTheme(val) {
+                this.sideTheme = val
+                // 如果将来需要在切换侧边主题时做额外副作用（比如埋点、动态样式调整），
+                // 可在这里统一处理
+            },
+
+            /**
              * 设置：网页标题，支持动态标题
              *
              * @param {string} title - 要设置的网页标题
