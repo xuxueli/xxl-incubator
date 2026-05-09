@@ -111,7 +111,8 @@ const useSettingsStore = defineStore(
              */
             setTheme(themeVal) {
                 this.theme = themeVal
-                // 立即应用主题样式
+
+                // 联动变更：立即应用主题样式
                 nextTick(() => {
                     handleThemeStyle(this.theme)
                 })
@@ -132,10 +133,12 @@ const useSettingsStore = defineStore(
 
             /**
              * 设置：标签页持久化选项，并在关闭持久化时清理标签页缓存
-             * @param {boolean} val
+             * @param {boolean} val true-开启持久化，false-关闭持久化，并清理缓存
              */
             setTagsViewPersist(val) {
                 this.tagsViewPersist = val
+
+                // 联动变更：清理标签页缓存
                 if (!val) {
                     try {
                         localStorage.removeItem('tags-view-visited')
@@ -157,12 +160,12 @@ const useSettingsStore = defineStore(
             /**
              * 设置：网页标题，支持动态标题
              *
-             * @param {string} title - 要设置的网页标题
+             * @param {string} title - 菜单标题
              */
             setTitle(title) {
                 this.title = title
 
-                // 动态标题
+                // 联动变更：修改 document.title
                 if (this.dynamicTitle) {
                     document.title = this.title + ' - ' + defaultSettings.title
                 } else {
