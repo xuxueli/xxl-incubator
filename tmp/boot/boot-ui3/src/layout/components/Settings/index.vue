@@ -56,7 +56,7 @@
     </div>
     <div class="drawer-item">
       <span>主题颜色</span>
-          <span class="comp-style">
+      <span class="comp-style">
             <el-color-picker v-model="theme" :predefine="predefineColors"/>
           </span>
     </div>
@@ -157,7 +157,10 @@ const tagsViewStore = useTagsViewStore()
 // 布局设置：组件是否显示
 const showSettingsRef = ref(false);
 // 菜单导航：左侧、混合、顶部
-const navType = ref(settingsStore.navType);
+const navType = computed({
+  get: () => settingsStore.navType,
+  set: v  => settingsStore.setNavType(v)
+});
 // 主题色：使用 computed getter/setter 与 store 同步
 const theme = computed({
   get: () => settingsStore.theme,
@@ -201,7 +204,6 @@ function handleTheme(val) {
  */
 function handleNavType(val) {
   settingsStore.setNavType(val)
-
   // 菜单导航-级联变更
   applyNavTypeBehavior(val)
 }
@@ -247,7 +249,7 @@ function saveSetting() {
   settingsStore.saveSetting()
 
   // 弹框提示： Close
-  setTimeout(function (){
+  setTimeout(function () {
     proxy.$modal.closeLoading();
     closeSetting();
   }, 500)

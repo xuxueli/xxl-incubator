@@ -181,19 +181,6 @@ const useSettingsStore = defineStore(
              */
             setNavType(val) {
                 this.navType = val
-            },
-            /**
-             * 设置：根据键值对更新，仅更新 state 中已存在的属性
-             *
-             * @param {Object} data - 包含要修改的配置项数据
-             * @param {string} data.key - 配置项的键名
-             * @param {*} data.value - 配置项的新值
-             */
-            changeSetting(data) {
-                const {key, value} = data
-                if (this.hasOwnProperty(key)) {
-                    this[key] = value
-                }
             }
         }
     })

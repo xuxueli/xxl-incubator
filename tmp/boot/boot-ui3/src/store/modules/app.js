@@ -10,9 +10,9 @@ const useAppStore = defineStore(
         state: () => ({
             // 侧边栏状态
             sidebar: {
-                opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,    // 0: 关闭，1: 开启
-                withoutAnimation: false,                                                          // 侧边栏切换动画
-                hide: false                                                                       // 侧边栏隐藏
+                opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,    // 是否展开：0-关闭 1-展开
+                withoutAnimation: false,                                                          // 是否无切换动画：true-无动画 false-有动画
+                hide: false                                                                       // 是否隐藏：true-隐藏 false-显示
             },
             // 设备状态
             device: 'desktop',
@@ -49,6 +49,13 @@ const useAppStore = defineStore(
                 this.sidebar.withoutAnimation = withoutAnimation
             },
             /**
+             * 侧边栏隐藏
+             * @param status  侧边栏隐藏状态
+             */
+            toggleSideBarHide(status) {
+                this.sidebar.hide = status
+            },
+            /**
              * 设置设备状态
              * @param device  设备状态
              */
@@ -62,13 +69,6 @@ const useAppStore = defineStore(
             setSize(size) {
                 this.size = size
                 Cookies.set('size', size)
-            },
-            /**
-             * 侧边栏隐藏
-             * @param status  侧边栏隐藏状态
-             */
-            toggleSideBarHide(status) {
-                this.sidebar.hide = status
             }
         }
     })
