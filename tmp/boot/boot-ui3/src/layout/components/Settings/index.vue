@@ -176,21 +176,21 @@ const tagsViewPersist = computed({
 
 
 /**
- * 动态标题-切换监听
+ * 动态标题-切换监听：更新 document.title
  */
 function dynamicTitleChange() {
   settingsStore.refreshTitle();
 }
 
 /**
- * 标签页持久化-切换监听
+ * 标签页持久化-切换监听：触发清理 标签页缓存
  */
 function tagsViewPersistChange(val) {
   settingsStore.setTagsViewPersist(val)
 }
 
 /**
- * 侧边主题-切换监听
+ * 侧边主题-切换监听：
  */
 function handleTheme(val) {
   settingsStore.setSideTheme(val)
