@@ -21,7 +21,7 @@ const isWhiteList = (path) => {
 router.beforeEach(async (to, from) => {
   NProgress.start()
   if (getToken()) {
-    to.meta.title && useSettingsStore().setTitle(to.meta.title)
+    to.meta.title && useSettingsStore().setMenuTitle(to.meta.title)
     const isLock = useLockStore().isLock
     if (to.path === '/login') {
       NProgress.done()

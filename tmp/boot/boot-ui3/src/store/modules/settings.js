@@ -34,8 +34,8 @@ const useSettingsStore = defineStore(
          * 如果不存在则使用默认配置
          */
         state: () => ({
-            title: '',                  // 系统标题（菜单）
-            isDark: isDark.value,       // 暗黑模式
+            menuTitle: '',                  // 菜单标题
+            isDark: isDark.value,           // 暗黑模式-是否
             showSettings: defaultSettings.showSettings,
             navType: storageSetting.navType === undefined ? defaultSettings.navType : storageSetting.navType,
             sideTheme: storageSetting.sideTheme || defaultSettings.sideTheme,
@@ -162,19 +162,19 @@ const useSettingsStore = defineStore(
                 this.dynamicTitle = val
 
                 // 联动变更：网页标题 刷新
-                this.setTitle(this.title);
+                this.setMenuTitle(this.menuTitle);
             },
             /**
              * 设置：网页标题，支持动态标题
              *
-             * @param {string} title - 菜单标题
+             * @param {string} menuTitle - 菜单标题
              */
-            setTitle(title) {
-                this.title = title
+            setMenuTitle(menuTitle) {
+                this.menuTitle = menuTitle
 
                 // 联动变更：修改 document.title
                 if (this.dynamicTitle) {
-                    document.title = this.title + ' - ' + defaultSettings.title
+                    document.title = this.menuTitle + ' - ' + defaultSettings.title
                 } else {
                     document.title = defaultSettings.title
                 }
