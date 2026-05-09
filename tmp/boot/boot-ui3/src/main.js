@@ -19,11 +19,11 @@ import Cookies from 'js-cookie'
 import App from './App'
 import router from './router'
 import store from './store'
+import '@/router/guards'                                    // 全局路由权限守卫（副作用导入/side-effect import，执行时会自动注册路由守卫）
 
 // 全局配置
 import directive from './directive'                         // 自定义指令
 import plugins from './plugins'                             // 全局插件
-import '@/router/guards'                                    // 全局路由权限守卫
 
 // ==================== 全局样式 ====================
 import '@/assets/styles/index.scss'
