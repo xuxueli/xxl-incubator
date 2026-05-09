@@ -1,3 +1,9 @@
+/*
+* Description: 全局插件，挂载到Vue实例上
+* 使用方式：
+*   1、Options API     ：this.$tab.xxx
+*   2、Composition API ：proxy.$modal.msgSuccess("操作成功");
+* */
 import tab from './tab'
 import auth from './auth'
 import cache from './cache'

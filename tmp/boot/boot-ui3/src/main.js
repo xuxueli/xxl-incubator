@@ -1,3 +1,6 @@
+/**
+ * Description: 引导文件
+ */
 // ==================== 核心依赖库 ====================
 // Vue 核心
 import {createApp} from 'vue'
