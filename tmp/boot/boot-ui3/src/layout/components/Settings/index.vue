@@ -212,14 +212,11 @@ function handleNavType(val) {
 function applyNavTypeBehavior(type) {
   // type: 1 = 左侧, 2 = 混合, 3 = 顶部
   if (type === 1) {
-    appStore.sidebar.opened = true
-    appStore.toggleSideBarHide(false)
+    appStore.openSideBar( true)
   } else if (type === 2) {
-    appStore.sidebar.opened = true
-    // 混合菜单不改变 hide 状态
+    appStore.openSideBar(true)
   } else if (type === 3) {
-    appStore.sidebar.opened = false
-    appStore.toggleSideBarHide(true)
+    appStore.hideSideBar(true)
   }
 
   // 只有左侧/顶部需要设置侧边栏路由

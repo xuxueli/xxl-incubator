@@ -102,11 +102,11 @@ const activeMenu = computed(() => {
     const tmpPath = path.substring(1, path.length)
     if (!route.meta.link) {
       activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"))
-      appStore.toggleSideBarHide(false)
+      appStore.hideSideBar(false)
     }
   } else if(!route.children) {
     activePath = path
-    appStore.toggleSideBarHide(true)
+    appStore.hideSideBar(true)
   }
   activeRoutes(activePath)
   return activePath
@@ -132,11 +132,11 @@ function handleSelect(key, keyPath) {
     } else {
       router.push({ path: key })
     }
-    appStore.toggleSideBarHide(true)
+    appStore.hideSideBar(true)
   } else {
     // 显示左侧联动菜单
     activeRoutes(key)
-    appStore.toggleSideBarHide(false)
+    appStore.hideSideBar(false)
   }
 }
 
@@ -152,7 +152,7 @@ function activeRoutes(key) {
   if(routes.length > 0) {
     permissionStore.setSidebarRouters(routes)
   } else {
-    appStore.toggleSideBarHide(true)
+    appStore.hideSideBar(true)
   }
   return routes
 }
