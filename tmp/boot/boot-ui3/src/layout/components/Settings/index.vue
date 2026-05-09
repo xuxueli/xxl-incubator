@@ -149,24 +149,31 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
-// 配置项
-const showSettings = ref(false)                   // 布局设置：是否显示
-const navType = ref(settingsStore.navType)        // 菜单导航：左侧、混合、顶部
-const theme = computed({                          // 主题色（使用 computed getter/setter 与 store 同步）
+/**
+ * 配置项
+ */
+// 布局设置：是否显示
+const showSettings = ref(false)
+// 菜单导航：左侧、混合、顶部
+const navType = ref(settingsStore.navType)
+// 主题色：使用 computed getter/setter 与 store 同步
+const theme = computed({
   get: () => settingsStore.theme,
   set: v => settingsStore.setTheme(v)
 })
-const sideTheme = computed({                      // 主题风格：暗色、浅色
+// 主题色：预设颜色
+const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
+// 主题风格：暗色、浅色
+const sideTheme = computed({
   get: () => settingsStore.sideTheme,
   set: v => settingsStore.setSideTheme(v)
 })
-const tagsViewPersist = computed({                // 持久化标签页
+// 持久化标签页
+const tagsViewPersist = computed({
   get: () => settingsStore.tagsViewPersist,
   set: v => settingsStore.setTagsViewPersist(v)
 })
 
-// 预设：主题颜色
-const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
 
 /**
  * 动态标题-切换监听
@@ -181,8 +188,6 @@ function dynamicTitleChange() {
 function tagsViewPersistChange(val) {
   settingsStore.setTagsViewPersist(val)
 }
-
-// 主题颜色的变更由上面的 computed setter 负责，无需额外的 themeChange 方法
 
 /**
  * 侧边主题-切换监听

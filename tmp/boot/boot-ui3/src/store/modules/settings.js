@@ -34,11 +34,12 @@ const useSettingsStore = defineStore(
          * 如果不存在则使用默认配置
          */
         state: () => ({
-            title: '',
-            theme: storageSetting.theme || '#409EFF',
-            sideTheme: storageSetting.sideTheme || defaultSettings.sideTheme,
+            title: '',                  // 系统标题（菜单）
+            isDark: isDark.value,       // 暗黑模式
             showSettings: defaultSettings.showSettings,
             navType: storageSetting.navType === undefined ? defaultSettings.navType : storageSetting.navType,
+            sideTheme: storageSetting.sideTheme || defaultSettings.sideTheme,
+            theme: storageSetting.theme || defaultSettings.theme,
             tagsView: storageSetting.tagsView === undefined ? defaultSettings.tagsView : storageSetting.tagsView,
             tagsViewPersist: storageSetting.tagsViewPersist === undefined ? defaultSettings.tagsViewPersist : storageSetting.tagsViewPersist,
             tagsIcon: storageSetting.tagsIcon === undefined ? defaultSettings.tagsIcon : storageSetting.tagsIcon,
@@ -47,8 +48,7 @@ const useSettingsStore = defineStore(
             sidebarLogo: storageSetting.sidebarLogo === undefined ? defaultSettings.sidebarLogo : storageSetting.sidebarLogo,
             dynamicTitle: storageSetting.dynamicTitle === undefined ? defaultSettings.dynamicTitle : storageSetting.dynamicTitle,
             footerVisible: storageSetting.footerVisible === undefined ? defaultSettings.footerVisible : storageSetting.footerVisible,
-            footerContent: defaultSettings.footerContent,
-            isDark: isDark.value
+            footerContent: defaultSettings.footerContent
         }),
         /**
          * 动作方法定义
@@ -71,16 +71,16 @@ const useSettingsStore = defineStore(
             saveSetting() {
                 const layoutSetting = {
                     navType: this.navType,
+                    sideTheme: this.sideTheme,
+                    theme: this.theme,
                     tagsView: this.tagsView,
+                    tagsViewPersist: this.tagsViewPersist,
                     tagsIcon: this.tagsIcon,
                     tagsViewStyle: this.tagsViewStyle,
-                    tagsViewPersist: this.tagsViewPersist,
                     fixedHeader: this.fixedHeader,
                     sidebarLogo: this.sidebarLogo,
                     dynamicTitle: this.dynamicTitle,
-                    footerVisible: this.footerVisible,
-                    sideTheme: this.sideTheme,
-                    theme: this.theme
+                    footerVisible: this.footerVisible
                 }
                 localStorage.setItem(LAYOUT_SETTING_KEY, JSON.stringify(layoutSetting))
             },

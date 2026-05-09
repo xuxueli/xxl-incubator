@@ -6,15 +6,7 @@ export default {
   title: 'Boot管理系统',
 
   /**
-   * 侧边栏主题：
-   *
-   * 1、深色主题：theme-dark
-   * 2、浅色主题：theme-light
-   */
-  sideTheme: 'theme-dark',
-
-  /**
-   * 是否系统布局配置
+   * 布局配置：启用开关
    */
   showSettings: true,
 
@@ -28,7 +20,20 @@ export default {
   navType: 1,
 
   /**
-   * 是否显示 tagsView
+   * 侧边栏主题：
+   *
+   * 1、深色主题：theme-dark
+   * 2、浅色主题：theme-light
+   */
+  sideTheme: 'theme-dark',
+
+  /**
+   * 主题颜色
+   */
+  theme: '#409EFF',
+
+  /**
+   * 页签/tagsView：是否启用
    */
   tagsView: true,
 
@@ -38,7 +43,7 @@ export default {
   tagsViewPersist: false,
 
   /**
-   * 显示页签图标
+   * 页签图标
    */
   tagsIcon: false,
 
