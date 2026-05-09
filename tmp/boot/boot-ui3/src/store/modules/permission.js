@@ -29,6 +29,10 @@ const usePermissionStore = defineStore(
       setTopbarRoutes(routes) {
         this.topbarRouters = routes
       },
+      /**
+       * 设置侧边栏路由: 用于侧边栏菜单
+       * @param routes
+       */
       setSidebarRouters(routes) {
         this.sidebarRouters = routes
       },
