@@ -92,7 +92,7 @@ const useSettingsStore = defineStore(
                 localStorage.removeItem(LAYOUT_SETTING_KEY)
 
                 // 恢复到默认配置
-                this.showSettings = defaultSettings.showSettings
+                this.showSettingsRef = defaultSettings.showSettings
                 this.navType = defaultSettings.navType
                 this.sideTheme = defaultSettings.sideTheme
                 this.theme = defaultSettings.theme
@@ -145,15 +145,6 @@ const useSettingsStore = defineStore(
              */
             setTagsViewPersist(val) {
                 this.tagsViewPersist = val
-
-                // 联动变更：清理标签页缓存
-                if (!val) {
-                    try {
-                        localStorage.removeItem('tags-view-visited')
-                    } catch (e) {
-                        // ignore
-                    }
-                }
             },
             /**
              * 设置：动态标题开关

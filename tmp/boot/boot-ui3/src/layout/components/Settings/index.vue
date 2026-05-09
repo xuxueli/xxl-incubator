@@ -3,7 +3,7 @@
   功能：菜单导航、布局风格、页签图标、页签样式、页签持久化 …… 等。
 -->
 <template>
-  <el-drawer v-model="showSettings" :withHeader="false" :lock-scroll="false" direction="rtl" size="300px">
+  <el-drawer v-model="showSettingsRef" :withHeader="false" :lock-scroll="false" direction="rtl" size="300px">
     <div class="setting-drawer-title">
       <h3 class="drawer-title">菜单导航设置</h3>
     </div>
@@ -135,6 +135,7 @@
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
+import useTagsViewStore from '@/store/modules/tagsView'
 
 // Vue 实例代理对象：用于访问全局方法（如 $modal、$cache）
 const {proxy} = getCurrentInstance()
@@ -143,16 +144,18 @@ const {proxy} = getCurrentInstance()
  * 1、appStore：应用Store，用于应用级别的数据处理，如：侧边栏、字体 等；
  * 2、settingsStore：设置Store，用于设置级别数据处理，如：菜单导航、页签图标、主题色 等；
  * 3、permissionStore：权限Store，用于权限级别数据处理，如：动态路由、动态菜单 等；
+ * 4、tagsViewStore：标签Store，用于标签级别数据处理，如：标签页缓存；
  */
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
+const tagsViewStore = useTagsViewStore()
 
 /**
  * 配置项
  */
 // 布局设置：是否显示
-const showSettings = ref(false)
+const showSettingsRef = ref(false)
 // 菜单导航：左侧、混合、顶部
 const navType = ref(settingsStore.navType)
 // 主题色：使用 computed getter/setter 与 store 同步
@@ -170,7 +173,14 @@ const sideTheme = computed({
 // 持久化标签页：开关设置
 const tagsViewPersist = computed({
   get: () => settingsStore.tagsViewPersist,
-  set: v => settingsStore.setTagsViewPersist(v)     // 联动更新：触发清理 标签页缓存
+  set: function (val) {
+    settingsStore.setTagsViewPersist(val)
+
+    // 联动变更：若不保存标签页，主动清除 - 标签页缓存
+    if (!val) {
+      tagsViewStore.clearVisitedViews();
+    }
+  }
 })
 
 // 动态标题：
@@ -224,14 +234,17 @@ function saveSetting() {
 
   // 若不保存标签页，主动清除 - 标签页缓存
   if (!tagsViewPersist.value) {
-    proxy.$cache.local.remove('tags-view-visited')
+    tagsViewStore.clearVisitedViews();
   }
 
   // Setting设置：持久化
   settingsStore.saveSetting()
 
   // 弹框提示： Close
-  setTimeout(() => proxy.$modal.closeLoading(), 500)
+  setTimeout(function (){
+    proxy.$modal.closeLoading();
+    closeSetting();
+  }, 500)
 }
 
 /**
@@ -239,7 +252,7 @@ function saveSetting() {
  */
 function resetSetting() {
   // 主动清除 - 标签页缓存
-  proxy.$cache.local.remove('tags-view-visited')
+  tagsViewStore.clearVisitedViews();
 
   // 弹框提示：Open
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
@@ -251,10 +264,23 @@ function resetSetting() {
   setTimeout(() => window.location.reload(), 500)
 }
 
+/**
+ * 打开布局设置
+ */
 function openSetting() {
-  showSettings.value = true
+  showSettingsRef.value = true
 }
 
+/**
+ * 关闭布局设置
+ */
+function closeSetting() {
+  showSettingsRef.value = false
+}
+
+/**
+ * 暴露方法
+ */
 defineExpose({
   openSetting
 })
