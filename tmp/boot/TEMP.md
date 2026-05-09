@@ -61,3 +61,23 @@ FontEnd（前后端分离）：
     帮助中心：
 ```
 
+前端Module：
+    /src    
+        /api                    // TODO 1
+        /assets                 // --     
+        /components             // TODO 3
+        /directive              // TODO 3
+        /layout                 // TODO 3
+        /plugins                // TODO 2    
+        /router                 // TODO 1
+        /store                  // TODO 1
+        /utils                  // TODO 2
+        /views                  // TODO 3
+        App.vue                 :--
+        main.js                 :--
+        settings.js             :--
+    env.development             :--
+    index.html                  :--
+    package.json                :--
+    vite.config.js              :--
+
