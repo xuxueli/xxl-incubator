@@ -1,11 +1,15 @@
 export default {
+
   /**
    * 网页标题
    */
   title: 'Boot管理系统',
 
   /**
-   * 侧边栏主题 深色主题 theme-dark，浅色主题 theme-light
+   * 侧边栏主题：
+   *
+   * 1、深色主题：theme-dark
+   * 2、浅色主题：theme-light
    */
   sideTheme: 'theme-dark',
 
@@ -15,7 +19,11 @@ export default {
   showSettings: true,
 
   /**
-   * 菜单导航模式 1、纯左侧 2、混合（左侧+顶部） 3、纯顶部
+   * 菜单导航模式
+   *
+   * 1、纯左侧
+   * 2、混合（左侧+顶部）
+   * 3、纯顶部
    */
   navType: 1,
 
@@ -35,7 +43,10 @@ export default {
   tagsIcon: false,
 
   /**
-   * 标签页样式：card 卡片、chrome 谷歌浏览器风格
+   * 标签页样式：
+   *
+   * 1、卡片：card
+   * 2、谷歌浏览器风格：chrome
    */
   tagsViewStyle: 'chrome',
 
@@ -64,4 +75,3 @@ export default {
    */
   footerContent: 'Copyright © 2015-' + new Date().getFullYear() + ' Boot. All Rights Reserved.'
 }
-
