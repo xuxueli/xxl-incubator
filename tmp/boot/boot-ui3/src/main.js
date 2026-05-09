@@ -1,6 +1,6 @@
 // ==================== 核心依赖库 ====================
 // Vue 核心
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 
 // UI 组件库
 import ElementPlus from 'element-plus'
@@ -31,10 +31,10 @@ import SvgIcon from '@/components/SvgIcon'                  // 自定义图标
 import elementIcons from '@/components/SvgIcon/svgicon'
 
 // ==================== 工具函数 ====================
-import { useDict } from '@/utils/dict'
-import { download } from '@/utils/request'
-import { getConfigKey } from '@/api/sys/config'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/boot'
+import {useDict} from '@/utils/dict'
+import {download} from '@/utils/request'
+import {getConfigKey} from '@/api/sys/config'
+import {parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels} from '@/utils/boot'
 
 // ==================== 全局业务组件 ====================
 import RightToolbar from '@/components/RightToolbar'        // 工具栏组件
@@ -84,9 +84,9 @@ directive(app)
 // ==================== 初始化 UI 组件库 ====================
 // 配置语言和默认组件尺寸（支持 large、default、small）
 app.use(ElementPlus, {
-  locale,
-  // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
+    locale,
+    // 支持 large、default、small
+    size: Cookies.get('size') || 'default'
 })
 
 // ==================== 挂载应用到 DOM ====================
