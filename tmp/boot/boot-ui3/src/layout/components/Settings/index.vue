@@ -187,13 +187,17 @@ function themeChange(val) {
   settingsStore.setTheme(val)
 }
 
+/**
+ * 侧边主题-切换监听
+ */
 function handleTheme(val) {
-  // delegate to store action
   settingsStore.setSideTheme(val)
 }
 
+/**
+ * 菜单导航-切换监听
+ */
 function handleNavType(val) {
-  // use store action to update navType to keep writes consistent
   settingsStore.changeSetting({key: 'navType', value: val})
   navType.value = val
 }

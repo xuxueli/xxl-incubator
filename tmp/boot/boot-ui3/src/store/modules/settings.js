@@ -153,8 +153,6 @@ const useSettingsStore = defineStore(
              */
             setSideTheme(val) {
                 this.sideTheme = val
-                // 如果将来需要在切换侧边主题时做额外副作用（比如埋点、动态样式调整），
-                // 可在这里统一处理
             },
 
             /**
