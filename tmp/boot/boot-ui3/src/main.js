@@ -25,21 +25,21 @@ import '@/router/guards'                                    // 全局路由权�
 import directive from './directive'                         // 自定义指令
 import plugins from './plugins'                             // 全局插件
 
-// ==================== 全局样式 ====================
+// ==================== 全局资源 ====================
+// 全局样式
 import '@/assets/styles/index.scss'
-
-// ==================== SVG 图标 ====================
+// svg 图标
 import 'virtual:svg-icons-register'                         // svg 图标
 import SvgIcon from '@/components/SvgIcon'                  // 自定义图标
 import elementIcons from '@/components/SvgIcon/svgicon'
 
-// ==================== 工具函数 ====================
+// 工具函数：字典、下载、日期处理等
 import {useDict} from '@/utils/dict'
 import {download} from '@/utils/request'
 import {getConfigKey} from '@/api/sys/config'
 import {parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels} from '@/utils/boot'
 
-// ==================== 业务组件 ====================
+// 业务组件：分页、上传、编辑器等；
 import RightToolbar from '@/components/RightToolbar'        // 工具栏组件
 import Pagination from '@/components/Pagination'            // 分页组件
 import DictTag from '@/components/DictTag'                  // 字典标签组件
@@ -53,17 +53,17 @@ import ImagePreview from '@/components/ImagePreview'        // 图片预览组�
 const app = createApp(App)
 
 // ==================== 安装核心插件 ====================
-app.use(router)                     // 路由
+app.use(router)                     // 路由系统
 app.use(store)                      // 状态管理
-app.use(plugins)                    // 插件
-app.use(elementIcons)               // 图标
-app.use(ElementPlus, {      // element-plus: 配置语言和默认组件尺寸
+app.use(plugins)                    // 全局插件
+app.use(elementIcons)               // 图标组件
+app.use(ElementPlus, {      // UI组件库：element-plus，配置语言和尺寸
     locale,                                 // 语言
     size: Cookies.get('size') || 'default'  // 支持 large、default、small
 })
 
 // ==================== 挂载全局方法 ====================
-// 兼容 Options API：可通过 this.xxx 调用，示例 this.getConfigKey('sys.user.defaultPassword')
+// 兼容 Options API：可通过 this.xxx、proxy.xxx 调用，示例 proxy.getConfigKey('xxx')
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
 app.config.globalProperties.getConfigKey = getConfigKey
@@ -75,11 +75,11 @@ app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
 
 // ==================== 注册自定义指令 ====================
-// 自定义指令：可通过 v-hasRole 调用，示例 v-hasRole="['admin','editor']"
+// 自定义指令：注册 v-hasRole、v-hasPermi 等权限指令，示例 v-hasRole="['admin','editor']"
 directive(app)
 
 // ==================== 注册全局业务组件 ====================
-// 页面可直接使用：无需重复 import，例如 <RightToolbar />
+// 页面业务组件：可直接使用，无需重复 import；例如 <RightToolbar />
 app.component('RightToolbar', RightToolbar)
 app.component('Pagination', Pagination)
 app.component('DictTag', DictTag)
