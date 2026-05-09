@@ -1,4 +1,4 @@
-import router from './router'
+import router from './index'
 import { ElMessage } from 'element-plus'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
@@ -74,3 +74,4 @@ router.beforeEach(async (to, from) => {
 router.afterEach(() => {
   NProgress.done()
 })
+
