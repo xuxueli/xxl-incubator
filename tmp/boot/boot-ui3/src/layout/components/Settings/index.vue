@@ -112,7 +112,7 @@
     <div class="drawer-item">
       <span>动态标题</span>
       <span class="comp-style">
-        <el-switch v-model="settingsStore.dynamicTitle" @change="dynamicTitleChange" class="drawer-switch"/>
+        <el-switch v-model="dynamicTitle" class="drawer-switch"/>
       </span>
     </div>
 
@@ -167,19 +167,17 @@ const sideTheme = computed({
   get: () => settingsStore.sideTheme,
   set: v => settingsStore.setSideTheme(v)
 })
-// 持久化标签页：
+// 持久化标签页：开关设置
 const tagsViewPersist = computed({
   get: () => settingsStore.tagsViewPersist,
-  set: v => settingsStore.setTagsViewPersist(v)     // 更新：会触发清理 标签页缓存
+  set: v => settingsStore.setTagsViewPersist(v)     // 联动更新：触发清理 标签页缓存
 })
 
-
-/**
- * 动态标题-切换监听：更新 document.title
- */
-function dynamicTitleChange() {
-  settingsStore.refreshTitle();
-}
+// 动态标题：
+const dynamicTitle = computed({
+  get: () => settingsStore.dynamicTitle,
+  set: v => settingsStore.setDynamicTitle(v)        // 联动更新：动态标题刷新
+})
 
 /**
  * 侧边主题-切换监听：

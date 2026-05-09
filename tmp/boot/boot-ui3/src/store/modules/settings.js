@@ -155,7 +155,15 @@ const useSettingsStore = defineStore(
             setSideTheme(val) {
                 this.sideTheme = val
             },
+            /**
+             * 设置：动态标题开关
+             */
+            setDynamicTitle(val) {
+                this.dynamicTitle = val
 
+                // 联动变更：网页标题 刷新
+                this.setTitle(this.title);
+            },
             /**
              * 设置：网页标题，支持动态标题
              *
@@ -170,12 +178,6 @@ const useSettingsStore = defineStore(
                 } else {
                     document.title = defaultSettings.title
                 }
-            },
-            /**
-             * 刷新：网页标题
-             */
-            refreshTitle(){
-                this.setTitle(this.title);
             },
             /**
              * 切换：暗黑/明亮模式，重新应用主题样式以确保视觉效果正确更新
