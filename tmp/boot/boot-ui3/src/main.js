@@ -16,14 +16,14 @@ import Cookies from 'js-cookie'
 
 // ==================== 核心模块 ====================
 // 根组件、路由及状态管理
-import App from './App'
-import router from './router'
-import store from './store'
+import App from '@/App'
+import router from '@/router'
+import store from '@/store'
 import '@/router/guards'                                    // 全局路由权限守卫（副作用导入/side-effect import，执行时会自动注册路由守卫）
 
 // 全局配置
-import directive from './directive'                         // 自定义指令
-import plugins from './plugins'                             // 全局插件
+import directive from '@/directive'                         // 自定义指令
+import plugins from '@/plugins'                             // 全局插件
 
 // ==================== 全局资源 ====================
 // 全局样式
