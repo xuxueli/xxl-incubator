@@ -5,7 +5,7 @@ export default {
   title: import.meta.env.VITE_APP_TITLE,
 
   /**
-   * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
+   * 侧边栏主题 深色主题 theme-dark，浅色主题 theme-light
    */
   sideTheme: 'theme-dark',
 
@@ -35,9 +35,9 @@ export default {
   tagsIcon: false,
 
   /**
-   * 标签页样式：card 卡片（默认）、chrome 谷歌浏览器风格
+   * 标签页样式：card 卡片、chrome 谷歌浏览器风格
    */
-  tagsViewStyle: 'card',
+  tagsViewStyle: 'chrome',
 
   /**
    * 是否固定头部
@@ -62,6 +62,6 @@ export default {
   /**
    * 底部版权文本内容
    */
-  footerContent: 'Copyright © 2018-2026 Boot. All Rights Reserved.'
+  footerContent: 'Copyright © 2015-' + new Date().getFullYear() + ' Boot. All Rights Reserved.'
 }
 
