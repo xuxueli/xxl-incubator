@@ -154,10 +154,10 @@ const tagsViewStore = useTagsViewStore()
 /**
  * 配置项
  */
-// 布局设置：是否显示
-const showSettingsRef = ref(false)
+// 布局设置：组件是否显示
+const showSettingsRef = ref(false);
 // 菜单导航：左侧、混合、顶部
-const navType = ref(settingsStore.navType)
+const navType = ref(settingsStore.navType);
 // 主题色：使用 computed getter/setter 与 store 同步
 const theme = computed({
   get: () => settingsStore.theme,
@@ -190,40 +190,46 @@ const dynamicTitle = computed({
 })
 
 /**
- * 侧边主题-切换监听：
+ * 侧边主题样式-切换监听：刷新
  */
 function handleTheme(val) {
   settingsStore.setSideTheme(val)
 }
 
 /**
- * 菜单导航-切换监听
+ * 菜单导航-切换监听：刷新
  */
 function handleNavType(val) {
-  settingsStore.changeSetting({key: 'navType', value: val})
-  navType.value = val
+  settingsStore.setNavType(val)
+
+  // 同步生效行为
+  applyNavTypeBehavior(val)
 }
 
-/**
- * 菜单导航，监听
- */
-watch(() => navType, val => {
-      if (val.value === 1) {
-        appStore.sidebar.opened = true
-        appStore.toggleSideBarHide(false)
-      }
-      if (val.value === 2) {
-        appStore.sidebar.opened = true
-      }
-      if (val.value === 3) {
-        appStore.sidebar.opened = false
-        appStore.toggleSideBarHide(true)
-      }
-      if ([1, 3].includes(val.value)) {
-        permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
-      }
-    }, {immediate: true, deep: true}
-)
+// 菜单导航-级联变更
+function applyNavTypeBehavior(type) {
+  // type: 1 = 左侧, 2 = 混合, 3 = 顶部
+  if (type === 1) {
+    appStore.sidebar.opened = true
+    appStore.toggleSideBarHide(false)
+  } else if (type === 2) {
+    appStore.sidebar.opened = true
+    // 混合菜单不改变 hide 状态
+  } else if (type === 3) {
+    appStore.sidebar.opened = false
+    appStore.toggleSideBarHide(true)
+  }
+
+  // 只有左侧/顶部需要设置侧边栏路由
+  if ([1, 3].includes(type)) {
+    permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
+  }
+}
+
+// 初始化时应用当前 navType（若其它模块直接修改 settingsStore.navType，建议改为 watch）
+onMounted(() => {
+  handleNavType(settingsStore.navType);
+})
 
 /**
  * 保存设置

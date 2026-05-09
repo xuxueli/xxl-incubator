@@ -1,3 +1,7 @@
+/**
+ * 名称：系统设置状态Store
+ * 描述：系统全局设置状态管理，包括 菜单导航、标签页、主题色 ... 等
+ */
 import defaultSettings from '@/settings'
 import {useDark, useToggle} from '@vueuse/core'
 import {handleThemeStyle} from '@/utils/theme'
@@ -169,6 +173,14 @@ const useSettingsStore = defineStore(
                 } else {
                     document.title = defaultSettings.title
                 }
+            },
+            /**
+             * 设置：导航栏类型
+             *
+             * @param {number} val - 导航栏类型
+             */
+            setNavType(val) {
+                this.navType = val
             },
             /**
              * 设置：根据键值对更新，仅更新 state 中已存在的属性
