@@ -60,6 +60,7 @@ const useSettingsStore = defineStore(
              * 初始化：样式全局设置
              */
             initSetting() {
+                // 异步变更：等待 DOM 更新
                 nextTick(() => {
                     // 主题样式设置
                     handleThemeStyle(this.theme)
@@ -171,19 +172,22 @@ const useSettingsStore = defineStore(
                 }
             },
             /**
-             * 设置：网页标题，主动刷新
+             * 刷新：网页标题
              */
             refreshTitle(){
-                console.log("refreshTitle>" + this.title )
                 this.setTitle(this.title);
             },
             /**
-             * 切换暗黑/明亮模式：重新应用主题样式以确保视觉效果正确更新
+             * 切换：暗黑/明亮模式，重新应用主题样式以确保视觉效果正确更新
              */
             toggleTheme() {
+                // 状态切换
                 this.isDark = !this.isDark
+                // 执行切换动作：包含修改DOM class操作
                 toggleDark()
+                // 异步变更：等待 DOM 更新
                 nextTick(() => {
+                    // 主题样式设置
                     handleThemeStyle(this.theme)
                 })
             }
