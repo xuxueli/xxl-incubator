@@ -192,7 +192,7 @@ function saveSetting() {
   // Use store action to persist settings
   settingsStore.saveSetting()
   // close loading after a short delay (pass function to setTimeout)
-  setTimeout(() => proxy.$modal.closeLoading(), 1000)
+  setTimeout(() => proxy.$modal.closeLoading(), 500)
 }
 
 function resetSetting() {
@@ -200,7 +200,7 @@ function resetSetting() {
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
   // Use store action to clear persisted settings and reset values
   settingsStore.resetSetting()
-  setTimeout(() => window.location.reload(), 1000)
+  setTimeout(() => window.location.reload(), 500)
 }
 
 function openSetting() {
