@@ -11,13 +11,11 @@ import useSettingsStore from '@/store/modules/settings'
  *
  * 执行流程：
  * 1. 等待 DOM 更新完成（nextTick）
- * 2. 从 settings store 中获取当前主题配置
- * 3. 应用主题样式到全局
+ * 2. 从 settings store 中获取当前主题配置，应用主题样式到全局
  */
 onMounted(() => {
-  // 通过 settings store 在应用挂载时统一应用主题样式
   nextTick(() => {
-    useSettingsStore().applyTheme()
+    useSettingsStore().initSetting()
   })
 })
 </script>
