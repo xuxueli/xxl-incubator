@@ -24,6 +24,68 @@ const storageSetting = JSON.parse(localStorage.getItem(LAYOUT_SETTING_KEY)) || {
  * - 管理系统的全局配置项，包括主题、布局、标签页等设置
  * - 支持从本地存储恢复用户偏好设置
  * - 提供暗黑模式切换和动态标题更新功能
+ *
+ *
+ * Pinia 简介：提供简洁、模块化且类型友好的状态管理能力。
+ * Pinia 定义：
+ * <pre>
+ *      import { defineStore } from 'pinia'
+ *
+ *      export const useCounterStore = defineStore('counter', {
+ *        // 1. 状态定义 (必须返回一个函数)
+ *        state: () => ({
+ *          count: 0,
+ *          name: 'Pinia'
+ *        }),
+ *
+ *        // 2. 计算属性 (Getters)
+ *        getters: {
+ *          // 接收 state 作为参数
+ *          doubleCount: (state) => state.count * 2,
+ *
+ *          // 如果需要访问其他 getter，不能使用箭头函数，需使用普通函数并通过 this 访问
+ *          doublePlusOne(): number {
+ *            return this.doubleCount + 1
+ *          }
+ *        },
+ *
+ *        // 3. 方法 (Actions)
+ *        actions: {
+ *          increment() {
+ *            // 直接修改 state
+ *            this.count++
+ *          },
+ *
+ *          // 支持异步操作
+ *          async fetchData() {
+ *            const res = await fetch('/api/data')
+ *            this.name = res.data.name
+ *          }
+ *        }
+ *      })
+ * </pre>
+ *
+ * Pinia 使用：
+ * <pre>
+ *      <script setup>
+ *      import { useCounterStore } from '@/stores/counter'
+ *
+ *      // 1. 初始化 Store
+ *      const counterStore = useCounterStore()
+ *
+ *      // 2. 直接使用
+ *      console.log(counterStore.count)
+ *      counterStore.increment()
+ *      </script>
+ *
+ *      <template>
+ *        <div>
+ *          <p>Count: {{ counterStore.count }}</p>
+ *          <p>Double: {{ counterStore.doubleCount }}</p>
+ *          <button @click="counterStore.increment">+1</button>
+ *        </div>
+ *      </template>
+ *      </pre>
  */
 const useSettingsStore = defineStore(
     /**
