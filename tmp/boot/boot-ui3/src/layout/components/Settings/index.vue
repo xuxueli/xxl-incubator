@@ -74,8 +74,7 @@
     <div class="drawer-item">
       <span>持久化标签页</span>
       <span class="comp-style">
-        <el-switch v-model="tagsViewPersist" :disabled="!settingsStore.tagsView" @change="tagsViewPersistChange"
-                   class="drawer-switch"/>
+        <el-switch v-model="tagsViewPersist" :disabled="!settingsStore.tagsView" class="drawer-switch"/>
       </span>
     </div>
 
@@ -168,10 +167,10 @@ const sideTheme = computed({
   get: () => settingsStore.sideTheme,
   set: v => settingsStore.setSideTheme(v)
 })
-// 持久化标签页
+// 持久化标签页：
 const tagsViewPersist = computed({
   get: () => settingsStore.tagsViewPersist,
-  set: v => settingsStore.setTagsViewPersist(v)
+  set: v => settingsStore.setTagsViewPersist(v)     // 更新：会触发清理 标签页缓存
 })
 
 
@@ -180,13 +179,6 @@ const tagsViewPersist = computed({
  */
 function dynamicTitleChange() {
   settingsStore.refreshTitle();
-}
-
-/**
- * 标签页持久化-切换监听：触发清理 标签页缓存
- */
-function tagsViewPersistChange(val) {
-  settingsStore.setTagsViewPersist(val)
 }
 
 /**

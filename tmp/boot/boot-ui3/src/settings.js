@@ -38,7 +38,7 @@ export default {
   tagsView: true,
 
   /**
-   * 持久化标签页
+   * 持久化标签页：启用开关
    */
   tagsViewPersist: false,
 
