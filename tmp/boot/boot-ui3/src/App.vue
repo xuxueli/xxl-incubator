@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-// Store模块：系统设置（内含主题应用逻辑）
+// 系统设置Store模块
 import useSettingsStore from '@/store/modules/settings'
 
 /**
