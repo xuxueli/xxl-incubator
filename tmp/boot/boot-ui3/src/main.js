@@ -53,13 +53,17 @@ import ImagePreview from '@/components/ImagePreview'        // 图片预览组�
 const app = createApp(App)
 
 // ==================== 安装核心插件 ====================
-app.use(router)
-app.use(store)
-app.use(plugins)
-app.use(elementIcons)
+app.use(router)                     // 路由
+app.use(store)                      // 状态管理
+app.use(plugins)                    // 插件
+app.use(elementIcons)               // 图标
+app.use(ElementPlus, {      // element-plus: 配置语言和默认组件尺寸
+    locale,                                 // 语言
+    size: Cookies.get('size') || 'default'  // 支持 large、default、small
+})
 
 // ==================== 挂载全局方法 ====================
-// 兼容 Options API，可通过 this.xxx 调用
+// 兼容 Options API：可通过 this.xxx 调用，示例 this.getConfigKey('sys.user.defaultPassword')
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
 app.config.globalProperties.getConfigKey = getConfigKey
@@ -71,10 +75,11 @@ app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
 
 // ==================== 注册自定义指令 ====================
+// 自定义指令：可通过 v-hasRole 调用，示例 v-hasRole="['admin','editor']"
 directive(app)
 
 // ==================== 注册全局业务组件 ====================
-// 页面可直接使用，无需重复 import
+// 页面可直接使用：无需重复 import，例如 <RightToolbar />
 app.component('RightToolbar', RightToolbar)
 app.component('Pagination', Pagination)
 app.component('DictTag', DictTag)
@@ -83,14 +88,6 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('svg-icon', SvgIcon)
-
-// ==================== 初始化 UI 组件库 ====================
-// 配置语言和默认组件尺寸（支持 large、default、small）
-app.use(ElementPlus, {
-    locale,
-    // 支持 large、default、small
-    size: Cookies.get('size') || 'default'
-})
 
 // ==================== 挂载应用到 DOM ====================
 app.mount('#app')
