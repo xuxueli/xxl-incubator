@@ -1,9 +1,5 @@
 /**
- * 核心功能：设置 Element Plus 主题色
- */
-
-/**
- * 处理主题样式
+ * 主题样式设置：设置 Element Plus 主题色
  *
  * 根据当前主题色和暗黑模式状态，动态设置 Element Plus 的 CSS 变量
  *
@@ -21,6 +17,7 @@ export function handleThemeStyle(theme) {
     }
 }
 
+
 /**
  * 暗色模式下柔化主题色
  *
@@ -29,7 +26,7 @@ export function handleThemeStyle(theme) {
  * @param {string} theme - 原始主题色的十六进制值
  * @returns {string} 柔化后的主题色十六进制值
  */
-export function softenPrimaryForDark(theme) {
+function softenPrimaryForDark(theme) {
     return mixHexColors(theme, '#2d3036', 0.34)
 }
 
@@ -43,7 +40,7 @@ export function softenPrimaryForDark(theme) {
  * @param {number} t - 混合比例（0-1之间，0表示完全背景色，1表示完全前景色）
  * @returns {string} 混合后的十六进制颜色值
  */
-export function mixHexColors(fg, bg, t) {
+function mixHexColors(fg, bg, t) {
     const a = hexToRgb(String(fg).replace('#', ''))
     const b = hexToRgb(String(bg).replace('#', ''))
     const out = [0, 1, 2].map((i) => Math.round(a[i] * (1 - t) + b[i] * t))
@@ -56,7 +53,7 @@ export function mixHexColors(fg, bg, t) {
  * @param {string} str - 十六进制颜色值（可带或不带 # 前缀）
  * @returns {number[]} RGB 数组，包含三个整数元素 [r, g, b]，每个值范围 0-255
  */
-export function hexToRgb(str) {
+function hexToRgb(str) {
     str = str.replace('#', '')
     let hexs = str.match(/../g)
     for (let i = 0; i < 3; i++) {
@@ -73,7 +70,7 @@ export function hexToRgb(str) {
  * @param {number} b - 蓝色通道值（0-255）
  * @returns {string} 十六进制颜色值（格式：#RRGGBB）
  */
-export function rgbToHex(r, g, b) {
+function rgbToHex(r, g, b) {
     let hexs = [r.toString(16), g.toString(16), b.toString(16)]
     for (let i = 0; i < 3; i++) {
         if (hexs[i].length == 1) {
@@ -92,7 +89,7 @@ export function rgbToHex(r, g, b) {
  * @param {number} level - 提亮程度（0-1之间，值越大颜色越浅）
  * @returns {string} 提亮后的十六进制颜色值
  */
-export function getLightColor(color, level) {
+function getLightColor(color, level) {
     let rgb = hexToRgb(color)
     for (let i = 0; i < 3; i++) {
         rgb[i] = Math.floor((255 - rgb[i]) * level + rgb[i])
@@ -109,7 +106,7 @@ export function getLightColor(color, level) {
  * @param {number} level - 加深程度（0-1之间，值越大颜色越深）
  * @returns {string} 加深后的十六进制颜色值
  */
-export function getDarkColor(color, level) {
+function getDarkColor(color, level) {
     let rgb = hexToRgb(color)
     for (let i = 0; i < 3; i++) {
         rgb[i] = Math.floor(rgb[i] * (1 - level))

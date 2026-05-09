@@ -1,6 +1,5 @@
 import defaultSettings from '@/settings'
 import {useDark, useToggle} from '@vueuse/core'
-import {useDynamicTitle} from '@/utils/dynamicTitle'
 import {handleThemeStyle} from '@/utils/theme'
 
 const isDark = useDark()
@@ -29,7 +28,7 @@ const useSettingsStore = defineStore(
          * 如果不存在则使用默认配置
          */
         state: () => ({
-            title: defaultSettings.title,
+            title: '',
             theme: storageSetting.theme || '#409EFF',
             sideTheme: storageSetting.sideTheme || defaultSettings.sideTheme,
             showSettings: defaultSettings.showSettings,
@@ -75,7 +74,13 @@ const useSettingsStore = defineStore(
              */
             setTitle(title) {
                 this.title = title
-                useDynamicTitle()
+
+                // 动态标题
+                if (this.dynamicTitle) {
+                    document.title = this.title + ' - ' + defaultSettings.title
+                } else {
+                    document.title = defaultSettings.title
+                }
             },
             /**
              * 切换暗黑模式
