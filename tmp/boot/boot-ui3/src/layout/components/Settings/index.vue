@@ -179,7 +179,7 @@ const tagsViewPersist = computed({
  * 动态标题-切换监听
  */
 function dynamicTitleChange() {
-  useSettingsStore().setTitle(useSettingsStore().title)
+  settingsStore.refreshTitle();
 }
 
 /**

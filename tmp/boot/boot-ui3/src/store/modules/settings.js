@@ -171,6 +171,13 @@ const useSettingsStore = defineStore(
                 }
             },
             /**
+             * 设置：网页标题，主动刷新
+             */
+            refreshTitle(){
+                console.log("refreshTitle>" + this.title )
+                this.setTitle(this.title);
+            },
+            /**
              * 切换暗黑/明亮模式：重新应用主题样式以确保视觉效果正确更新
              */
             toggleTheme() {
