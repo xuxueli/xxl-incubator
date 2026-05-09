@@ -75,6 +75,7 @@ const useAppStore = defineStore(
              */
             hideSideBar(status) {
                 this.sidebar.hide = status
+                this.sidebar.withoutAnimation = true
             },
             /**
              * 设备 - 切换状态
