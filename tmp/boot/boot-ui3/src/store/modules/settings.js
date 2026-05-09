@@ -92,10 +92,10 @@ const useSettingsStore = defineStore(
                 localStorage.removeItem(LAYOUT_SETTING_KEY)
 
                 // 恢复到默认配置
-                this.theme = defaultSettings.theme || '#409EFF'
-                this.sideTheme = defaultSettings.sideTheme
                 this.showSettings = defaultSettings.showSettings
                 this.navType = defaultSettings.navType
+                this.sideTheme = defaultSettings.sideTheme
+                this.theme = defaultSettings.theme
                 this.tagsView = defaultSettings.tagsView
                 this.tagsViewPersist = defaultSettings.tagsViewPersist
                 this.tagsIcon = defaultSettings.tagsIcon
@@ -105,6 +105,27 @@ const useSettingsStore = defineStore(
                 this.dynamicTitle = defaultSettings.dynamicTitle
                 this.footerVisible = defaultSettings.footerVisible
                 this.footerContent = defaultSettings.footerContent
+            },
+            /**
+             * 切换：暗黑/明亮模式，重新应用主题样式以确保视觉效果正确更新
+             */
+            toggleTheme() {
+                // 状态切换
+                this.isDark = !this.isDark
+                // 执行切换动作：包含修改DOM class操作
+                toggleDark()
+                // 异步变更：等待 DOM 更新
+                nextTick(() => {
+                    // 主题样式设置
+                    handleThemeStyle(this.theme)
+                })
+            },
+            /**
+             * 设置：侧边主题（例如 'theme-dark'/'theme-light'），集中处理更新逻辑
+             * @param {string} val
+             */
+            setSideTheme(val) {
+                this.sideTheme = val
             },
             /**
              * 设置：主题色
@@ -118,20 +139,6 @@ const useSettingsStore = defineStore(
                     handleThemeStyle(this.theme)
                 })
             },
-            /**
-             * 设置：根据键值对更新，仅更新 state 中已存在的属性
-             *
-             * @param {Object} data - 包含要修改的配置项数据
-             * @param {string} data.key - 配置项的键名
-             * @param {*} data.value - 配置项的新值
-             */
-            changeSetting(data) {
-                const {key, value} = data
-                if (this.hasOwnProperty(key)) {
-                    this[key] = value
-                }
-            },
-
             /**
              * 设置：标签页持久化选项，并在关闭持久化时清理标签页缓存
              * @param {boolean} val true-开启持久化，false-关闭持久化，并清理缓存
@@ -147,13 +154,6 @@ const useSettingsStore = defineStore(
                         // ignore
                     }
                 }
-            },
-            /**
-             * 设置：侧边主题（例如 'theme-dark'/'theme-light'），集中处理更新逻辑
-             * @param {string} val
-             */
-            setSideTheme(val) {
-                this.sideTheme = val
             },
             /**
              * 设置：动态标题开关
@@ -180,18 +180,17 @@ const useSettingsStore = defineStore(
                 }
             },
             /**
-             * 切换：暗黑/明亮模式，重新应用主题样式以确保视觉效果正确更新
+             * 设置：根据键值对更新，仅更新 state 中已存在的属性
+             *
+             * @param {Object} data - 包含要修改的配置项数据
+             * @param {string} data.key - 配置项的键名
+             * @param {*} data.value - 配置项的新值
              */
-            toggleTheme() {
-                // 状态切换
-                this.isDark = !this.isDark
-                // 执行切换动作：包含修改DOM class操作
-                toggleDark()
-                // 异步变更：等待 DOM 更新
-                nextTick(() => {
-                    // 主题样式设置
-                    handleThemeStyle(this.theme)
-                })
+            changeSetting(data) {
+                const {key, value} = data
+                if (this.hasOwnProperty(key)) {
+                    this[key] = value
+                }
             }
         }
     })
