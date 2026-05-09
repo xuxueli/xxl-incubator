@@ -14,7 +14,7 @@ import locale from 'element-plus/es/locale/lang/zh-cn'
 // 工具库
 import Cookies from 'js-cookie'
 
-// ==================== 应用核心模块 ====================
+// ==================== 核心模块 ====================
 // 根组件、路由及状态管理
 import App from './App'
 import router from './router'
@@ -28,7 +28,7 @@ import '@/router/guards'                                    // 全局路由权�
 // ==================== 全局样式 ====================
 import '@/assets/styles/index.scss'
 
-// ==================== SVG 图标系统 ====================
+// ==================== SVG 图标 ====================
 import 'virtual:svg-icons-register'                         // svg 图标
 import SvgIcon from '@/components/SvgIcon'                  // 自定义图标
 import elementIcons from '@/components/SvgIcon/svgicon'
@@ -39,7 +39,7 @@ import {download} from '@/utils/request'
 import {getConfigKey} from '@/api/sys/config'
 import {parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels} from '@/utils/boot'
 
-// ==================== 全局业务组件 ====================
+// ==================== 业务组件 ====================
 import RightToolbar from '@/components/RightToolbar'        // 工具栏组件
 import Pagination from '@/components/Pagination'            // 分页组件
 import DictTag from '@/components/DictTag'                  // 字典标签组件
@@ -51,6 +51,12 @@ import ImagePreview from '@/components/ImagePreview'        // 图片预览组�
 
 // ==================== 创建 Vue 应用实例 ====================
 const app = createApp(App)
+
+// ==================== 安装核心插件 ====================
+app.use(router)
+app.use(store)
+app.use(plugins)
+app.use(elementIcons)
 
 // ==================== 挂载全局方法 ====================
 // 兼容 Options API，可通过 this.xxx 调用
@@ -64,6 +70,9 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
 
+// ==================== 注册自定义指令 ====================
+directive(app)
+
 // ==================== 注册全局业务组件 ====================
 // 页面可直接使用，无需重复 import
 app.component('RightToolbar', RightToolbar)
@@ -74,15 +83,6 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('svg-icon', SvgIcon)
-
-// ==================== 安装核心插件 ====================
-app.use(router)
-app.use(store)
-app.use(plugins)
-app.use(elementIcons)
-
-// ==================== 注册自定义指令 ====================
-directive(app)
 
 // ==================== 初始化 UI 组件库 ====================
 // 配置语言和默认组件尺寸（支持 large、default、small）
