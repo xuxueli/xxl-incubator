@@ -194,7 +194,9 @@ function handleNavType(val) {
   navType.value = val
 }
 
-/** 菜单导航设置 */
+/**
+ * 菜单导航，监听
+ */
 watch(() => navType, val => {
       if (val.value === 1) {
         appStore.sidebar.opened = true
@@ -213,22 +215,39 @@ watch(() => navType, val => {
     }, {immediate: true, deep: true}
 )
 
+/**
+ * 保存设置
+ */
 function saveSetting() {
+  // 弹框提示：Open
   proxy.$modal.loading("正在保存到本地，请稍候...")
+
+  // 若不保存标签页，主动清除 - 标签页缓存
   if (!tagsViewPersist.value) {
     proxy.$cache.local.remove('tags-view-visited')
   }
-  // Use store action to persist settings
+
+  // Setting设置：持久化
   settingsStore.saveSetting()
-  // close loading after a short delay (pass function to setTimeout)
+
+  // 弹框提示： Close
   setTimeout(() => proxy.$modal.closeLoading(), 500)
 }
 
+/**
+ * 重置设置
+ */
 function resetSetting() {
+  // 主动清除 - 标签页缓存
   proxy.$cache.local.remove('tags-view-visited')
+
+  // 弹框提示：Open
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
-  // Use store action to clear persisted settings and reset values
+
+  // Setting设置：持久化
   settingsStore.resetSetting()
+
+  // 弹框提示： Close
   setTimeout(() => window.location.reload(), 500)
 }
 
