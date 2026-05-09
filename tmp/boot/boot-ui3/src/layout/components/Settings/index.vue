@@ -56,9 +56,9 @@
     </div>
     <div class="drawer-item">
       <span>主题颜色</span>
-      <span class="comp-style">
-        <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange"/>
-      </span>
+          <span class="comp-style">
+            <el-color-picker v-model="theme" :predefine="predefineColors"/>
+          </span>
     </div>
     <el-divider/>
 
@@ -152,7 +152,10 @@ const permissionStore = usePermissionStore()
 // 配置项
 const showSettings = ref(false)                   // 布局设置：是否显示
 const navType = ref(settingsStore.navType)        // 菜单导航：左侧、混合、顶部
-const theme = ref(settingsStore.theme)            // 主题色
+const theme = computed({                          // 主题色（使用 computed getter/setter 与 store 同步）
+  get: () => settingsStore.theme,
+  set: v => settingsStore.setTheme(v)
+})
 const sideTheme = computed({                      // 主题风格：暗色、浅色
   get: () => settingsStore.sideTheme,
   set: v => settingsStore.setSideTheme(v)
@@ -179,13 +182,7 @@ function tagsViewPersistChange(val) {
   settingsStore.setTagsViewPersist(val)
 }
 
-/**
- * 使用 store 的 setTheme 来统一应用样式
- * @param val
- */
-function themeChange(val) {
-  settingsStore.setTheme(val)
-}
+// 主题颜色的变更由上面的 computed setter 负责，无需额外的 themeChange 方法
 
 /**
  * 侧边主题-切换监听
