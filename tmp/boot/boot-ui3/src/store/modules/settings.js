@@ -91,6 +91,25 @@ const useSettingsStore = defineStore(
                 localStorage.setItem(LAYOUT_SETTING_KEY, JSON.stringify(layoutSetting))
             },
             /**
+             * 设置主题色（同时应用样式）
+             * @param {string} themeVal
+             */
+            setTheme(themeVal) {
+                this.theme = themeVal
+                // 立即应用主题样式
+                nextTick(() => {
+                    handleThemeStyle(this.theme)
+                })
+            },
+            /**
+             * 在应用初始化时调用，确保主题样式被应用到页面
+             */
+            applyTheme() {
+                nextTick(() => {
+                    handleThemeStyle(this.theme)
+                })
+            },
+            /**
              * 重置为默认设置并清除 localStorage 中的缓存
              */
             resetSetting() {

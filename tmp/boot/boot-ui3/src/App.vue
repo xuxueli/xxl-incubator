@@ -3,10 +3,8 @@
 </template>
 
 <script setup>
-// Store模块：系统设置
+// Store模块：系统设置（内含主题应用逻辑）
 import useSettingsStore from '@/store/modules/settings'
-// 主题工具：设置样式
-import {handleThemeStyle} from '@/utils/theme'
 
 /**
  * 组件挂载后的生命周期钩子
@@ -17,8 +15,9 @@ import {handleThemeStyle} from '@/utils/theme'
  * 3. 应用主题样式到全局
  */
 onMounted(() => {
+  // 通过 settings store 在应用挂载时统一应用主题样式
   nextTick(() => {
-    handleThemeStyle(useSettingsStore().theme)
+    useSettingsStore().applyTheme()
   })
 })
 </script>

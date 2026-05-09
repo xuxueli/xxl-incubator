@@ -127,7 +127,6 @@
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
-import { handleThemeStyle } from '@/utils/theme'
 
 const { proxy } = getCurrentInstance()
 const appStore = useAppStore()
@@ -152,8 +151,8 @@ function tagsViewPersistChange(val) {
 }
 
 function themeChange(val) {
-  settingsStore.theme = val
-  handleThemeStyle(val)
+  // 使用 store 的 setTheme 来统一应用样式
+  settingsStore.setTheme(val)
 }
 
 function handleTheme(val) {
