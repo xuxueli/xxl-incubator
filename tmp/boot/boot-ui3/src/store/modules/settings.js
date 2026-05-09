@@ -2,12 +2,16 @@ import defaultSettings from '@/settings'
 import {useDark, useToggle} from '@vueuse/core'
 import {handleThemeStyle} from '@/utils/theme'
 
+// 持久化存储Key：localStorage key constant
+const LAYOUT_SETTING_KEY = 'layout-setting'
+
 // 初始化暗黑模式：跟随系统
 const isDark = useDark()
-// 切换暗黑模式：
+// 切换暗黑模式：联动更新
 const toggleDark = useToggle(isDark)
 
-const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
+// 持久化存储数据：从 localStorage 读取已有配置（如果有）
+const storageSetting = JSON.parse(localStorage.getItem(LAYOUT_SETTING_KEY)) || {}
 
 /**
  * 系统设置状态管理 Store
@@ -66,6 +70,45 @@ const useSettingsStore = defineStore(
                 if (this.hasOwnProperty(key)) {
                     this[key] = value
                 }
+            },
+            /**
+             * 将当前设置持久化到 localStorage
+             */
+            saveSetting() {
+                const layoutSetting = {
+                    navType: this.navType,
+                    tagsView: this.tagsView,
+                    tagsIcon: this.tagsIcon,
+                    tagsViewStyle: this.tagsViewStyle,
+                    tagsViewPersist: this.tagsViewPersist,
+                    fixedHeader: this.fixedHeader,
+                    sidebarLogo: this.sidebarLogo,
+                    dynamicTitle: this.dynamicTitle,
+                    footerVisible: this.footerVisible,
+                    sideTheme: this.sideTheme,
+                    theme: this.theme
+                }
+                localStorage.setItem(LAYOUT_SETTING_KEY, JSON.stringify(layoutSetting))
+            },
+            /**
+             * 重置为默认设置并清除 localStorage 中的缓存
+             */
+            resetSetting() {
+                localStorage.removeItem(LAYOUT_SETTING_KEY)
+                // 恢复到默认配置
+                this.theme = defaultSettings.theme || '#409EFF'
+                this.sideTheme = defaultSettings.sideTheme
+                this.showSettings = defaultSettings.showSettings
+                this.navType = defaultSettings.navType
+                this.tagsView = defaultSettings.tagsView
+                this.tagsViewPersist = defaultSettings.tagsViewPersist
+                this.tagsIcon = defaultSettings.tagsIcon
+                this.tagsViewStyle = defaultSettings.tagsViewStyle
+                this.fixedHeader = defaultSettings.fixedHeader
+                this.sidebarLogo = defaultSettings.sidebarLogo
+                this.dynamicTitle = defaultSettings.dynamicTitle
+                this.footerVisible = defaultSettings.footerVisible
+                this.footerContent = defaultSettings.footerContent
             },
             /**
              * 设置网页标题

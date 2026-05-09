@@ -190,28 +190,18 @@ function saveSetting() {
   if (!tagsViewPersist.value) {
     proxy.$cache.local.remove('tags-view-visited')
   }
-  let layoutSetting = {
-    "navType": storeSettings.value.navType,
-    "tagsView": storeSettings.value.tagsView,
-    "tagsIcon": storeSettings.value.tagsIcon,
-    "tagsViewStyle": storeSettings.value.tagsViewStyle,
-    "tagsViewPersist": storeSettings.value.tagsViewPersist,
-    "fixedHeader": storeSettings.value.fixedHeader,
-    "sidebarLogo": storeSettings.value.sidebarLogo,
-    "dynamicTitle": storeSettings.value.dynamicTitle,
-    "footerVisible": storeSettings.value.footerVisible,
-    "sideTheme": storeSettings.value.sideTheme,
-    "theme": storeSettings.value.theme
-  }
-  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting))
-  setTimeout(proxy.$modal.closeLoading(), 1000)
+  // Use store action to persist settings
+  settingsStore.saveSetting()
+  // close loading after a short delay (pass function to setTimeout)
+  setTimeout(() => proxy.$modal.closeLoading(), 1000)
 }
 
 function resetSetting() {
   proxy.$cache.local.remove('tags-view-visited')
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
-  localStorage.removeItem("layout-setting")
-  setTimeout("window.location.reload()", 1000)
+  // Use store action to clear persisted settings and reset values
+  settingsStore.resetSetting()
+  setTimeout(() => window.location.reload(), 1000)
 }
 
 function openSetting() {
