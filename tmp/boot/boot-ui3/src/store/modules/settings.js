@@ -2,7 +2,9 @@ import defaultSettings from '@/settings'
 import {useDark, useToggle} from '@vueuse/core'
 import {handleThemeStyle} from '@/utils/theme'
 
+// 初始化暗黑模式：跟随系统
 const isDark = useDark()
+// 切换暗黑模式：
 const toggleDark = useToggle(isDark)
 
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
