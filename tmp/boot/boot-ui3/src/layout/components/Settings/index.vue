@@ -202,7 +202,7 @@ function handleTheme(val) {
 function handleNavType(val) {
   settingsStore.setNavType(val)
 
-  // 同步生效行为
+  // 菜单导航-级联变更
   applyNavTypeBehavior(val)
 }
 
