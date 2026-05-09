@@ -57,22 +57,16 @@ const useSettingsStore = defineStore(
          */
         actions: {
             /**
-             * 修改布局设置
-             *
-             * 根据传入的键值对更新对应的配置项，仅更新 state 中已存在的属性
-             *
-             * @param {Object} data - 包含要修改的配置项数据
-             * @param {string} data.key - 配置项的键名
-             * @param {*} data.value - 配置项的新值
+             * 初始化：样式全局设置
              */
-            changeSetting(data) {
-                const {key, value} = data
-                if (this.hasOwnProperty(key)) {
-                    this[key] = value
-                }
+            initSetting() {
+                nextTick(() => {
+                    // 主题样式设置
+                    handleThemeStyle(this.theme)
+                })
             },
             /**
-             * 将当前设置持久化到 localStorage
+             * 持久化：将当前设置持久化到 localStorage
              */
             saveSetting() {
                 const layoutSetting = {
@@ -91,29 +85,11 @@ const useSettingsStore = defineStore(
                 localStorage.setItem(LAYOUT_SETTING_KEY, JSON.stringify(layoutSetting))
             },
             /**
-             * 设置主题色（同时应用样式）
-             * @param {string} themeVal
-             */
-            setTheme(themeVal) {
-                this.theme = themeVal
-                // 立即应用主题样式
-                nextTick(() => {
-                    handleThemeStyle(this.theme)
-                })
-            },
-            /**
-             * 在应用初始化时调用，确保主题样式被应用到页面
-             */
-            applyTheme() {
-                nextTick(() => {
-                    handleThemeStyle(this.theme)
-                })
-            },
-            /**
-             * 重置为默认设置并清除 localStorage 中的缓存
+             * 重置：恢复默认设置，并清除 localStorage 中数据
              */
             resetSetting() {
                 localStorage.removeItem(LAYOUT_SETTING_KEY)
+
                 // 恢复到默认配置
                 this.theme = defaultSettings.theme || '#409EFF'
                 this.sideTheme = defaultSettings.sideTheme
@@ -130,9 +106,32 @@ const useSettingsStore = defineStore(
                 this.footerContent = defaultSettings.footerContent
             },
             /**
-             * 设置网页标题
+             * 设置：主题色
+             * @param {string} themeVal
+             */
+            setTheme(themeVal) {
+                this.theme = themeVal
+                // 立即应用主题样式
+                nextTick(() => {
+                    handleThemeStyle(this.theme)
+                })
+            },
+            /**
+             * 设置：根据键值对更新，仅更新 state 中已存在的属性
              *
-             * 更新 store 中的标题并同步到浏览器标签页标题
+             * @param {Object} data - 包含要修改的配置项数据
+             * @param {string} data.key - 配置项的键名
+             * @param {*} data.value - 配置项的新值
+             */
+            changeSetting(data) {
+                const {key, value} = data
+                if (this.hasOwnProperty(key)) {
+                    this[key] = value
+                }
+            },
+
+            /**
+             * 设置：网页标题，支持动态标题
              *
              * @param {string} title - 要设置的网页标题
              */
@@ -147,9 +146,7 @@ const useSettingsStore = defineStore(
                 }
             },
             /**
-             * 切换暗黑模式
-             *
-             * 切换暗黑/明亮模式状态，并重新应用主题样式以确保视觉效果正确更新
+             * 切换暗黑/明亮模式：重新应用主题样式以确保视觉效果正确更新
              */
             toggleTheme() {
                 this.isDark = !this.isDark

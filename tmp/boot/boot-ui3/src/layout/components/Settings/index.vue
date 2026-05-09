@@ -150,8 +150,11 @@ function tagsViewPersistChange(val) {
   tagsViewPersist.value = val
 }
 
+/**
+ * 使用 store 的 setTheme 来统一应用样式
+ * @param val
+ */
 function themeChange(val) {
-  // 使用 store 的 setTheme 来统一应用样式
   settingsStore.setTheme(val)
 }
 
