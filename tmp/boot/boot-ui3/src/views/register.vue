@@ -81,7 +81,7 @@ import { getCodeImg, register } from "@/api/login"
 import defaultSettings from '@/settings'
 import { usePasswordRule } from "@/utils/passwordRule"
 
-const title = import.meta.env.VITE_APP_TITLE
+const title = defaultSettings.title
 const footerContent = defaultSettings.footerContent
 const router = useRouter()
 const { proxy } = getCurrentInstance()

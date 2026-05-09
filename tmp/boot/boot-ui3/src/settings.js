@@ -2,7 +2,7 @@ export default {
   /**
    * 网页标题
    */
-  title: import.meta.env.VITE_APP_TITLE,
+  title: 'Boot管理系统',
 
   /**
    * 侧边栏主题 深色主题 theme-dark，浅色主题 theme-light
