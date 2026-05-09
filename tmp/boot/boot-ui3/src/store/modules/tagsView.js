@@ -17,6 +17,9 @@ function loadVisitedViews() {
   return cache.local.getJSON(PERSIST_KEY) || []
 }
 
+/**
+ * 清空 tags-view 缓存
+ */
 function clearVisitedViews() {
   cache.local.remove(PERSIST_KEY)
 }
