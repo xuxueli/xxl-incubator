@@ -62,6 +62,7 @@ FontEnd（前后端分离）：
 ```
 
 前端Module：
+```
     /src    
         /api                    // TODO 1
         /assets                 // --     
@@ -80,4 +81,4 @@ FontEnd（前后端分离）：
     index.html                  :--
     package.json                :--
     vite.config.js              :--
-
+```
