@@ -1,7 +1,16 @@
 import request from '@/utils/request'
 import { parseStrEmpty } from "@/utils/boot";
 
-// 查询用户列表
+/**
+ * 名称：用户管理 API
+ * 能力：提供用户列表、详情、增删改、状态与授权管理等接口。
+ */
+
+/**
+ * 查询用户列表。
+ * @param {Object} query 查询参数。
+ * @returns {Promise<any>} 用户分页列表。
+ */
 export function listUser(query) {
   return request({
     url: '/system/user/list',
@@ -10,7 +19,11 @@ export function listUser(query) {
   })
 }
 
-// 查询用户详细
+/**
+ * 查询用户详情。
+ * @param {string|number} userId 用户 ID。
+ * @returns {Promise<any>} 用户详细信息。
+ */
 export function getUser(userId) {
   return request({
     url: '/system/user/' + parseStrEmpty(userId),
@@ -18,7 +31,11 @@ export function getUser(userId) {
   })
 }
 
-// 新增用户
+/**
+ * 新增用户。
+ * @param {Object} data 用户数据。
+ * @returns {Promise<any>} 新增结果。
+ */
 export function addUser(data) {
   return request({
     url: '/system/user',
@@ -27,7 +44,11 @@ export function addUser(data) {
   })
 }
 
-// 修改用户
+/**
+ * 修改用户。
+ * @param {Object} data 用户数据。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function updateUser(data) {
   return request({
     url: '/system/user',
@@ -36,7 +57,11 @@ export function updateUser(data) {
   })
 }
 
-// 删除用户
+/**
+ * 删除用户。
+ * @param {string|number} userId 用户 ID。
+ * @returns {Promise<any>} 删除结果。
+ */
 export function delUser(userId) {
   return request({
     url: '/system/user/' + userId,
@@ -44,7 +69,12 @@ export function delUser(userId) {
   })
 }
 
-// 用户密码重置
+/**
+ * 重置用户密码。
+ * @param {string|number} userId 用户 ID。
+ * @param {string} password 新密码。
+ * @returns {Promise<any>} 重置结果。
+ */
 export function resetUserPwd(userId, password) {
   const data = {
     userId,
@@ -57,7 +87,12 @@ export function resetUserPwd(userId, password) {
   })
 }
 
-// 用户状态修改
+/**
+ * 修改用户状态。
+ * @param {string|number} userId 用户 ID。
+ * @param {string} status 状态值。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function changeUserStatus(userId, status) {
   const data = {
     userId,
@@ -70,7 +105,10 @@ export function changeUserStatus(userId, status) {
   })
 }
 
-// 查询用户个人信息
+/**
+ * 查询当前用户个人信息。
+ * @returns {Promise<any>} 个人资料。
+ */
 export function getUserProfile() {
   return request({
     url: '/system/user/profile',
@@ -78,7 +116,11 @@ export function getUserProfile() {
   })
 }
 
-// 修改用户个人信息
+/**
+ * 修改当前用户个人信息。
+ * @param {Object} data 个人资料数据。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function updateUserProfile(data) {
   return request({
     url: '/system/user/profile',
@@ -87,7 +129,12 @@ export function updateUserProfile(data) {
   })
 }
 
-// 用户密码重置
+/**
+ * 修改当前用户密码。
+ * @param {string} oldPassword 原密码。
+ * @param {string} newPassword 新密码。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function updateUserPwd(oldPassword, newPassword) {
   const data = {
     oldPassword,
@@ -100,7 +147,11 @@ export function updateUserPwd(oldPassword, newPassword) {
   })
 }
 
-// 用户头像上传
+/**
+ * 上传当前用户头像。
+ * @param {string|Object} data 头像表单数据。
+ * @returns {Promise<any>} 上传结果。
+ */
 export function uploadAvatar(data) {
   return request({
     url: '/system/user/profile/avatar',
@@ -110,7 +161,11 @@ export function uploadAvatar(data) {
   })
 }
 
-// 查询授权角色
+/**
+ * 查询用户授权角色。
+ * @param {string|number} userId 用户 ID。
+ * @returns {Promise<any>} 角色授权信息。
+ */
 export function getAuthRole(userId) {
   return request({
     url: '/system/user/authRole/' + userId,
@@ -118,7 +173,11 @@ export function getAuthRole(userId) {
   })
 }
 
-// 保存授权角色
+/**
+ * 保存用户授权角色。
+ * @param {Object} data 角色授权数据。
+ * @returns {Promise<any>} 保存结果。
+ */
 export function updateAuthRole(data) {
   return request({
     url: '/system/user/authRole',
@@ -127,7 +186,10 @@ export function updateAuthRole(data) {
   })
 }
 
-// 查询部门下拉树结构
+/**
+ * 查询部门下拉树。
+ * @returns {Promise<any>} 部门树结构。
+ */
 export function deptTreeSelect() {
   return request({
     url: '/system/user/deptTree',
