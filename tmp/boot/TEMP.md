@@ -64,12 +64,12 @@ FontEnd（前后端分离）：
 前端Module：
 ```
     /src    
-        /api                    // TODO 1
+        /api                    // ing
         /assets                 // --     
         /components             // TODO 3
         /directive              // --
         /layout                 // TODO 3
-        /plugins                // TODO 2    
+        /plugins                // -- 
         /router                 // TODO 3
         /store                  // ing
         /utils                  // TODO 1
