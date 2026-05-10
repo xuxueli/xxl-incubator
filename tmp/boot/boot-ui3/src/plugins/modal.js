@@ -43,16 +43,22 @@ import { ElMessage, ElMessageBox, ElNotification, ElLoading } from 'element-plus
  * export default { msgSuccess() {} }
  * import modal from '@/plugins/modal'
  * ```
+ *    - 优势：语义直观、调用简单，适合作为单模块默认入口。
+ *    - 适合场景：`modal.js` 这类“一个文件对应一个能力对象”的插件文件。
  * 2) install 插件导出
  * ```js
  * export default { install(app) { app.config.globalProperties.$modal = modal } }
  * app.use(modalPlugin)
  * ```
+ *    - 优势：可标准化接入 Vue 插件生命周期，便于统一注册与扩展。
+ *    - 适合场景：需要在安装阶段注入多个全局能力，或需要按环境做初始化逻辑。
  * 3) 命名导出 + 聚合导出
  * ```js
  * export const modal = { msgSuccess() {} }
  * export { modal } from './modal'
  * ```
+ *    - 优势：便于按需引入与多模块聚合导出，命名更清晰。
+ *    - 适合场景：插件能力被拆分为多个子模块，需在 `plugins/index.js` 统一组织时。
  */
 let loadingInstance
 
@@ -118,6 +124,7 @@ export default {
     })
   },
   // 输入框：返回 Promise，调用方可获取输入结果
+  // 与 confirm 对比：confirm 只确认“是否继续”；prompt 额外采集用户输入（如备注、原因、名称）
   prompt(content) {
     return ElMessageBox.prompt(content, "系统提示", {
       confirmButtonText: '确定',
