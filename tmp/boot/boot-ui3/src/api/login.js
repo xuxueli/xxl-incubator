@@ -1,6 +1,18 @@
 import request from '@/utils/request'
 
-// 登录方法
+/**
+ * 名称：登录认证 API
+ * 能力：提供登录、退出、验证码与当前用户信息等认证相关接口。
+ */
+
+/**
+ * 用户登录。
+ * @param {string} username 用户名。
+ * @param {string} password 密码。
+ * @param {string} code 验证码。
+ * @param {string} uuid 验证码标识。
+ * @returns {Promise<any>} 登录结果。
+ */
 export function login(username, password, code, uuid) {
   const data = {
     username,
@@ -19,7 +31,7 @@ export function login(username, password, code, uuid) {
   })
 }
 
-// 注册方法
+/** 注册账号。 */
 /*export function register(data) {
   return request({
     url: '/register',
@@ -31,7 +43,10 @@ export function login(username, password, code, uuid) {
   })
 }*/
 
-// 获取用户详细信息
+/**
+ * 获取当前登录用户信息。
+ * @returns {Promise<any>} 用户详情。
+ */
 export function getInfo() {
   return request({
     url: '/getInfo',
@@ -39,7 +54,7 @@ export function getInfo() {
   })
 }
 
-// 解锁屏幕
+/** 解锁屏幕。 */
 /*export function unlockScreen(password) {
   return request({
     url: '/unlockscreen',
@@ -48,7 +63,10 @@ export function getInfo() {
   })
 }*/
 
-// 退出方法
+/**
+ * 用户退出登录。
+ * @returns {Promise<any>} 退出结果。
+ */
 export function logout() {
   return request({
     url: '/logout',
@@ -56,7 +74,10 @@ export function logout() {
   })
 }
 
-// 获取验证码
+/**
+ * 获取登录验证码。
+ * @returns {Promise<any>} 验证码图片与标识。
+ */
 export function getCodeImg() {
   return request({
     url: '/captchaImage',

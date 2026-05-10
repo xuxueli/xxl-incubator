@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
-// 查询字典类型列表
+/**
+ * 名称：字典类型 API
+ * 能力：提供字典类型查询、维护、缓存刷新与下拉选项接口。
+ */
+
+/**
+ * 查询字典类型列表。
+ * @param {Object} query 查询参数。
+ * @returns {Promise<any>} 字典类型列表。
+ */
 export function listType(query) {
   return request({
     url: '/system/dict/type/list',
@@ -9,7 +18,11 @@ export function listType(query) {
   })
 }
 
-// 查询字典类型详细
+/**
+ * 查询字典类型详情。
+ * @param {string|number} dictId 字典类型 ID。
+ * @returns {Promise<any>} 字典类型详情。
+ */
 export function getType(dictId) {
   return request({
     url: '/system/dict/type/' + dictId,
@@ -17,7 +30,11 @@ export function getType(dictId) {
   })
 }
 
-// 新增字典类型
+/**
+ * 新增字典类型。
+ * @param {Object} data 字典类型数据。
+ * @returns {Promise<any>} 新增结果。
+ */
 export function addType(data) {
   return request({
     url: '/system/dict/type',
@@ -26,7 +43,11 @@ export function addType(data) {
   })
 }
 
-// 修改字典类型
+/**
+ * 修改字典类型。
+ * @param {Object} data 字典类型数据。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function updateType(data) {
   return request({
     url: '/system/dict/type',
@@ -35,7 +56,11 @@ export function updateType(data) {
   })
 }
 
-// 删除字典类型
+/**
+ * 删除字典类型。
+ * @param {string|number} dictId 字典类型 ID。
+ * @returns {Promise<any>} 删除结果。
+ */
 export function delType(dictId) {
   return request({
     url: '/system/dict/type/' + dictId,
@@ -43,7 +68,10 @@ export function delType(dictId) {
   })
 }
 
-// 刷新字典缓存
+/**
+ * 刷新字典缓存。
+ * @returns {Promise<any>} 刷新结果。
+ */
 export function refreshCache() {
   return request({
     url: '/system/dict/type/refreshCache',
@@ -51,7 +79,10 @@ export function refreshCache() {
   })
 }
 
-// 获取字典选择框列表
+/**
+ * 获取字典类型下拉选项。
+ * @returns {Promise<any>} 下拉选项列表。
+ */
 export function optionselect() {
   return request({
     url: '/system/dict/type/optionselect',

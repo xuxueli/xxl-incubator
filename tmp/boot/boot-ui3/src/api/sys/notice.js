@@ -1,6 +1,15 @@
 import request from '@/utils/request'
 
-// 查询公告列表
+/**
+ * 名称：公告管理 API
+ * 能力：提供公告查询、维护、已读标记与已读用户查询接口。
+ */
+
+/**
+ * 查询公告列表。
+ * @param {Object} query 查询参数。
+ * @returns {Promise<any>} 公告列表。
+ */
 export function listNotice(query) {
   return request({
     url: '/system/notice/list',
@@ -9,7 +18,11 @@ export function listNotice(query) {
   })
 }
 
-// 查询公告详细
+/**
+ * 查询公告详情。
+ * @param {string|number} noticeId 公告 ID。
+ * @returns {Promise<any>} 公告详情。
+ */
 export function getNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -17,7 +30,11 @@ export function getNotice(noticeId) {
   })
 }
 
-// 新增公告
+/**
+ * 新增公告。
+ * @param {Object} data 公告数据。
+ * @returns {Promise<any>} 新增结果。
+ */
 export function addNotice(data) {
   return request({
     url: '/system/notice',
@@ -26,7 +43,11 @@ export function addNotice(data) {
   })
 }
 
-// 修改公告
+/**
+ * 修改公告。
+ * @param {Object} data 公告数据。
+ * @returns {Promise<any>} 修改结果。
+ */
 export function updateNotice(data) {
   return request({
     url: '/system/notice',
@@ -35,7 +56,11 @@ export function updateNotice(data) {
   })
 }
 
-// 删除公告
+/**
+ * 删除公告。
+ * @param {string|number} noticeId 公告 ID。
+ * @returns {Promise<any>} 删除结果。
+ */
 export function delNotice(noticeId) {
   return request({
     url: '/system/notice/' + noticeId,
@@ -43,7 +68,10 @@ export function delNotice(noticeId) {
   })
 }
 
-// 首页顶部公告列表（带已读状态）
+/**
+ * 查询首页顶部公告（含已读状态）。
+ * @returns {Promise<any>} 顶部公告列表。
+ */
 export function listNoticeTop() {
   return request({
     url: '/system/notice/listTop',
@@ -51,7 +79,11 @@ export function listNoticeTop() {
   })
 }
 
-// 标记公告已读
+/**
+ * 标记公告已读。
+ * @param {string|number} noticeId 公告 ID。
+ * @returns {Promise<any>} 标记结果。
+ */
 export function markNoticeRead(noticeId) {
   return request({
     url: '/system/notice/markRead',
@@ -60,7 +92,11 @@ export function markNoticeRead(noticeId) {
   })
 }
 
-// 批量标记已读
+/**
+ * 批量标记公告已读。
+ * @param {string} ids 公告 ID 集合（逗号分隔）。
+ * @returns {Promise<any>} 标记结果。
+ */
 export function markNoticeReadAll(ids) {
   return request({
     url: '/system/notice/markReadAll',
@@ -69,7 +105,11 @@ export function markNoticeReadAll(ids) {
   })
 }
 
-// 查询公告已读用户列表
+/**
+ * 查询公告已读用户列表。
+ * @param {Object} query 查询参数。
+ * @returns {Promise<any>} 已读用户列表。
+ */
 export function listNoticeReadUsers(query) {
   return request({
     url: '/system/notice/readUsers/list',
