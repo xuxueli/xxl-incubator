@@ -1,7 +1,43 @@
 /**
- * 主题样式设置：设置 Element Plus 主题色
+ * Util（工具模块）说明：`theme.js`
  *
- * 根据当前主题色和暗黑模式状态，动态设置 Element Plus 的 CSS 变量
+ * 一、定义（是什么）
+ * - Util 是“可复用、低耦合、偏纯函数”的能力单元，聚焦某个具体问题（如颜色计算、格式转换、校验等）。
+ * - 本文件属于“主题色工具”：负责把业务主题色转换为 Element Plus 运行所需的 CSS 变量色阶。
+ *
+ * 二、特性（为什么适合放到 util）
+ * - 输入输出明确：输入主题色，输出（写入）一组稳定的主题变量。
+ * - 复用粒度细：可在设置页、初始化流程、主题切换流程复用。
+ * - 依赖轻：不依赖组件生命周期，不需要 `app.use()` 安装。
+ *
+ * 三、能力（能做什么）
+ * - 根据浅色/暗色模式动态计算主色。
+ * - 生成 `--el-color-primary`、`--el-color-primary-light-*`、`--el-color-primary-dark-*`。
+ * - 提供十六进制与 RGB 转换、颜色混合、提亮/加深等基础算法。
+ *
+ * 四、典型用法
+ * ```js
+ * import { handleThemeStyle } from '@/utils/theme'
+ * handleThemeStyle('#409EFF')
+ * ```
+ *
+ * 五、导出模式示例（维护参考）
+ * 1) 命名导出（本文件采用）
+ * ```js
+ * export function handleThemeStyle(theme) {}
+ * import { handleThemeStyle } from '@/utils/theme'
+ * ```
+ * 2) 默认导出对象
+ * ```js
+ * export default { handleThemeStyle }
+ * import themeUtil from '@/utils/theme'
+ * themeUtil.handleThemeStyle('#409EFF')
+ * ```
+ * 3) 聚合再导出
+ * ```js
+ * export { handleThemeStyle } from './theme'
+ * import { handleThemeStyle } from '@/utils'
+ * ```
  *
  * @param {string} theme - 主题色的十六进制值（如：#409EFF）
  */
