@@ -67,12 +67,12 @@ FontEnd（前后端分离）：
         /api                    // TODO 1
         /assets                 // --     
         /components             // TODO 3
-        /directive              // TODO 3
+        /directive              // --
         /layout                 // TODO 3
         /plugins                // TODO 2    
-        /router                 // TODO 1
-        /store                  // TODO 1
-        /utils                  // TODO 2
+        /router                 // TODO 3
+        /store                  // ing
+        /utils                  // TODO 1
         /views                  // TODO 3
         App.vue                 :--
         main.js                 :--
