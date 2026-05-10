@@ -64,15 +64,15 @@ FontEnd（前后端分离）：
 前端Module：
 ```
     /src    
-        /api                    // ing
+        /api                    // --
         /assets                 // --     
         /components             // TODO 3
         /directive              // --
         /layout                 // TODO 3
         /plugins                // -- 
-        /router                 // TODO 3
+        /router                 // TODO 2
         /store                  // ing
-        /utils                  // TODO 1
+        /utils                  // ing
         /views                  // TODO 3
         App.vue                 :--
         main.js                 :--
