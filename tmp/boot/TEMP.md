@@ -66,13 +66,13 @@ FontEnd（前后端分离）：
     /src    
         /api                    // --
         /assets                 // --     
-        /components             // TODO 3
+        /components             // TODO 2
         /directive              // --
-        /layout                 // TODO 3
+        /layout                 // TODO 1
         /plugins                // -- 
-        /router                 // TODO 2
-        /store                  // ing
-        /utils                  // ing
+        /router                 // --
+        /store                  // --
+        /utils                  // --
         /views                  // TODO 3
         App.vue                 :--
         main.js                 :--
