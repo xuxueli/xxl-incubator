@@ -6,24 +6,24 @@
     3. 按主题与布局状态输出动态样式类与 CSS 变量。
 -->
 <template>
-  <!-- 分项1：根容器绑定布局状态类与主题变量。 -->
+  <!-- 布局骨架：根容器汇总布局状态类与主题变量，作为页面主承载区。 -->
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme, '--current-color-light': theme + '1a', '--current-color-dark-bg': theme + '33' }">
-    <!-- 分项2：仅在移动端且侧栏展开时显示遮罩，点击触发关闭。 -->
+    <!-- 实现细节：移动端侧栏展开时显示遮罩，点击遮罩触发侧栏关闭。 -->
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
-    <!-- 分项3：侧边栏未隐藏时渲染导航菜单。 -->
+    <!-- 实现细节：侧边栏按 hide 状态按需渲染，避免无效节点。 -->
     <sidebar v-if="!sidebar.hide" class="sidebar-container" />
-    <!-- 分项4：主区域根据标签页与侧栏隐藏状态切换容器样式。 -->
+    <!-- 主内容区：根据标签页和侧栏隐藏状态切换容器样式。 -->
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
-      <!-- 分项5：头部区域按 fixedHeader 控制固定定位。 -->
+      <!-- 实现细节：头部固定样式由 fixedHeader 控制。 -->
       <div :class="{ 'fixed-header': fixedHeader }">
-        <!-- 分项5.1：导航栏提供 setLayout 事件入口。 -->
+        <!-- 实现细节：导航栏通过 setLayout 事件打开设置面板。 -->
         <navbar @setLayout="setLayout" />
-        <!-- 分项5.2：按配置决定是否显示标签页。 -->
+        <!-- 实现细节：标签页按配置开关显示。 -->
         <tags-view v-if="needTagsView" />
       </div>
-      <!-- 分项6：路由内容主体渲染区。 -->
+      <!-- 实现细节：路由页面主体出口。 -->
       <app-main />
-      <!-- 分项7：设置面板实例，供 setLayout 调用打开。 -->
+      <!-- 实现细节：设置面板通过 ref 暴露打开方法。 -->
       <settings ref="settingRef" />
     </div>
   </div>
@@ -43,7 +43,7 @@ const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
 
-// 分项8：根据状态计算布局类名（侧栏显隐、动画开关、移动端标记）。
+// 布局状态映射：将 store 状态映射为容器 class，统一驱动页面样式。
 const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
   openSidebar: sidebar.value.opened,
@@ -54,16 +54,17 @@ const classObj = computed(() => ({
 const { width, height } = useWindowSize()
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
-// 分项9：设备变更为 mobile 且侧栏处于展开时，主动收起侧栏。
+// 设备切换处理：切换到 mobile 时，若侧栏已展开则主动收起，避免遮挡内容。
 watch(() => device.value, () => {
   if (device.value === 'mobile' && sidebar.value.opened) {
     useAppStore().closeSideBar({ withoutAnimation: false })
   }
 })
 
-// 分项10：窗口宽度小于阈值时切换 mobile 并无动画收起侧栏；否则切换 desktop。
+// 窗口响应式处理：根据宽度阈值切换设备类型，并同步侧栏状态。
 watchEffect(() => {
   if (width.value - 1 < WIDTH) {
+    // 实现细节：移动端采用无动画收起，减少窗口缩放时的抖动。
     useAppStore().toggleDevice('mobile')
     useAppStore().closeSideBar({ withoutAnimation: true })
   } else {
@@ -72,12 +73,12 @@ watchEffect(() => {
 })
 
 function handleClickOutside() {
-  // 分项11：遮罩点击行为，关闭移动端侧栏。
+  // 交互细节：遮罩点击只执行侧栏关闭，不影响其他布局状态。
   useAppStore().closeSideBar({ withoutAnimation: false })
 }
 
 const settingRef = ref(null)
-// 分项12：导航栏触发设置入口，通过组件实例打开 Settings 面板。
+// 设置面板入口：响应导航栏事件，通过组件实例方法打开设置抽屉。
 function setLayout() {
   settingRef.value.openSetting()
 }
