@@ -1,29 +1,18 @@
 <!--
   名称：Layout 主框架布局组件（src/layout/index.vue）
-  功能：统一承载后台系统的整体页面骨架，协调侧边栏、顶部导航、标签页、主内容区与设置面板的联动展示。
-
-  总体说明：
-    该组件是应用路由页面的外层容器，负责“结构组织 + 响应式切换 + 交互协同”三类核心职责，
-    让不同终端下的页面布局行为保持一致。
-
-  分项说明：
-    1. 结构组织
-       - 渲染 app-wrapper 作为根容器。
-       - 按配置展示 Sidebar、Navbar、TagsView、AppMain 与 Settings，形成完整后台布局。
-
-    2. 响应式切换
-       - 监听窗口宽度并以 WIDTH 阈值区分 desktop / mobile。
-       - 在移动端自动收起侧边栏，避免内容区域被遮挡。
-
-    3. 交互协同
-       - 移动端侧边栏展开时显示遮罩层，点击遮罩层触发关闭逻辑。
-       - 导航栏触发 setLayout 时，调用设置面板实例打开布局设置。
-
-    4. 视觉与样式联动
-       - 通过 CSS 变量注入当前主题色，供子区域复用。
-       - 根据侧边栏状态、设备类型、头部固定配置动态切换样式类名。
+  功能项摘要：
+    1. 统一后台整体骨架（侧边栏 / 顶部导航 / 标签页 / 主内容 / 设置面板）。
+    2. 处理桌面端与移动端的布局切换与侧边栏收展联动。
+    3. 按主题与布局状态输出动态样式类与 CSS 变量。
 -->
 <template>
+  <!--
+    总体：模板层负责布局骨架渲染与页面结构编排。
+    分项：
+      1. 根容器 app-wrapper 统一挂载动态类名与主题色变量。
+      2. 移动端侧栏展开时显示遮罩层，并绑定点击关闭事件。
+      3. 主内容区按配置渲染导航栏、标签页、主体内容与设置面板。
+  -->
   <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme, '--current-color-light': theme + '1a', '--current-color-dark-bg': theme + '33' }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar v-if="!sidebar.hide" class="sidebar-container" />
@@ -52,6 +41,8 @@ const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
 const fixedHeader = computed(() => settingsStore.fixedHeader)
 
+// 总体：根据设备状态与侧边栏状态，计算布局容器类名。
+// 分项：控制侧栏显示状态、动画开关和移动端样式标记。
 const classObj = computed(() => ({
   hideSidebar: !sidebar.value.opened,
   openSidebar: sidebar.value.opened,
@@ -62,12 +53,18 @@ const classObj = computed(() => ({
 const { width, height } = useWindowSize()
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
+// 总体：设备状态变化时确保移动端不会保留展开侧边栏。
+// 分项：当设备切换为 mobile 且侧边栏打开时，主动关闭侧边栏。
 watch(() => device.value, () => {
   if (device.value === 'mobile' && sidebar.value.opened) {
     useAppStore().closeSideBar({ withoutAnimation: false })
   }
 })
 
+// 总体：监听窗口尺寸，维护响应式设备状态与侧边栏行为。
+// 分项：
+//   1. 小于阈值时切换为 mobile，并无动画收起侧边栏。
+//   2. 大于等于阈值时切换为 desktop。
 watchEffect(() => {
   if (width.value - 1 < WIDTH) {
     useAppStore().toggleDevice('mobile')
@@ -82,6 +79,8 @@ function handleClickOutside() {
 }
 
 const settingRef = ref(null)
+// 总体：提供导航栏触发入口，打开布局设置抽屉。
+// 分项：通过 settingRef 调用 Settings 组件实例方法。
 function setLayout() {
   settingRef.value.openSetting()
 }
