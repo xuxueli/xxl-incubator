@@ -103,14 +103,19 @@ function handleLink(item) {
   router.push(path)
 }
 
+// 路由响应式监听：
+// - watchEffect 会自动收集 route.path 依赖，路径变化时重新计算面包屑；
+// - 在组件首次执行时也会立即运行一次，保证首屏即可拿到正确导航层级。
 watchEffect(() => {
   // 重要实现细节：redirect 中转页不更新面包屑，避免出现临时跳转路径痕迹。
+  // 例如权限跳转/重定向过程中，URL 会短暂进入 /redirect/*，此时保持上一状态可避免闪烁。
   // if you go to the redirect page, do not update the breadcrumbs
   if (route.path.startsWith('/redirect/')) {
     return
   }
   getBreadcrumb()
 })
+// 显式初始化一次，确保在某些依赖尚未稳定时也能尽早渲染基础面包屑。
 getBreadcrumb()
 </script>
 
