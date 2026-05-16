@@ -1,3 +1,13 @@
+/**
+ * 名称：路由权限 Store
+ * 描述：负责把后端返回的菜单路由转换为前端可用的路由对象，并维护侧边栏、顶栏、默认路由等多套路由视图数据。
+ *
+ * 职责划分：
+ * 1. state：保存不同场景下的路由集合；
+ * 2. actions：负责生成并分发路由数据；
+ * 3. helpers：负责路由组件映射、子路由拍平和权限过滤；
+ * 4. getters：当前模块未定义 getters，调用方直接读取 state。
+ */
 import auth from '@/plugins/auth'
 import router, { constantRoutes, dynamicRoutes } from '@/router'
 import { getRouters } from '@/api/menu'
@@ -5,12 +15,21 @@ import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
 
-// 匹配views里面所有的.vue文件
+// 预先收集 views 目录下的页面组件，供后端路由字符串按需映射为真实组件。
 const modules = import.meta.glob('./../../views/**/*.vue')
 
 const usePermissionStore = defineStore(
   'permission',
   {
+    /**
+     * 状态定义
+     *
+     * - routes：最终用于权限路由合并的完整路由表；
+     * - addRoutes：本次动态追加的路由；
+     * - defaultRoutes：默认展示的路由集合；
+     * - topbarRouters：顶栏导航使用的路由；
+     * - sidebarRouters：侧边栏菜单使用的路由。
+     */
     state: () => ({
       routes: [],
       addRoutes: [],
@@ -18,14 +37,32 @@ const usePermissionStore = defineStore(
       topbarRouters: [],
       sidebarRouters: []
     }),
+    /**
+     * 动作方法定义
+     *
+     * 本模块的核心工作是请求后端菜单数据，并拆分出不同 UI 场景需要的路由结果。
+     */
     actions: {
+      /**
+       * 设置完整权限路由
+       *
+       * 最终结果会与 constantRoutes 合并，形成前端真正生效的路由表。
+       */
       setRoutes(routes) {
         this.addRoutes = routes
         this.routes = constantRoutes.concat(routes)
       },
+      /**
+       * 设置默认路由
+       *
+       * 默认路由同样会和静态常量路由合并，主要用于默认菜单渲染。
+       */
       setDefaultRoutes(routes) {
         this.defaultRoutes = constantRoutes.concat(routes)
       },
+      /**
+       * 设置顶栏路由
+       */
       setTopbarRoutes(routes) {
         this.topbarRouters = routes
       },
@@ -36,6 +73,16 @@ const usePermissionStore = defineStore(
       setSidebarRouters(routes) {
         this.sidebarRouters = routes
       },
+      /**
+       * 生成权限路由
+       *
+       * 处理流程：
+       * 1. 请求后端菜单数据；
+       * 2. 深拷贝多份路由数据，避免不同转换过程互相影响；
+       * 3. 生成侧边栏、重写路由、默认路由等不同结果；
+       * 4. 过滤本地动态路由并注册到 router 实例；
+       * 5. 回填 store 中的多套路由状态。
+       */
       generateRoutes(roles) {
         return new Promise(resolve => {
           // 向后端请求路由数据
@@ -59,14 +106,21 @@ const usePermissionStore = defineStore(
     }
   })
 
-// 遍历后台传来的路由字符串，转换为组件对象
+/**
+ * 遍历后台传来的路由配置，将字符串组件名转换为真实组件对象。
+ *
+ * @param {Array} asyncRouterMap 后端返回的路由数组
+ * @param {Object|boolean} lastRouter 上一级路由，用于拼接多级路径
+ * @param {boolean} type 是否执行子路由拍平处理
+ * @returns {Array}
+ */
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {
     if (type && route.children) {
       route.children = filterChildren(route.children)
     }
     if (route.component) {
-      // Layout ParentView 组件特殊处理
+      // 框架级容器组件使用固定映射，普通页面组件再走动态加载。
       if (route.component === 'Layout') {
         route.component = Layout
       } else if (route.component === 'ParentView') {
@@ -87,6 +141,15 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   })
 }
 
+/**
+ * 递归拍平 ParentView 子路由。
+ *
+ * 该方法用于处理多层级菜单，把需要继承父级 path 的子节点展开成前端更易消费的结构。
+ *
+ * @param {Array} childrenMap 子路由集合
+ * @param {Object|boolean} lastRouter 上一级路由
+ * @returns {Array}
+ */
 function filterChildren(childrenMap, lastRouter = false) {
   var children = []
   childrenMap.forEach(el => {
@@ -100,7 +163,14 @@ function filterChildren(childrenMap, lastRouter = false) {
   return children
 }
 
-// 动态路由遍历，验证是否具备权限
+/**
+ * 动态路由遍历，验证当前用户是否具备访问权限。
+ *
+ * 这里只处理本地预定义的 dynamicRoutes，通过 permissions / roles 两种方式做过滤。
+ *
+ * @param {Array} routes 本地动态路由集合
+ * @returns {Array}
+ */
 export function filterDynamicRoutes(routes) {
   const res = []
   routes.forEach(route => {
@@ -117,6 +187,14 @@ export function filterDynamicRoutes(routes) {
   return res
 }
 
+/**
+ * 视图组件懒加载器
+ *
+ * 根据后端返回的 view 字符串，在 import.meta.glob 收集的页面组件中查找并返回异步组件工厂。
+ *
+ * @param {string} view 页面路径
+ * @returns {Function|undefined}
+ */
 export const loadView = (view) => {
   let res
   for (const path in modules) {

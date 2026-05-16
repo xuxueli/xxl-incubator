@@ -1,18 +1,46 @@
+/**
+ * 名称：标签页视图 Store
+ * 描述：负责管理多页签导航所需的访问标签、缓存页面以及 iframe 标签数据，并按设置决定是否持久化访问记录。
+ *
+ * 职责划分：
+ * 1. state：维护 visitedViews、cachedViews、iframeViews 三类标签数据；
+ * 2. actions：负责新增、删除、批量整理和恢复标签；
+ * 3. helpers：封装持久化开关判断与 localStorage 读写；
+ * 4. getters：当前模块未定义 getters，组件直接消费状态数据。
+ */
 import cache from '@/plugins/cache'
 import useSettingsStore from '@/store/modules/settings'
 
+// 持久化 key：用于保存普通访问标签页，affix 固定标签不参与持久化。
 const PERSIST_KEY = 'tags-view-visited'
 
+/**
+ * 判断当前是否开启 tags-view 持久化。
+ *
+ * 这里直接读取 settings store，确保标签页模块始终跟随全局设置工作。
+ */
 function isPersistEnabled() {
   return useSettingsStore().tagsViewPersist
 }
 
+/**
+ * 保存访问过的标签页。
+ *
+ * 只持久化普通标签页需要的最小字段集合，避免把固定标签或无关运行态数据写入本地缓存。
+ *
+ * @param {Array} views
+ */
 function saveVisitedViews(views) {
   if (!isPersistEnabled()) return
   const toSave = views.filter(v => !(v.meta && v.meta.affix)).map(v => ({ path: v.path, fullPath: v.fullPath, name: v.name, title: v.title, query: v.query, meta: v.meta }))
   cache.local.setJSON(PERSIST_KEY, toSave)
 }
 
+/**
+ * 读取已持久化的标签页数据。
+ *
+ * @returns {Array}
+ */
 function loadVisitedViews() {
   return cache.local.getJSON(PERSIST_KEY) || []
 }
@@ -27,16 +55,36 @@ function clearVisitedViews() {
 const useTagsViewStore = defineStore(
   'tags-view',
   {
+    /**
+     * 状态定义
+     *
+     * - visitedViews：页面顶部已访问标签；
+     * - cachedViews：需要 keep-alive 缓存的组件名称集合；
+     * - iframeViews：以 iframe 方式打开的外链页面标签。
+     */
     state: () => ({
       visitedViews: [],
       cachedViews: [],
       iframeViews: []
     }),
+    /**
+     * 动作方法定义
+     *
+     * 这些方法围绕“单个标签操作”和“批量标签整理”两类场景展开，并在必要时同步持久化。
+     */
     actions: {
+      /**
+       * 同时新增访问标签和缓存标签，是页面进入时最常用的统一入口。
+       */
       addView(view) {
         this.addVisitedView(view)
         this.addCachedView(view)
       },
+      /**
+       * 新增 iframe 标签页。
+       *
+       * 通过 path 去重，避免相同 iframe 页面重复打开。
+       */
       addIframeView(view) {
         if (this.iframeViews.some(v => v.path === view.path)) return
         this.iframeViews.push(
@@ -45,6 +93,9 @@ const useTagsViewStore = defineStore(
           })
         )
       },
+      /**
+       * 新增普通访问标签，并在成功新增后刷新持久化数据。
+       */
       addVisitedView(view) {
         if (this.visitedViews.some(v => v.path === view.path)) return
         this.visitedViews.push(
@@ -54,6 +105,11 @@ const useTagsViewStore = defineStore(
         )
         saveVisitedViews(this.visitedViews)
       },
+      /**
+       * 新增固定标签。
+       *
+       * affix 标签通常在应用初始化时插入到头部，因此使用 unshift 保持固定标签靠前展示。
+       */
       addAffixView(view) {
         if (this.visitedViews.some(v => v.path === view.path)) return
         this.visitedViews.unshift(
@@ -62,12 +118,20 @@ const useTagsViewStore = defineStore(
           })
         )
       },
+      /**
+       * 新增缓存标签。
+       *
+       * 只有页面声明了 name 且未设置 meta.noCache 时，才会进入 keep-alive 缓存列表。
+       */
       addCachedView(view) {
         if (this.cachedViews.includes(view.name)) return
         if (!view.meta.noCache) {
           this.cachedViews.push(view.name)
         }
       },
+      /**
+       * 删除单个标签的统一入口，同时删除访问记录与缓存记录。
+       */
       delView(view) {
         return new Promise(resolve => {
           this.delVisitedView(view)
@@ -78,6 +142,11 @@ const useTagsViewStore = defineStore(
           })
         })
       },
+      /**
+       * 删除单个访问标签。
+       *
+       * 除了 visitedViews 本身，还会同步清理关联的 iframe 标签和持久化缓存。
+       */
       delVisitedView(view) {
         return new Promise(resolve => {
           for (const [i, v] of this.visitedViews.entries()) {
@@ -91,12 +160,20 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
+      /**
+       * 删除单个 iframe 标签。
+       *
+       * 该操作只影响 iframeViews，不会触碰普通访问标签和缓存标签。
+       */
       delIframeView(view) {
         return new Promise(resolve => {
           this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
           resolve([...this.iframeViews])
         })
       },
+      /**
+       * 删除单个缓存标签。
+       */
       delCachedView(view) {
         return new Promise(resolve => {
           const index = this.cachedViews.indexOf(view.name)
@@ -104,6 +181,9 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
+      /**
+       * 删除当前标签之外的其他标签，是“关闭其他”操作的统一入口。
+       */
       delOthersViews(view) {
         return new Promise(resolve => {
           this.delOthersVisitedViews(view)
@@ -114,6 +194,9 @@ const useTagsViewStore = defineStore(
           })
         })
       },
+      /**
+       * 删除其他访问标签，但保留固定标签和当前标签。
+       */
       delOthersVisitedViews(view) {
         return new Promise(resolve => {
           this.visitedViews = this.visitedViews.filter(v => {
@@ -124,6 +207,9 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
+      /**
+       * 删除其他缓存标签，只保留当前页对应的缓存项。
+       */
       delOthersCachedViews(view) {
         return new Promise(resolve => {
           const index = this.cachedViews.indexOf(view.name)
@@ -135,6 +221,9 @@ const useTagsViewStore = defineStore(
           resolve([...this.cachedViews])
         })
       },
+      /**
+       * 删除全部标签的统一入口。
+       */
       delAllViews(view) {
         return new Promise(resolve => {
           this.delAllVisitedViews(view)
@@ -145,6 +234,11 @@ const useTagsViewStore = defineStore(
           })
         })
       },
+      /**
+       * 删除全部访问标签，但固定标签始终保留。
+       *
+       * 注意：这里直接清空 iframe 列表，并移除持久化缓存，避免重载后恢复过期标签。
+       */
       delAllVisitedViews(view) {
         return new Promise(resolve => {
           const affixTags = this.visitedViews.filter(tag => tag.meta.affix)
@@ -154,15 +248,28 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
+      /**
+       * 对外暴露的清理持久化缓存入口。
+       *
+       * 与上方同名辅助函数配合使用：辅助函数处理实际缓存删除，action 提供 store 调用入口。
+       */
       clearVisitedViews() {
         clearVisitedViews()
       },
+      /**
+       * 删除全部缓存标签。
+       */
       delAllCachedViews(view) {
         return new Promise(resolve => {
           this.cachedViews = []
           resolve([...this.cachedViews])
         })
       },
+      /**
+       * 更新单个访问标签的最新信息。
+       *
+       * 常用于页面参数或标题变化后，保持标签展示内容同步。
+       */
       updateVisitedView(view) {
         for (let v of this.visitedViews) {
           if (v.path === view.path) {
@@ -171,6 +278,11 @@ const useTagsViewStore = defineStore(
           }
         }
       },
+      /**
+       * 删除当前标签右侧的所有标签。
+       *
+       * 过滤过程中会同步清理对应的缓存标签与 iframe 标签，确保三份状态保持一致。
+       */
       delRightTags(view) {
         return new Promise(resolve => {
           const index = this.visitedViews.findIndex(v => v.path === view.path)
@@ -195,6 +307,11 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
+      /**
+       * 删除当前标签左侧的所有标签。
+       *
+       * 与 delRightTags 对称实现，同样需要同步维护缓存和 iframe 数据。
+       */
       delLeftTags(view) {
         return new Promise(resolve => {
           const index = this.visitedViews.findIndex(v => v.path === view.path)
@@ -219,7 +336,11 @@ const useTagsViewStore = defineStore(
           resolve([...this.visitedViews])
         })
       },
-      // 恢复持久化的 tags
+      /**
+       * 恢复持久化的 tags。
+       *
+       * 逐条调用 addVisitedView 进行恢复，复用现有去重与标准化逻辑。
+       */
       loadPersistedViews() {
         const views = loadVisitedViews()
         views.forEach(view => {
