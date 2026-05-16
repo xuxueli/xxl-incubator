@@ -64,9 +64,27 @@ const useTagsViewStore = defineStore(
     /**
      * 状态定义
      *
-     * - visitedViews：页面顶部已访问标签；
-     * - cachedViews：需要 keep-alive 缓存的组件名称集合；
-     * - iframeViews：以 iframe 方式打开的外链页面标签。
+     * 这里拆成三份数据，不是简单为了分类，而是为了分别服务项目里三条不同的消费链路：
+     *
+     * 1. visitedViews：
+     *    - 供 `layout/components/TagsView/index.vue` 和 `ScrollPane.vue` 渲染顶部标签、滚动定位、右键菜单和关闭逻辑；
+     *    - 保存的是“可导航标签对象”，需要保留 path、fullPath、title、query、meta 等信息，才能正确展示标题、恢复路由和做持久化；
+     *    - 它是标签体系的主数据源，普通页签与 affix 固定页签都会进入这里。
+     *
+     * 2. cachedViews：
+     *    - 供 `layout/components/AppMain.vue` 的 `<keep-alive :include="...">` 直接消费；
+     *    - 这里只需要组件 `name` 字符串集合，因为 keep-alive 只按组件名决定是否缓存，不关心标题、query、是否 affix 等展示信息；
+     *    - 因此它和 visitedViews 虽然关联紧密，但数据结构、去重规则和使用场景都不同，不能简单合并为一份。
+     *
+     * 3. iframeViews：
+     *    - 供 `layout/components/IframeToggle/index.vue` 渲染外链 iframe 容器；
+     *    - 它关注的是 `meta.link`、path、query 这些 iframe 打开外部地址所需的信息，不参与 keep-alive，也不等同于普通组件页签；
+     *    - 关闭左右标签、关闭其他标签时会和 visitedViews 同步裁剪，但渲染目标是独立的 iframe 容器。
+     *
+     * 合并分析：
+     * - cachedViews 不建议合并进 visitedViews，因为 keep-alive 需要的是去重后的组件名列表，而 visitedViews 允许同一路由组件因不同 fullPath/query 形成独立标签；
+     * - iframeViews 理论上可以通过 visitedViews 过滤 `meta.link` 临时派生，但当前项目中它有独立渲染入口和独立清理动作，单独维护能减少组件层重复过滤，也让关闭逻辑更直观；
+     * - 因此现阶段保留三份状态更符合当前项目结构，这次只补充说明，不调整实现。
      */
     state: () => ({
       visitedViews: [],
