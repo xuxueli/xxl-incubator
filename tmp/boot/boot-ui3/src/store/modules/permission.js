@@ -84,6 +84,12 @@ const usePermissionStore = defineStore(
        * 5. 回填 store 中的多套路由状态。
        */
       generateRoutes(roles) {
+        /**
+         * 这里显式返回 Promise，目的是把“菜单请求 + 路由转换 + 动态注册”这整套异步初始化流程
+         * 暴露给外部调用方（通常是路由守卫或应用启动流程）统一等待；
+         * 当全部路由都整理完成后，再通过 resolve(rewriteRoutes) 把最终可用的动态路由返回出去，
+         * 这样调用方就可以在路由已准备就绪的前提下继续执行后续导航逻辑，避免出现页面跳转早于路由注册完成的问题。
+         */
         return new Promise(resolve => {
           // 向后端请求路由数据
           getRouters().then(res => {
