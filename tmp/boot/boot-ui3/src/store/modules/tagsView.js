@@ -32,6 +32,12 @@ function isPersistEnabled() {
  */
 function saveVisitedViews(views) {
   if (!isPersistEnabled()) return
+  /**
+   * 持久化前先做两步收敛：
+   * 1. 过滤掉 affix 固定标签，这类标签通常由路由配置静态生成，刷新后会重新注入，不需要写入本地缓存；
+   * 2. 只提取标签恢复所需的关键字段（路径、名称、标题、查询参数和 meta），
+   *    避免把页面运行过程中临时挂载的响应式数据或其他冗余属性一并持久化，降低缓存体积，也减少恢复时的歧义。
+   */
   const toSave = views.filter(v => !(v.meta && v.meta.affix)).map(v => ({ path: v.path, fullPath: v.fullPath, name: v.name, title: v.title, query: v.query, meta: v.meta }))
   cache.local.setJSON(PERSIST_KEY, toSave)
 }
