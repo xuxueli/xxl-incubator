@@ -33,6 +33,9 @@
  */
 import { scrollTo } from '@/utils/scroll-to'
 
+// defineProps 用法说明：
+// 在 <script setup> 中用于声明组件入参，返回响应式 props 对象；
+// 这里采用对象写法定义类型、必填项与默认值，供模板和逻辑直接读取。
 // 分）参数定义：统一管理分页行为所需输入项与默认值。
 const props = defineProps({
   // 总记录数（必填）：用于计算分页器页码与边界。
@@ -84,9 +87,15 @@ const props = defineProps({
   }
 })
 
+// defineEmits 用法说明：
+// 在 <script setup> 中用于声明组件可触发的事件，返回 emit 函数；
+// 通过 emit('事件名', 载荷) 将状态变化通知父组件。
 // 分）事件定义：向父组件派发双向绑定更新与分页行为事件。
 const emit = defineEmits()
 
+// computed 用法说明：
+// 这里使用带 get/set 的 computed 创建“可写计算属性”，
+// 以 currentPage / pageSize 作为 v-model 代理，实现 props 与事件更新桥接。
 // 分）当前页双向代理：读取 props.page，写入时触发 update:page。
 const currentPage = computed({
   get() {
