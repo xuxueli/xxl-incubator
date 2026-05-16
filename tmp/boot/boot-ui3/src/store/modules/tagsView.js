@@ -309,25 +309,39 @@ const useTagsViewStore = defineStore(
        */
       delRightTags(view) {
         return new Promise(resolve => {
+          // 先定位“当前参考标签”在 visitedViews 中的下标，后续右侧裁剪都以它为边界。
           const index = this.visitedViews.findIndex(v => v.path === view.path)
+          // 没找到基准标签时直接结束；通常说明当前传入 view 已不在标签列表中。
           if (index === -1) {
             return
           }
+          // 重新生成 visitedViews：
+          // - 保留基准标签左侧（含自身）的标签；
+          // - 始终保留 affix 固定标签；
+          // - 其余位于右侧的标签在过滤时顺带清理掉关联状态。
           this.visitedViews = this.visitedViews.filter((item, idx) => {
+            // 当前项在基准左侧/自身，或者是 affix 固定标签时，直接保留。
             if (idx <= index || (item.meta && item.meta.affix)) {
               return true
             }
+            // 走到这里说明当前项属于“需要关闭的右侧标签”。
+            // 先尝试从 keep-alive 缓存名列表中删除对应组件名，避免页面实例继续驻留。
             const i = this.cachedViews.indexOf(item.name)
             if (i > -1) {
               this.cachedViews.splice(i, 1)
             }
+            // 如果右侧标签本身是 iframe 外链页，还要同步移除 iframe 容器列表中的对应项，
+            // 否则 AppMain 下的 IframeToggle 仍可能保留已经关闭的 iframe。
             if(item.meta.link) {
               const fi = this.iframeViews.findIndex(v => v.path === item.path)
               this.iframeViews.splice(fi, 1)
             }
+            // 返回 false，把该右侧标签从 visitedViews 主列表中过滤掉。
             return false
           })
+          // 过滤完成后，把新的 visitedViews 回写到持久化缓存，保证刷新后恢复的是裁剪后的结果。
           saveVisitedViews(this.visitedViews)
+          // resolve 当前剩余标签列表，供调用方决定是否需要跳转到新的最后一个标签。
           resolve([...this.visitedViews])
         })
       },
