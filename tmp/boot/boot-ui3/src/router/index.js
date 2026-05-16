@@ -1,12 +1,16 @@
 /**
- * Description：路由配置，包括静态路由和动态路由
+ * 名称：路由定义与路由实例模块
+ * 描述：声明系统静态路由与权限动态路由，并创建全局 router 实例供应用挂载与守卫模块复用。
  *
- *  1. 静态路由（constantRoutes）：所有用户都可以访问的基础路由，如登录、注册、404 等；
- *  2. 动态路由（dynamicRoutes）：基于用户权限动态加载的路由，如用户管理、角色管理等；
- *  3. 路由元信息（meta）：用于控制路由的显示、权限等，如 title、icon、roles、permissions 等；
- *  4. 路由守卫：在 guards.js 中定义全局路由守卫，根据用户权限动态添加路由；
- *  5. 路由懒加载：使用动态 import 实现组件的按需加载，优化性能。
+ * 结构总览（从全局到细节）：
+ * 1. `constantRoutes`：无权限门槛的基础路由，应用启动即注册（登录、错误页、首页、个人中心等）；
+ * 2. `dynamicRoutes`：带权限标记的增量路由，通常在登录后由权限模块按角色筛选并动态注入；
+ * 3. `router` 实例：统一使用 HTML5 history，默认加载静态路由，并定义滚动行为恢复策略。
  *
+ * 协作关系：
+ * - `guards.js` 负责鉴权与路由注入时机；
+ * - `store/modules/permission` 负责把后端菜单转换并筛选为可注入路由；
+ * - 本文件仅负责“声明路由”和“创建实例”，不承载运行期权限判断逻辑。
  */
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
@@ -34,9 +38,13 @@ import Layout from '@/layout'
   }
  */
 
-// 公共路由
+// 公共路由（constantRoutes）：
+// - 这些路由在 createRouter 时一次性注册；
+// - 覆盖登录、错误、首页和个人中心等基础访问路径；
+// - 即使动态路由加载失败，公共路由仍可保障基础导航能力。
 export const constantRoutes = [
   {
+    // 内部重定向承载页：用于统一处理需要跳转回原路径的场景。
     path: '/redirect',
     component: Layout,
     hidden: true,
@@ -48,6 +56,7 @@ export const constantRoutes = [
     ]
   },
   {
+    // 登录页：未登录用户的默认入口。
     path: '/login',
     component: () => import('@/views/login'),
     hidden: true
@@ -58,16 +67,19 @@ export const constantRoutes = [
     hidden: true
   },*/
   {
+    // 404 兜底路由：应放在常量路由末段，匹配所有未命中路径。
     path: "/:pathMatch(.*)*",
     component: () => import('@/views/error/404'),
     hidden: true
   },
   {
+    // 401 权限异常页：用于展示“已登录但无权限”的结果页。
     path: '/401',
     component: () => import('@/views/error/401'),
     hidden: true
   },
   {
+    // 根路径默认跳转：首页作为系统主工作台。
     path: '',
     component: Layout,
     redirect: '/index',
@@ -87,6 +99,7 @@ export const constantRoutes = [
     meta: { title: '锁定屏幕' }
   },*/
   {
+    // 个人中心：挂在主布局下，通过 hidden 控制不在侧栏直接展示。
     path: '/user',
     component: Layout,
     hidden: true,
@@ -102,7 +115,10 @@ export const constantRoutes = [
   }
 ]
 
-// 动态路由，基于用户权限动态去加载
+// 动态路由（dynamicRoutes）：
+// - 路由定义中携带 permissions 字段，作为权限筛选依据；
+// - 实际注入动作由权限模块和路由守卫触发；
+// - 主要用于“入口隐藏但允许直达”的授权页面（如分配角色、分配用户、字典详情、代码生成编辑页）。
 export const dynamicRoutes = [
   {
     path: '/system/user-auth',
@@ -162,13 +178,19 @@ export const dynamicRoutes = [
   }
 ]
 
+// 创建路由实例：
+// - history 使用 createWebHistory（标准 History 模式）；
+// - routes 初始仅加载 constantRoutes，动态路由后续按需 addRoute；
+// - scrollBehavior 保持“有缓存位置优先恢复，否则回到顶部”的统一体验。
 const router = createRouter({
   history: createWebHistory(),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
+    // 浏览器前进/后退时优先恢复历史滚动位置，保持原生体验。
     if (savedPosition) {
       return savedPosition
     }
+    // 常规路由跳转默认回到页面顶部，避免沿用上个页面滚动状态。
     return { top: 0 }
   },
 })

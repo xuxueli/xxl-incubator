@@ -1,17 +1,22 @@
 /**
- * Description: 路由守卫，判断用户权限
+ * 名称：全局路由守卫注册模块
+ * 描述：集中管理路由切换前后的鉴权流程、进度反馈与异常兜底，确保“先鉴权再进入页面”。
  *
- *  1、获取用户权限：通过 getToken() 获取用户的 token，判断用户是否已登录；如果已登录，则通过 useUserStore().getInfo() 获取用户信息，包括角色和权限；如果未登录，则根据白名单判断是否允许访问目标路由。
- *  2、动态添加路由：如果用户已登录但没有角色信息，则调用 usePermissionStore().generateRoutes() 生成可访问的动态路由，并通过 router.addRoute() 添加到路由系统中。
- *  3、路由重定向：在用户登录后，如果访问了 /login 路由，则重定向到主页；如果访问了锁屏页 /lock，但未锁屏，则重定向到主页；如果访问了其他需要权限的路由，但没有权限，则重定向到登录页。
- *  4、进度条显示：使用 NProgress 显示页面加载进度，在路由跳转开始时调用 NProgress.start()，在路由跳转结束时调用 NProgress.done()。
- *  5、错误处理：如果用户登录失败，则调用 useUserStore().logOut() 清空用户信息，并返回登录页；如果用户权限不足，则返回登录页。
- *  6、异常处理：如果用户权限不足，则返回登录页。
+ * 模块职责（从全局到细节）：
+ * 1. 统一前置守卫流程：在 `beforeEach` 中串联 token 校验、白名单放行、用户信息初始化与动态路由注入；
+ * 2. 统一后置守卫流程：在 `afterEach` 中收口进度条，避免因分支跳转导致加载状态残留；
+ * 3. 统一异常处理：当拉取用户信息或生成路由失败时，执行登出并回退到安全入口；
+ * 4. 统一辅助判断：使用 `isPathMatch` 处理白名单匹配，使用 `isHttp` 过滤外链路由，减少分散判断。
  *
- *  注意：
- *    isPathMatch() 函数用于判断路径是否匹配指定模式，如果匹配，则返回 true，否则返回 false。
- *    isHttp() 函数用于判断路径是否为 HTTP 协议，如果路径为 HTTP 协议，则返回 true，否则返回 false。
- *
+ * 关键执行路径：
+ * - 已登录：
+ *   - 访问登录页：直接回首页，避免重复登录；
+ *   - 访问白名单：直接放行；
+ *   - 首次进入（roles 为空）：先拉取用户信息，再按权限生成并注册动态路由，最后 replace 重入目标页；
+ *   - 非首次进入：直接放行。
+ * - 未登录：
+ *   - 访问白名单：放行；
+ *   - 访问受控页：重定向至登录页并携带 redirect 参数。
  */
 import router from './index'
 import { ElMessage } from 'element-plus'
@@ -26,6 +31,7 @@ import usePermissionStore from '@/store/modules/permission'
 
 NProgress.configure({ showSpinner: false })
 
+// 路由白名单：无需登录即可访问；采用模式匹配，便于后续扩展通配规则。
 const whiteList = ['/login']
 
 const isWhiteList = (path) => {
@@ -33,14 +39,18 @@ const isWhiteList = (path) => {
 }
 
 router.beforeEach(async (to, from) => {
+  // 所有跳转先启动顶部进度条；后续由各分支或 afterEach 负责结束。
   NProgress.start()
   if (getToken()) {
+    // 已登录场景：先同步设置当前页面标题，确保菜单/标签页文案一致。
     to.meta.title && useSettingsStore().setMenuTitle(to.meta.title)
     if (to.path === '/login') {
+      // 已登录访问登录页：重定向到首页，阻止进入重复登录流程。
       NProgress.done()
       return { path: '/' }
     }
     if (isWhiteList(to.path)) {
+      // 已登录访问白名单路由：直接放行。
       return true
     }
     /*if (to.path === '/lock') {
@@ -48,39 +58,45 @@ router.beforeEach(async (to, from) => {
       return { path: '/' }
     }*/
     if (useUserStore().roles.length === 0) {
+      // 角色为空通常意味着页面刷新后的首次进入，需要重新初始化权限上下文。
       isRelogin.show = true
       try {
-        // 拉取user_info信息
+        // 1) 拉取 user_info（含角色/权限）。
         await useUserStore().getInfo()
         isRelogin.show = false
-        // 根据roles权限生成可访问的路由
+        // 2) 根据角色生成可访问的动态路由。
         const accessRoutes = await usePermissionStore().generateRoutes()
         accessRoutes.forEach(route => {
+          // 外链路由不注入 vue-router，避免与内部路由系统混用。
           if (!isHttp(route.path)) {
             router.addRoute(route)
           }
         })
-        // 重新导航到目标路由，确保动态路由已注册
+        // 3) 使用 replace 重新进入目标路由，确保本次匹配能命中新注册路由且不新增历史记录。
         return { ...to, replace: true }
       } catch (err) {
+        // 任一初始化步骤失败时，统一清理登录态并回到安全入口。
         await useUserStore().logOut()
         ElMessage.error(err)
         return { path: '/' }
       }
     }
+    // 角色信息已就绪：正常放行。
     return true
   } else {
-    // 没有token
+    // 未登录场景：仅白名单放行，其余统一引导登录。
     if (isWhiteList(to.path)) {
-      // 在免登录白名单，直接进入
+      // 在免登录白名单，直接进入。
       return true
     }
+    // 当前分支提前返回到登录页，需要手动结束进度条。
     NProgress.done()
-    return `/login?redirect=${to.fullPath}` // 否则全部重定向到登录页
+    // 携带 redirect，登录成功后可回跳原目标页。
+    return `/login?redirect=${to.fullPath}`
   }
 })
 
+// 后置守卫兜底收口：不论前置分支如何返回，都确保进度条关闭。
 router.afterEach(() => {
   NProgress.done()
 })
-
