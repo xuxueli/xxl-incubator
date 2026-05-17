@@ -75,7 +75,7 @@
           <div class="body">
             <p>
               <i class="el-icon-s-promotion"></i> 官网：<el-link
-                href="http://www.ruoyi.vip"
+                href="http://www.xxx.xxx"
                 target="_blank"
                 >http://www.boot.vip</el-link
               >
