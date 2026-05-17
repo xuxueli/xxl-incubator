@@ -1,13 +1,13 @@
 # 项目相关配置
-ruoyi:
+boot:
   # 名称
   name: Boot
   # 版本
-  version: 3.9.2
+  version: 1.0.0
   # 版权年份
   copyrightYear: 2026
-  # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
-  profile: D:/ruoyi/uploadPath
+  # 文件路径 示例（ Windows配置D:/boot/uploadPath，Linux配置 /home/boot/uploadPath）
+  profile: D:/boot/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
@@ -34,7 +34,7 @@ server:
 # 日志配置
 logging:
   level:
-    com.ruoyi: debug
+    com.boot: debug
     org.springframework: warn
 
 # 用户配置
@@ -104,7 +104,7 @@ token:
 # MyBatis配置
 mybatis:
   # 搜索指定包别名
-  typeAliasesPackage: com.ruoyi.**.domain
+  typeAliasesPackage: com.boot.**.domain
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
@@ -128,14 +128,14 @@ springdoc:
     - group: 'default'
       display-name: '测试模块'
       paths-to-match: '/**'
-      packages-to-scan: com.ruoyi.web.controller.tool
+      packages-to-scan: com.boot.web.controller.tool
 
 # 防盗链配置
 referer:
   # 防盗链开关
   enabled: false
   # 允许的域名列表
-  allowed-domains: localhost,127.0.0.1,ruoyi.vip,www.ruoyi.vip
+  allowed-domains: localhost,127.0.0.1,boot.vip
 
 # 防止XSS攻击
 xss:
