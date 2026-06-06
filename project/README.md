@@ -69,9 +69,11 @@ xxl-incubator
 ### 开发环境
 ```
 - OS：mac + homebrew 
-- Java：jdk + maven + git + idea
+- Java：jdk + maven + git
+- Node：nvm + node + npm 
+- IDE: idea + zed
 - DB：mysql + idea-database
+- AI: opencode + deepseek/glm
 - Linux：docker + terminal
-- Etc：sublime
 - Other：Chrome + 百度云 + office
 ```
