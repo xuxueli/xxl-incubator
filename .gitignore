@@ -1,16 +1,20 @@
-# for eclipse
-/.settings/
-/.project
-
-# for idea
+# for backend
 *.iml
-*/target
-**/target
 /.idea
+**/target/
+.classpath
+.project
 .DS_Store
 .gitattributes
 
-# for node
+# for fontend
 node_modules/
 dist/
 package-lock.json
+
+# for ai
+.opencode
+.omo
+.claude
+.specify
+specs
