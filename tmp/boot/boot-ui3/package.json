@@ -15,7 +15,7 @@
     "vue": "3.5.33",
     "vue-router": "5.0.6",
     "pinia": "3.0.4",
-    "axios": "1.16.0",
+    "axios": "1.18.0",
     "element-plus": "2.13.7",
     "@element-plus/icons-vue": "2.3.2",
     "@vueuse/core": "14.1.0",
