@@ -8,6 +8,7 @@
 
 	<modules>
         <!-- level-1 -->
+		<module>project/level-1/xxl-boot-backup/api</module>
         <!--<module>project/level-1/xxl-glue</module>
         <module>project/level-1/xxl-hex</module>
         <module>project/level-1/xxl-web</module>
@@ -23,8 +24,6 @@
         <module>project/level-2/xxl-util</module>-->
 
 		<!-- tmp -->
-		<module>tmp/boot/boot-admin</module>
-		<module>tmp/simple/simple-api</module>
     </modules>
 
 </project>
