@@ -17,7 +17,7 @@
         <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
-            <version>2.4.0</version>
+            <version>8.19.8</version>
         </dependency>
 
         <!-- for only lucene, use elasticsearch's version, 5.x require jdk1.7
